@@ -1,4 +1,4 @@
-# `Air-Sea-and-See`
+# `AirCnC-aa`
 
 ## Database Schema Design
 
