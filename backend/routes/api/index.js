@@ -17,7 +17,7 @@ router.post('/test', function (req, res) {
 3 - error if no JWT/LOGIN cookie 
 */
 
-
+/*
 //1
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -43,5 +43,5 @@ router.get('/require-auth',requireAuth,(req, res) => {
     return res.json(req.user);
   }
 );
-
+*/
 module.exports = router;
