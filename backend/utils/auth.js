@@ -7,6 +7,8 @@ const { secret, expiresIn } = jwtConfig;
 
 
 // Sends a JWT Cookie
+//Token accepts from safeUser + existing Res
+//Combined to alter Res to include Token Cookie
 const setTokenCookie = (res, user) => {
     // Create the token.
     const safeUser = {
