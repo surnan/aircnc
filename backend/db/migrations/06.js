@@ -1,3 +1,4 @@
+//BOOKINGS
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
 
@@ -17,11 +18,15 @@ module.exports = {
       },
       spotId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {model: 'Spots'},
+        onDelete: 'CASCADE'
       },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {model: 'Users'},
+        onDelete: 'CASCADE'
       },
       startDate: {
         type: Sequelize.DATE,
