@@ -69,7 +69,8 @@ module.exports = {
         lng: -74.0622927904529,
         name: "Roller Coaster Hotel",
         description: "Enoy amusement parks",
-        price: 80,
+        price: 80
+
       }
     ], { validate: true });
   },
