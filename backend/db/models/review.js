@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
        allowNull: true
     },
     stars: {
-      Dtype: ataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
   }, {

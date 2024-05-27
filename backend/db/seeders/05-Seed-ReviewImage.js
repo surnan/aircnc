@@ -1,6 +1,6 @@
 'use strict';
 
-const { User } = require('../models');
+const { ReviewImage } = require('../models');
 const bcrypt = require("bcryptjs");
 
 let options = {};
@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await User.bulkCreate([
+    await ReviewImage.bulkCreate([
       {
         reviewId: 1,
         url: 'www.google.com'
@@ -24,13 +24,13 @@ module.exports = {
         reviewId: 3,
         url: 'www.google.com'
       }
+
     ],{ validate: true });
   },
-
   async down(queryInterface, Sequelize) {
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2', 'FakeUser3'] }
+      reviewId: { [Op.in]: [1, 2, 3] }
     }, {});
   }
 };
