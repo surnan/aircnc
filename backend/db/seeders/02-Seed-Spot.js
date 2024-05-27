@@ -70,6 +70,7 @@ module.exports = {
         name: "Roller Coaster Hotel",
         description: "Enoy amusement parks",
         price: 80
+
       }
     ], { validate: true });
   },
