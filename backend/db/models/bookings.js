@@ -1,7 +1,6 @@
+//Bookings
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
@@ -16,11 +15,13 @@ module.exports = (sequelize, DataTypes) => {
   Booking.init({
     spotId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: { model: 'Spots' }
     },
     userId: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: { model: 'Users' }
     },
     startDate: {
       type: DataTypes.DATE,
@@ -28,11 +29,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     endDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: falseinse
     }, 
   }, {
     sequelize,
     modelName: 'Booking',
   });
   return Booking;
-};
+};2 
