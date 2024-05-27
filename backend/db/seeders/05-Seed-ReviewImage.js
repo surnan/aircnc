@@ -14,15 +14,39 @@ module.exports = {
     await ReviewImage.bulkCreate([
       {
         reviewId: 1,
-        url: 'www.google.com'
+        url: 'www.google1.com'
       },
       {
         reviewId: 2,
-        url: 'www.google.com'
+        url: 'www.google2.com'
       },
       {
         reviewId: 3,
-        url: 'www.google.com'
+        url: 'www.google3.com'
+      },
+      {
+        reviewId: 1,
+        url: 'www.google4.com'
+      },
+      {
+        reviewId: 2,
+        url: 'www.google5.com'
+      },
+      {
+        reviewId: 3,
+        url: 'www.google6.com'
+      },
+      {
+        reviewId: 1,
+        url: 'www.google7.com'
+      },
+      {
+        reviewId: 2,
+        url: 'www.google8.com'
+      },
+      {
+        reviewId: 3,
+        url: 'www.google9.com'
       }
 
     ],{ validate: true });

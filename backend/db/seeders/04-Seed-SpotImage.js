@@ -17,47 +17,47 @@ module.exports = {
     await SpotImage.bulkCreate([
       {
         spotId: 1,
-        url: 'www.google.com',
+        url: 'www.googleA.com',
         isPreview: false
       },
       {
         spotId: 2,
-        url: 'www.google.com',
+        url: 'www.googleB.com',
         isPreview: true
       },
       {
         spotId: 3,
-        url: 'www.google.com',
+        url: 'www.googleC.com',
         isPreview: true
       },
       {
         spotId: 4,
-        url: 'www.google.com',
+        url: 'www.googleD.com',
         isPreview: false
       },
       {
         spotId: 5,
-        url: 'www.google.com',
+        url: 'www.googleE.com',
         isPreview: false
       },
       {
         spotId: 1,
-        url: 'www.google.com',
+        url: 'www.googleF.com',
         isPreview: true
       },
       {
         spotId: 2,
-        url: 'www.google.com',
+        url: 'www.googleG.com',
         isPreview: false
       },
       {
         spotId: 3,
-        url: 'www.google.com',
+        url: 'www.googleH.com',
         isPreview: false
       },
       {
         spotId: 4,
-        url: 'www.google.com',
+        url: 'www.googleI.com',
         isPreview: true
       }
     ], { validate: true });
