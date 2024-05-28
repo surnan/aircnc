@@ -18,47 +18,47 @@ module.exports = {
       {
         spotId: 1,
         url: 'www.googleA.com',
-        isPreview: false
+        preview: false
       },
       {
         spotId: 2,
         url: 'www.googleB.com',
-        isPreview: true
+        preview: true
       },
       {
         spotId: 3,
         url: 'www.googleC.com',
-        isPreview: true
+        preview: true
       },
       {
         spotId: 4,
         url: 'www.googleD.com',
-        isPreview: false
+        preview: false
       },
       {
         spotId: 5,
         url: 'www.googleE.com',
-        isPreview: false
+        preview: false
       },
       {
         spotId: 1,
         url: 'www.googleF.com',
-        isPreview: true
+        preview: true
       },
       {
         spotId: 2,
         url: 'www.googleG.com',
-        isPreview: false
+        preview: false
       },
       {
         spotId: 3,
         url: 'www.googleH.com',
-        isPreview: false
+        preview: false
       },
       {
         spotId: 4,
         url: 'www.googleI.com',
-        isPreview: true
+        preview: true
       }
     ], { validate: true });
   },
