@@ -65,7 +65,7 @@ router.get('/', async (req, res, next) => {
 });
 
 //Get all Spots by current user
-// router.get('/current', requireAuth, async (req, res, next) => {
+// router.get('/current', async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
 
     try {
