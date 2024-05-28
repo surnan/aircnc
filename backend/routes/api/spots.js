@@ -204,55 +204,84 @@ router.post('/', requireAuth, async (req, res, next) => {
 })
 
 //Add Image to Spot
-router.post('/:spotId/images', requireAuth, async(req, res, next)=>{
+router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     // router.post('/:spotId/images', async (req, res, next) => {
-        try {
-            // const { user } = req.body
-            const { user } = req;
-            let { spotId } = req.params;
-            let { url, preview } = req.body;
-    
-            const currentSpot = await Spot.findByPk(spotId);
-    
-            if (!currentSpot) {
-                return res.status(404).json({
-                    message: "Spot couldn't be found"
-                })
-            }
-    
-            if (parseInt(user.id) !== parseInt(currentSpot.ownerId)) {
-                return res.status(403).json({ 
-                    message: "Access Denied", 
-                    userID: parseInt(user.id),
-                    ownerID: parseInt(currentSpot.ownerId)
-                })
-            }
-    
-    
-            //if preview is invalid, set to false
-            preview = preview === "true" ? true : false
-            spotId = parseInt(spotId)
-    
-            const currentSpotImage = await SpotImage.create({
-                url,
-                preview,
-                spotId
+    try {
+        // const { user } = req.body
+        const { user } = req;
+        let { spotId } = req.params;
+        let { url, preview } = req.body;
+
+        const currentSpot = await Spot.findByPk(spotId);
+
+        if (!currentSpot) {
+            return res.status(404).json({
+                message: "Spot couldn't be found"
             })
-    
-    
-    
-            res.json({
-                id: currentSpot.id,
-                url,
-                preview
-            })
-    
-    
-        } catch (e) {
-            next(e)
         }
+
+        if (parseInt(user.id) !== parseInt(currentSpot.ownerId)) {
+            return res.status(403).json({ message: "Forbidden" })
+        }
+
+
+        //if preview is invalid, set to false
+        preview = preview === "true" ? true : false
+        spotId = parseInt(spotId)
+
+        const currentSpotImage = await SpotImage.create({
+            url,
+            preview,
+            spotId
+        })
+
+
+
+        res.json({
+            id: currentSpot.id,
+            url,
+            preview
+        })
+
+
+    } catch (e) {
+        next(e)
     }
+}
 )
+
+//Delete Spot
+// router.delete('/:spotId', async (req, res, next) => {
+router.delete('/:spotId', requireAuth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        // const userId = req.body.user.id;
+
+        const { spotId } = req.params;
+        const currentSpot = await Spot.findByPk(spotId);
+
+        if (!currentSpot) {
+            res.status(404).json({
+                message: "Spot couldn't be found"
+            });
+        }
+
+
+        if (userId !== currentSpot.ownerId) {
+            return res.status(403).json({
+                message: "Forbidden"
+            })
+        }
+
+        currentSpot.destroy();
+        res.json({ "message": "Successfully deleted" })
+    } catch (e) {
+        next(e)
+    }
+})
+
+
+
 
 
 module.exports = router;
