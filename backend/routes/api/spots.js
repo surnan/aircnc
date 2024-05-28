@@ -65,9 +65,8 @@ router.get('/', async (req, res, next) => {
 });
 
 //Get all Spots by current user
-// router.get('/current', requireAuth, async (req, res, next) => {
+// router.get('/current', async (req, res, next) => {
 router.get('/current', requireAuth, async (req, res, next) => {
-
     try {
         // const { user } = req.body
         const { user } = req;
@@ -126,14 +125,52 @@ router.get('/:spotId', async (req, res, next) => {
         const currentSpot = await Spot.findByPk(spotId, {
             include: [
                 {
-                    model: SpotImage, 
-                    attributes: ['id', 'url']
-                }
+                    model: SpotImage,
+                    attributes: ['id', 'url', 'preview']
+                },
+                {
+                    model: Review,
+                    attributes: ['stars']
+                }, {
+                    model: User,
+                    as: 'Owner',
+                    attributes: ['id', 'firstName', 'lastName']
+                },
             ]
         })
-        // const allSpots = await Spot.findAll()
-        res.json(currentSpot)
-        // res.json(allSpots)
+
+
+        // Average Stars
+        const totalStars = currentSpot.Reviews.reduce((sum, review) => sum + review.stars, 0);
+        const avgRating = currentSpot.Reviews.length ? totalStars / currentSpot.Reviews.length : 0;
+        
+        const { id, ownerId, address, city, state, country, lat, lng } = currentSpot;
+        const { name, description, price, createdAt, updatedAt, Owner } = currentSpot;
+
+    
+        const result = {
+            id,
+            ownerId,
+            address,
+            city,
+            state,
+            country,
+            lat: lat.toFixed(latlngPrecision),
+            lng: lng.toFixed(latlngPrecision),
+            name,
+            description,
+            price,
+            createdAt,
+            updatedAt,
+            numReviews: currentSpot.Reviews.length,
+            // numReview: currentSpot.s
+            avgStarRating: avgRating.toFixed(1),
+            SpotImages: currentSpot.SpotImages,
+            Owner
+        }
+
+        res.json(result)
+        // res.json(currentSpot)
     } catch (e) {
         next(e)
     }
