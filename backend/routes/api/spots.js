@@ -31,7 +31,7 @@ router.get('/', async (req, res, next) => {
         const result = spots.map(spot => {
 
             // Preview Image
-            let previewImage = spot.SpotImages.find(image => image.isPreview);
+            let previewImage = spot.SpotImages.find(image => image.preview);
             previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
 
             // Average Stars
@@ -79,10 +79,13 @@ router.get('/current', async (req, res, next) => {
             }
         });
 
+        // return res.json(spots)
+
+
         const result = spots.map(spot => {
 
             // Preview Image
-            let previewImage = spot.SpotImages.find(image => image.isPreview);
+            let previewImage = spot.SpotImages.find(image => image.preview);
             previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
 
             // Average Stars
