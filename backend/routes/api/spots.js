@@ -143,11 +143,11 @@ router.get('/:spotId', async (req, res, next) => {
         // Average Stars
         const totalStars = currentSpot.Reviews.reduce((sum, review) => sum + review.stars, 0);
         const avgRating = currentSpot.Reviews.length ? totalStars / currentSpot.Reviews.length : 0;
-        
+
         const { id, ownerId, address, city, state, country, lat, lng } = currentSpot;
         const { name, description, price, createdAt, updatedAt, Owner } = currentSpot;
 
-    
+
         const result = {
             id,
             ownerId,
@@ -163,14 +163,41 @@ router.get('/:spotId', async (req, res, next) => {
             createdAt,
             updatedAt,
             numReviews: currentSpot.Reviews.length,
-            // numReview: currentSpot.s
             avgStarRating: avgRating.toFixed(1),
             SpotImages: currentSpot.SpotImages,
             Owner
         }
 
         res.json(result)
-        // res.json(currentSpot)
+    } catch (e) {
+        next(e)
+    }
+})
+
+//Create a Spot
+// router.post('/', async (req, res, next) => {
+router.post('/', requireAuth, async (req, res, next) => {
+
+    try {
+        // const { user } = req.body
+        const { user } = req;
+        const { lat, lng, address, name, country, city, state, description, price } = req.body;
+
+        const spot = await Spot.create(
+            {
+                ownerId: user.id,
+                address,
+                city,
+                state,
+                country,
+                lat,
+                lng,
+                name,
+                description,
+                price
+            }
+        )
+        res.status(201).json(spot)
     } catch (e) {
         next(e)
     }
