@@ -25,7 +25,10 @@ router.get('/', async (req, res, next) => {
     try {
 
         const spots = await Spot.findAll({
-            include: [{ model: SpotImage }, { model: Review }]
+            include: [
+                { model: SpotImage }, 
+                { model: Review }
+            ]
         });
 
         const result = spots.map(spot => {
@@ -38,7 +41,7 @@ router.get('/', async (req, res, next) => {
             const totalStars = spot.Reviews.reduce((sum, review) => sum + review.stars, 0);
             const avgRating = spot.Reviews.length ? totalStars / spot.Reviews.length : 0;
 
-            // Create the new spot object
+            // Create new spot object
             const { id, ownerId, address, city, state, country, lat, lng } = spot;
             const { name, description, price, createdAt, updatedAt } = spot;
 
@@ -73,14 +76,14 @@ router.get('/current', async (req, res, next) => {
         const { user } = req;
 
         const spots = await Spot.findAll({
-            include: [{ model: SpotImage }, { model: Review }],
+            include: [
+                { model: SpotImage }, 
+                { model: Review }
+            ],
             where: {
                 ownerId: user.id
             }
         });
-
-        // return res.json(spots)
-
 
         const result = spots.map(spot => {
 
@@ -219,9 +222,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
         const currentSpot = await Spot.findByPk(spotId);
 
         if (!currentSpot) {
-            return res.status(404).json({
-                message: "Spot couldn't be found"
-            })
+            return res.status(404).json({message: "Spot couldn't be found"})
         }
 
         if (parseInt(user.id) !== parseInt(currentSpot.ownerId)) {
@@ -239,26 +240,22 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             spotId
         })
 
-
-
         res.json({
             id: currentSpot.id,
             url,
             preview
         })
 
-
     } catch (e) {
         next(e)
     }
-}
-)
+})
 
 //Delete Spot
 // router.delete('/:spotId', async (req, res, next) => {
 router.delete('/:spotId', requireAuth, async (req, res) => {
     try {
-        // const userId = req.user.id;
+        const userId = req.user.id;
         // const userId = req.bodyr.id;
 
         const { spotId } = req.params;
@@ -297,22 +294,13 @@ router.put('/:spotId', async (req, res, next) => {
 
         const currentSpot = await Spot.findByPk(spotId);
         if (!currentSpot) {
-            res.status(404).json({
-                message: "Spot couldn't be found"
-            });
+            res.status(404).json({message: "Spot couldn't be found"});
         }
 
         const { ownerId } = currentSpot;
 
         if (parseInt(userId) !== parseInt(ownerId)) {
-            return res.status(403).json({
-                message: "Forbidden",
-                userId,
-                ownerId,
-                address,
-                city,
-                price
-            })
+            return res.status(403).json({message: "Forbidden"})
         }
 
         await currentSpot.update(
