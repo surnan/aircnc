@@ -2,12 +2,13 @@
 
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Op } = require('sequelize');
-const { requireAuth, restoreUser, setTokenCookie } = require('../../utils/auth');
+// const { Op } = require('sequelize');
+// const { requireAuth, restoreUser, setTokenCookie } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../db/models');
 
 
@@ -30,7 +31,7 @@ router.get('/', async (req, res, next) => {
         const result = spots.map(spot => {
 
             // Preview Image
-            let previewImage = spot.SpotImages.find(image => image.isPreview);
+            let previewImage = spot.SpotImages.find(image => image.preview);
             previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
 
             // Average Stars
@@ -65,8 +66,8 @@ router.get('/', async (req, res, next) => {
 });
 
 //Get all Spots by current user
-// router.get('/current', async (req, res, next) => {
-router.get('/current', requireAuth, async (req, res, next) => {
+router.get('/current', async (req, res, next) => {
+// router.get('/current', requireAuth, async (req, res, next) => {
     try {
         // const { user } = req.body
         const { user } = req;
@@ -78,10 +79,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         });
 
+        // return res.json(spots)
+
+
         const result = spots.map(spot => {
 
             // Preview Image
-            let previewImage = spot.SpotImages.find(image => image.isPreview);
+            let previewImage = spot.SpotImages.find(image => image.preview);
             previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
 
             // Average Stars
@@ -254,8 +258,8 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 // router.delete('/:spotId', async (req, res, next) => {
 router.delete('/:spotId', requireAuth, async (req, res) => {
     try {
-        const userId = req.user.id;
-        // const userId = req.body.user.id;
+        // const userId = req.user.id;
+        // const userId = req.bodyr.id;
 
         const { spotId } = req.params;
         const currentSpot = await Spot.findByPk(spotId);
@@ -280,7 +284,55 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     }
 })
 
+router.put('/:spotId', async (req, res, next) => {
+    // router.put('/:spotId', requireAuth, validateSpot, async(req, res) => {  
+    try {
+        const { spotId } = req.params;
 
+        const userId = req.user.id;
+        // const userId = req.body.id;
+
+        const { address, city, state, country } = req.body;
+        const { lat, lng, name, description, price } = req.body;
+
+        const currentSpot = await Spot.findByPk(spotId);
+        if (!currentSpot) {
+            res.status(404).json({
+                message: "Spot couldn't be found"
+            });
+        }
+
+        const { ownerId } = currentSpot;
+
+        if (parseInt(userId) !== parseInt(ownerId)) {
+            return res.status(403).json({
+                message: "Forbidden",
+                userId,
+                ownerId,
+                address,
+                city,
+                price
+            })
+        }
+
+        await currentSpot.update(
+            {
+                address,
+                city,
+                state,
+                country,
+                lat,
+                lng,
+                name,
+                description,
+                price
+            }
+        )
+        res.json(currentSpot)
+    } catch (e) {
+        next(e)
+    }
+})
 
 
 
