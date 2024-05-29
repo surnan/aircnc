@@ -391,8 +391,8 @@ router.get('/:spotId/reviews', async (req, res) => {
 
 
 //Create a Review for a Spot based on the Spot's id
-// router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
-router.post('/:spotId/reviews', async (req, res) => {
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
+// router.post('/:spotId/reviews', async (req, res) => {
 
     const { spotId } = req.params;
     const {review, stars} = req.body;
@@ -403,6 +403,8 @@ router.post('/:spotId/reviews', async (req, res) => {
     }
 
     const userId = req.user.id;
+    // const userId = 2;
+
 
     const usersReview = await Review.findOne({ where: { userId: userId, spotId: spotId } });
 
@@ -415,10 +417,9 @@ router.post('/:spotId/reviews', async (req, res) => {
             userId,
             spotId,
             review,
-            stars: req.body.stars
+            stars: stars
         }
     );
-
 
     res.status(201).json(spot_review);
 });
