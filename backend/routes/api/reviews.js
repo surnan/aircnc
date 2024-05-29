@@ -10,6 +10,13 @@ const { requireAuth, restoreUser, setTokenCookie } = require('../../utils/auth')
 const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../db/models');
 
 
+const validateReview = [
+    check('review').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Review text is required'),
+    check('stars').exists({ checkFalsy: true }).isFloat({ min: 1.0, max: 5.0 }).withMessage('Stars must be from 1 to 5'),
+    handleValidationErrors
+];
+
+
 router.get('/hello/world', function (req, res) {
     res.cookie('XSRF-TOKEN', req.csrfToken());
     res.send('Hello World!!!');
@@ -19,12 +26,17 @@ const avgStarPrecision = 1;
 const latlngPrecision = 6;
 
 
+//!!!NEEDS PREVIEW IMAGE !!!!
 //Get current user reviews
 router.get('/current', async (req, res, next) => {
     // router.get('/', requireAuth, async (req, res, next) => {
     try {
 
-        const safeUser = { id: 2 };
+        // const {user} = req
+        const user = {id: 2};
+        const userId = user.id;
+
+
         const reviews = await Review.findAll(
             {
                 include: [
@@ -77,7 +89,6 @@ router.post('/', async (req, res) => {
             price,
         }
     );
-
     res.status(201).json(spot);
 });
 
@@ -85,7 +96,6 @@ router.post('/', async (req, res) => {
 //Add an Image to a Review based on the Review's id
 // router.post('/:reviewId/images', async (req, res, next) => {
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
-
     try {
 
         const { reviewId } = req.params;
@@ -95,7 +105,9 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
             return res.status(404).json({ message: "Review couldn't be found" })
         }
 
-        // const user = { id: 2 }
+        const user = { id: 2 }
+        // const user = req.user
+
         const userId = user.id
 
         if (userId !== review.userId) { //verify review belongs to user
@@ -126,19 +138,26 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     }
 });
 
+
 //Edit a Review
 // router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
 router.put('/:reviewId', async (req, res, next) => {
     try {
         const { reviewId } = req.params;
         const currentReview = await Review.findByPk(reviewId)
-        if (!review) {
+        if (!currentReview) {
             return res.status(404).json({ message: "Review couldn't be found" })
         }
 
+        const user = {id: 2};
+        // const {user} = req
 
-        const { userId, spotId, review, stars } = req.body
-        if (userId !== review.userId) {
+        const userId = user.id;
+
+
+        const { review, stars } = req.body
+
+        if (userId !== currentReview.userId) {
             return res.status(403).json({ message: "Forbidden" })
         }
 
@@ -146,7 +165,7 @@ router.put('/:reviewId', async (req, res, next) => {
         await currentReview.update(
             {
                 userId,
-                spotId,
+                spotId: currentReview.spotId,
                 review,
                 stars
             }
@@ -156,5 +175,4 @@ router.put('/:reviewId', async (req, res, next) => {
         next(e)
     }
 });
-
 module.exports = router;
