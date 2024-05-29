@@ -126,6 +126,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     }
 });
 
+
 //Edit a Review
 // router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
 router.put('/:reviewId', async (req, res, next) => {
@@ -156,5 +157,4 @@ router.put('/:reviewId', async (req, res, next) => {
         next(e)
     }
 });
-
 module.exports = router;
