@@ -20,7 +20,6 @@ const latlngPrecision = 6;
 
 
 router.get('/', async (req, res, next) => {
-    res.json('hello world')
     try {
         const reviews = await Review.findAll();
         res.json(reviews)
@@ -28,3 +27,5 @@ router.get('/', async (req, res, next) => {
         next(e)
     }
 })
+
+module.exports = router;
