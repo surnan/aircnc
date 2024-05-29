@@ -3,7 +3,8 @@
 ## Database Schema Design
 
 
-![db-schema](./images/Readme_DB_v1.png)
+![db-schema](./images/diagram1.png)
+
 
 
 ## API Documentation

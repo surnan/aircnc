@@ -1,7 +1,5 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
-
 
 const { SpotImage } = require('../models');
 
