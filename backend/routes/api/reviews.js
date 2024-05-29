@@ -33,7 +33,7 @@ router.get('/current', async (req, res, next) => {
     try {
 
         // const {user} = req
-        const user = {id: 2};
+        const user = { id: 2 };
         const userId = user.id;
 
 
@@ -140,8 +140,8 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
 
 //Edit a Review
-// router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
-router.put('/:reviewId', async (req, res, next) => {
+router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
+// router.put('/:reviewId', async (req, res, next) => {
     try {
         const { reviewId } = req.params;
         const currentReview = await Review.findByPk(reviewId)
@@ -149,8 +149,8 @@ router.put('/:reviewId', async (req, res, next) => {
             return res.status(404).json({ message: "Review couldn't be found" })
         }
 
-        const user = {id: 2};
-        // const {user} = req
+        // const user = { id: 2 };
+        const {user} = req
 
         const userId = user.id;
 
@@ -175,4 +175,38 @@ router.put('/:reviewId', async (req, res, next) => {
         next(e)
     }
 });
+
+//Delete a Review
+// router.delete('/:reviewId', requireAuth, async (req, res) => {
+router.delete('/:reviewId', async (req, res) => {
+    try {
+        // const userId = req.user.id;
+        const userId = 2;
+
+        const { reviewId } = req.params;
+        const currentReview = await Review.findByPk(reviewId);
+
+        if (!currentReview) {
+            res.status(404).json({
+                message: "Review couldn't be found"
+            });
+        }
+
+
+        if (userId !== currentReview.userId) {
+            return res.status(403).json({
+                message: "Forbidden",
+                userId,
+                reviewUserId:currentReview.userId
+            })
+        }
+
+        currentReview.destroy();
+        res.json({ "message": "Successfully deleted" })
+
+    } catch (e) {
+        next(e)
+    }
+})
+
 module.exports = router;
