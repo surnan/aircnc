@@ -19,10 +19,36 @@ const avgStarPrecision = 1;
 const latlngPrecision = 6;
 
 
-router.get('/', async (req, res, next) => {
+//Get allReviews of Current User
+router.get('/current', async (req, res, next) => {
+    // router.get('/', requireAuth, async (req, res, next) => {
     try {
-        const reviews = await Review.findAll();
-        res.json(reviews)
+
+        const safeUser = { id: 2 };
+        const reviews = await Review.findAll(
+            {
+                include: [
+                    {
+                        model: User,
+                        attributes: ['id', 'firstName', 'lastName']
+                    },
+                    {
+                        model: Spot,
+                        attributes: {
+                            exclude: ['createdAt', 'updatedAt']
+                        }
+                    },
+                    {
+                        model: ReviewImage,
+                        attributes: ['id', 'url']
+                    }
+                ],
+                where: {
+                    userId: safeUser.id
+                }
+            }
+        )
+        res.json({ Reviews: reviews })
     } catch (e) {
         next(e)
     }
