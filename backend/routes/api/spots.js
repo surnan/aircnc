@@ -103,9 +103,11 @@ router.get('/', async (req, res, next) => {
 //Get all Spots by current user
 router.get('/current', async (req, res, next) => {
     // router.get('/current', requireAuth, async (req, res, next) => {
+
     try {
-        // const { user } = req.body
-        const { user } = req;
+
+        const { user } = req.body
+        // const { user } = req;
 
         const spots = await Spot.findAll({
             include: [
@@ -356,5 +358,32 @@ router.put('/:spotId', async (req, res, next) => {
 })
 
 
+router.get('/:spotId/reviews', async (req, res) => {
+    const { spotId } = req.params;
+    const spot = await Spot.findByPk(spotId);
+    if (!spot) {
+        res.status(404).json({ message: "Spot couldn't be found" })
+    }
+    const reviews = await Review.findAll(
+        {
+            include:
+                [
+                    {
+                        model: User,
+                        attributes: ['id', 'firstName', 'lastName']
+                    },
+                    {
+                        model: ReviewImage,
+                        attributes: ['id', 'url']
+                    }
+                ],
+            where:
+            {
+                spotId: spotId
+            }
+        });
+
+    res.json({Reviews: reviews});
+});
 
 module.exports = router;
