@@ -17,3 +17,15 @@ router.get('/hello/world', function (req, res) {
 
 const avgStarPrecision = 1;
 const latlngPrecision = 6;
+
+
+router.get('/', async (req, res, next) => {
+    try {
+        const reviews = await Review.findAll();
+        res.json(reviews)
+    } catch (e) {
+        next(e)
+    }
+})
+
+module.exports = router;
