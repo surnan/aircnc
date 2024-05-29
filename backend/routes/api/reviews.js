@@ -54,17 +54,18 @@ router.get('/current', async (req, res, next) => {
     }
 })
 
+//Create a Review for a Spot based on the Spot's Id
 // router.post('/', requireAuth, validateSpot, async(req, res) => {
 router.post('/', async (req, res) => {
 
     // const {user} = req;
     const user = { id: 1 };
 
-    const {lat, lng, address, name, country, city, state, description, price} = req.body
+    const { lat, lng, address, name, country, city, state, description, price } = req.body
 
     const spot = await Spot.create(
         {
-            lat, 
+            lat,
             lng,
             ownerId: user.id,
             address,
@@ -78,6 +79,82 @@ router.post('/', async (req, res) => {
     );
 
     res.status(201).json(spot);
+});
+
+
+//Add an Image to a Review based on the Review's id
+// router.post('/:reviewId/images', async (req, res, next) => {
+router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
+
+    try {
+
+        const { reviewId } = req.params;
+        const review = await Review.findByPk(reviewId)
+
+        if (!review) {
+            return res.status(404).json({ message: "Review couldn't be found" })
+        }
+
+        // const user = { id: 2 }
+        const userId = user.id
+
+        if (userId !== review.userId) { //verify review belongs to user
+            return res.status(403).json({ message: "Forbidden" })
+        }
+
+        const images = await review.getReviewImages();
+        console.log(images.length);
+
+        if (images.length > 10) {
+            res.status(403).json({ message: "Maximum number of images for this resource was reached" });
+        }
+
+
+        const reviewImage = await ReviewImage.create(
+            {
+                url: req.body.url,
+                reviewId
+            }
+        );
+
+        res.json({
+            "id": reviewImage.id,
+            "url": reviewImage.url
+        });
+    } catch (e) {
+        next(e)
+    }
+});
+
+//Edit a Review
+// router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
+router.put('/:reviewId', async (req, res, next) => {
+    try {
+        const { reviewId } = req.params;
+        const currentReview = await Review.findByPk(reviewId)
+        if (!review) {
+            return res.status(404).json({ message: "Review couldn't be found" })
+        }
+
+
+        const { userId, spotId, review, stars } = req.body
+        if (userId !== review.userId) {
+            return res.status(403).json({ message: "Forbidden" })
+        }
+
+
+        await currentReview.update(
+            {
+                userId,
+                spotId,
+                review,
+                stars
+            }
+        );
+        res.json(currentReview);
+    } catch (e) {
+        next(e)
+    }
 });
 
 module.exports = router;
