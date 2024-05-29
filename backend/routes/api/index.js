@@ -2,6 +2,8 @@
 const router          = require('express').Router();
 const sessionRouter   = require('./session.js');
 const usersRouter     = require('./users.js');
+const spotsRouter     = require('./spots.js');
+const reviewsRouter     = require('./reviews.js');
 
 const { restoreUser } = require("../../utils/auth.js");
 
@@ -9,7 +11,8 @@ const { restoreUser } = require("../../utils/auth.js");
 router.use(restoreUser);    //get user details from login cookie
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
-
+router.use('/spots', spotsRouter);
+router.use('/reviews', reviewsRouter);
 
 
 
@@ -30,7 +33,7 @@ router.post('/test', (req, res) => {
 3 - error if no JWT/LOGIN cookie 
 */
 
-/*
+
 //1
 const { setTokenCookie } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
@@ -43,7 +46,6 @@ router.get('/set-token-cookie', async (_req, res) => {
 
 
 //2
-const { restoreUser } = require('../../utils/auth.js');
 router.use(restoreUser);
 router.get('/restore-user',(req, res) => {
     return res.json(req.user);
@@ -56,7 +58,7 @@ router.get('/require-auth',requireAuth,(req, res) => {
     return res.json(req.user);
   }
 );
-*/
+
 
 
 

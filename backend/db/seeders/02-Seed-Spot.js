@@ -12,7 +12,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await Spot.bulkCreate([ 
       {
-        ownerId: 3,
+        ownerId: 1,
         address: "One Park Avenue",
         city: "New York City",
         state: "NY",
@@ -48,7 +48,7 @@ module.exports = {
         price: 75,
       },
       {
-        ownerId: 4,
+        ownerId: 2,
         address: "12 Union Street",
         city: "New York City",
         state: "NY",
@@ -69,31 +69,8 @@ module.exports = {
         lng: -74.0622927904529,
         name: "Roller Coaster Hotel",
         description: "Enoy amusement parks",
-        price: 80,
-      },
-      {
-        ownerId: 2,
-        address: "77 Astora Blvd",
-        city: "Queens",
-        state: "NY",
-        country: "USA",
-        lat: 40.82595300239568,
-        lng: -73.87838826939743,
-        name: "Astoria Motel",
-        description: "Near LaGuardia Airport",
-        price: 75,
-      },
-      {
-        ownerId: 2,
-        address: "2211 Grand Concourse",
-        city: "Bronx",
-        state: "NY",
-        country: "USA",
-        lat: 40.77520686455507,
-        lng: -73.9120134429709,
-        name: "Yankee Inn",
-        description: "Near famouse baseball stadium",
-        price: 13,
+        price: 80
+
       }
     ], { validate: true });
   },
