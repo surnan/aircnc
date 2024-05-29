@@ -73,6 +73,18 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: "Spot",
+    scopes:
+    {
+      noDate: {
+        attributes:
+          [
+            'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price'
+          ]
+      }
+    }
   });
   return Spot;
 };
+
+
+
