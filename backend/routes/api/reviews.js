@@ -19,7 +19,7 @@ const avgStarPrecision = 1;
 const latlngPrecision = 6;
 
 
-//Get allReviews of Current User
+//Get current user reviews
 router.get('/current', async (req, res, next) => {
     // router.get('/', requireAuth, async (req, res, next) => {
     try {
@@ -53,5 +53,31 @@ router.get('/current', async (req, res, next) => {
         next(e)
     }
 })
+
+// router.post('/', requireAuth, validateSpot, async(req, res) => {
+router.post('/', async (req, res) => {
+
+    // const {user} = req;
+    const user = { id: 1 };
+
+    const {lat, lng, address, name, country, city, state, description, price} = req.body
+
+    const spot = await Spot.create(
+        {
+            lat, 
+            lng,
+            ownerId: user.id,
+            address,
+            name,
+            country,
+            city,
+            state,
+            description,
+            price,
+        }
+    );
+
+    res.status(201).json(spot);
+});
 
 module.exports = router;

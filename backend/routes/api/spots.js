@@ -40,6 +40,12 @@ const validateSpot = [
 ];
 
 
+const validateReview = [
+    check('review').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Review text is required'),
+    check('stars').exists({ checkFalsy: true }).isFloat({ min: 1.0, max: 5.0 }).withMessage('Stars must be from 1 to 5'),
+    handleValidationErrors
+  ];
+
 // Both Helper functions not working?!
 const getAvgRating = (reviews) => {
     const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
@@ -366,6 +372,7 @@ router.get('/:spotId/reviews', async (req, res) => {
     }
     const reviews = await Review.findAll(
         {
+            where: {spotId: spotId},
             include:
                 [
                     {
@@ -377,13 +384,43 @@ router.get('/:spotId/reviews', async (req, res) => {
                         attributes: ['id', 'url']
                     }
                 ],
-            where:
-            {
-                spotId: spotId
-            }
         });
 
-    res.json({Reviews: reviews});
+    res.json({ Reviews: reviews });
+});
+
+
+//Create a Review for a Spot based on the Spot's id
+// router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
+router.post('/:spotId/reviews', async (req, res) => {
+
+    const { spotId } = req.params;
+    const {review, stars} = req.body;
+    const spot = await Spot.findByPk(spotId);
+
+    if (!spot) {
+        res.status(404).json({message: "Spot couldn't be found"});
+    }
+
+    const userId = req.user.id;
+
+    const usersReview = await Review.findOne({ where: { userId: userId, spotId: spotId } });
+
+    if (usersReview) {
+        res.status(500).json({ message: "User already has a review for this spot" });
+    }
+
+    const spot_review = await Review.create(
+        {
+            userId,
+            spotId,
+            review,
+            stars: req.body.stars
+        }
+    );
+
+
+    res.status(201).json(spot_review);
 });
 
 module.exports = router;
