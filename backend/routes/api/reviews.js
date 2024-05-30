@@ -56,15 +56,61 @@ router.get('/current', async (req, res, next) => {
                     }
                 ],
                 where: {
-                    userId: safeUser.id
+                    userId: user.id
                 }
             }
         )
-        res.json({ Reviews: reviews })
-    } catch (e) {
+
+        for (let review of reviews) {
+            let spot = await Spot.findByPk(review.spotId);
+            console.log("======");
+            console.log(spot)
+            console.log("++++++");
+
+            if (!spot) continue
+            let previewImage = spot.SpotImages.find(image => image.preview);
+            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+            review.Spot = {...review.Spot, "hello":"world"}
+        }
+
+        res.json({Review: reviews})
+    } catch (e){
         next(e)
     }
 })
+
+// let temp = parseInt(reviews[0].Spot.id);
+// console.log("reviews.Spot.id = ", parseInt(temp));
+
+
+// const {}
+// let previewImage = spot.SpotImages.find(image => image.preview);
+// previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+
+// let previewImage = await SpotImage.findOne({
+//     spotId: temp,
+//     preview: true
+// })
+
+// previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+// console.log(previewImage)
+
+
+// res.json({
+//     Reviews: reviews, previewImage: previewImage
+// })
+
+// reviews.map((currentReview)=>{
+
+// })
+
+// let { User, Spot, ReviewImages, ...res } = reviews
+
+// Spot.previewImage = previewImage
+
+
+// res.json({Reviews: reviews})
+
 
 //Create a Review for a Spot based on the Spot's Id
 // router.post('/', requireAuth, validateSpot, async(req, res) => {
@@ -141,7 +187,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
 //Edit a Review
 router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
-// router.put('/:reviewId', async (req, res, next) => {
+    // router.put('/:reviewId', async (req, res, next) => {
     try {
         const { reviewId } = req.params;
         const currentReview = await Review.findByPk(reviewId)
@@ -150,7 +196,7 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
         }
 
         // const user = { id: 2 };
-        const {user} = req
+        const { user } = req
 
         const userId = user.id;
 
@@ -197,7 +243,7 @@ router.delete('/:reviewId', async (req, res) => {
             return res.status(403).json({
                 message: "Forbidden",
                 userId,
-                reviewUserId:currentReview.userId
+                reviewUserId: currentReview.userId
             })
         }
 
