@@ -33,7 +33,6 @@ const validateLogin = [
 // Log in
 router.post('/', validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
-
   const user = await User.unscoped().findOne({
     where: {
       [Op.or]: {
@@ -42,7 +41,7 @@ router.post('/', validateLogin, async (req, res, next) => {
       }
     }
   });
-
+  
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
     const err = new Error('Login failed');
     err.status = 401;
@@ -59,10 +58,7 @@ router.post('/', validateLogin, async (req, res, next) => {
     email,
     username
   };
-
-
   await setTokenCookie(res, safeUser); //Login Token
-
   return res.json({
     user: safeUser
   });
