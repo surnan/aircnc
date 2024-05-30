@@ -76,9 +76,10 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ['NYU Langone Headquarters', 'Peachtree Suites', 'Boogy Down Bronx'] }
-    },{});
+    // const Op = Sequelize.Op;
+    // return queryInterface.bulkDelete(options, {
+    //   name: { [Op.in]: ['NYU Langone Headquarters', 'Peachtree Suites', 'Boogy Down Bronx'] }
+    // },{});
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };

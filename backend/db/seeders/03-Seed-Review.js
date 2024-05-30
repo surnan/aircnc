@@ -64,7 +64,8 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, 'Reviews', null, {});
+    // const Op = Sequelize.Op;
+    // return queryInterface.bulkDelete(options, 'Reviews', null, {});
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };
