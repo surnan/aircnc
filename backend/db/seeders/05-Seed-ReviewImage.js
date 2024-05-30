@@ -52,9 +52,10 @@ module.exports = {
     ],{ validate: true });
   },
   async down(queryInterface, Sequelize) {
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      reviewId: { [Op.in]: [1, 2, 3] }
-    }, {});
+    // const Op = Sequelize.Op;
+    // return queryInterface.bulkDelete(options, {
+    //   reviewId: { [Op.in]: [1, 2, 3] }
+    // }, {});
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };
