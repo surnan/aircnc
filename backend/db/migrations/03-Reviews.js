@@ -28,6 +28,7 @@ module.exports = {
         references: {model: 'Spots'},
         onDelete: 'CASCADE'
       },
+      
       review: {
         type: Sequelize.STRING,
         allowNull: true
@@ -44,7 +45,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    }, options);
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Reviews";
