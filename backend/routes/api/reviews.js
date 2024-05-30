@@ -17,26 +17,12 @@ const validateReview = [
 ];
 
 
-router.get('/hello/world', function (req, res) {
-    res.cookie('XSRF-TOKEN', req.csrfToken());
-    res.send('Hello World!!!');
-});
-
-const avgStarPrecision = 1;
-const latlngPrecision = 6;
-
-
 //!!!NEEDS PREVIEW IMAGE !!!!
 //Get current user reviews
-router.get('/current', async (req, res, next) => {
-    // router.get('/', requireAuth, async (req, res, next) => {
+router.get('/current', requireAuth, async (req, res, next) => {
     try {
-
-        // const {user} = req
-        const user = { id: 2 };
+        const { user } = req
         const userId = user.id;
-
-
         const reviews = await Review.findAll(
             {
                 include: [
@@ -56,25 +42,28 @@ router.get('/current', async (req, res, next) => {
                     }
                 ],
                 where: {
-                    userId: safeUser.id
+                    userId: userId
                 }
             }
         )
-        res.json({ Reviews: reviews })
+
+        for (let review of reviews) {
+            let spot = await Spot.findByPk(review.spotId);
+            if (!spot) continue
+            let previewImage = spot.SpotImages.find(image => image.preview);
+            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+            review.Spot = { ...review.Spot, "hello": "world" }
+        }
+        res.json({ Review: reviews })
     } catch (e) {
         next(e)
     }
 })
 
 //Create a Review for a Spot based on the Spot's Id
-// router.post('/', requireAuth, validateSpot, async(req, res) => {
-router.post('/', async (req, res) => {
-
-    // const {user} = req;
-    const user = { id: 1 };
-
+router.post('/', requireAuth, validateSpot, async(req, res) => {
+    const {user} = req;
     const { lat, lng, address, name, country, city, state, description, price } = req.body
-
     const spot = await Spot.create(
         {
             lat,
@@ -94,10 +83,8 @@ router.post('/', async (req, res) => {
 
 
 //Add an Image to a Review based on the Review's id
-// router.post('/:reviewId/images', async (req, res, next) => {
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     try {
-
         const { reviewId } = req.params;
         const review = await Review.findByPk(reviewId)
 
@@ -105,9 +92,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
             return res.status(404).json({ message: "Review couldn't be found" })
         }
 
-        const user = { id: 2 }
-        // const user = req.user
-
+        const user = req.user
         const userId = user.id
 
         if (userId !== review.userId) { //verify review belongs to user
@@ -141,7 +126,6 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
 //Edit a Review
 router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
-// router.put('/:reviewId', async (req, res, next) => {
     try {
         const { reviewId } = req.params;
         const currentReview = await Review.findByPk(reviewId)
@@ -149,18 +133,14 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
             return res.status(404).json({ message: "Review couldn't be found" })
         }
 
-        // const user = { id: 2 };
-        const {user} = req
-
+        const { user } = req
         const userId = user.id;
-
 
         const { review, stars } = req.body
 
         if (userId !== currentReview.userId) {
             return res.status(403).json({ message: "Forbidden" })
         }
-
 
         await currentReview.update(
             {
@@ -177,11 +157,9 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
 });
 
 //Delete a Review
-// router.delete('/:reviewId', requireAuth, async (req, res) => {
-router.delete('/:reviewId', async (req, res) => {
+router.delete('/:reviewId', requireAuth, async (req, res) => {
     try {
-        // const userId = req.user.id;
-        const userId = 2;
+        const userId = req.user.id;
 
         const { reviewId } = req.params;
         const currentReview = await Review.findByPk(reviewId);
@@ -192,12 +170,11 @@ router.delete('/:reviewId', async (req, res) => {
             });
         }
 
-
         if (userId !== currentReview.userId) {
             return res.status(403).json({
                 message: "Forbidden",
                 userId,
-                reviewUserId:currentReview.userId
+                reviewUserId: currentReview.userId
             })
         }
 

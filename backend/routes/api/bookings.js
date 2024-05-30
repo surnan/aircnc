@@ -30,14 +30,9 @@ const validateBooking = [
 
 
 //NEEDS PREVIEW IMAGE ON BOOKINGS.SPOT
-router.get('/current', requireAuth, async(req, res, next) =>{
-// router.get('/current', async (req, res, next) => {
-    // const {user} = req;
-    // const userId = req.user.id;
-    const user = {id: 1, email: 'demo@user.io', username: 'Demo-lition'}
-    const userId = 1;
-
-
+router.get('/current', requireAuth, async (req, res, next) => {
+    const { user } = req;
+    const userId = req.user.id;
 
     if (userId !== user.id) {
         return res.status(403).json({ message: "Forbidden" })
@@ -52,7 +47,8 @@ router.get('/current', requireAuth, async(req, res, next) =>{
 
         const usersBookings = await Booking.findAll({
             include: {
-                model: Spot, where: {
+                model: Spot,
+                where: {
                     ownerId: safeUser.id
                 }
             },
@@ -61,10 +57,35 @@ router.get('/current', requireAuth, async(req, res, next) =>{
     }
 });
 
-router.get('/', async (req, res, next) => {
-    // router.get('/', requireAuth, async(req, res, next)=>{
-    res.json("hello world")
-})
+//Edit a Booking
+router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
+    const { bookingId } = req.params;
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking) {
+        res.status(404).json({
+            message: "Booking couldn't be found"
+        });
+    }
+
+    const userId = req.user.id;
+    if (userId !== booking.userId) {
+        return res.status(403).json({ message: "Forbidden" })
+    }
+
+    const { spotId, startDate, endDate } = req.body;
+
+    await booking.update(
+        {
+            userId: req.body.userId,
+            spotId,
+            startDate,
+            endDate
+        }
+    );
+    res.json(booking);
+});
+
+
 
 
 
