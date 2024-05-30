@@ -6,7 +6,7 @@ const { Booking } = require('../models');
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
-  options.tableName = "Booking"
+  options.tableName = "Bookings"
 }
 
 module.exports = {
@@ -69,9 +69,10 @@ module.exports = {
     ],{ validate: true });
   },
   async down(queryInterface, Sequelize) {
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      userId: { [Op.in]: [1, 2, 3] }
-    }, {});
+    // const Op = Sequelize.Op;
+    // return queryInterface.bulkDelete(options, {
+    //   userId: { [Op.in]: [1, 2, 3] }
+    // }, {});
+    return queryInterface.bulkDelete(options, {}, {});
   }
 };

@@ -12,6 +12,10 @@ router.get('/', async(req, res, next)=>{
     res.json("hello world")
 })
 
+router.get('/current', async(req, res, next)=>{
+    // router.get('/', requireAuth, async(req, res, next)=>{
+        res.json("hello world")
+    })
 
 
 module.exports = router;
