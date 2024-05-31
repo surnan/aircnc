@@ -108,9 +108,9 @@ router.get('/', queryParams, async (req, res, next) => {
                 { model: SpotImage },
                 { model: Review }
             ],
-            where,
-            limit: size,
-            offset: parseInt(page-1) * size
+            // where,
+            // limit: size,
+            // offset: parseInt(page-1) * size
         });
 
         const result = spots.map(spot => {
@@ -146,13 +146,6 @@ router.get('/', queryParams, async (req, res, next) => {
             }
         });
 
-        let answer = []
-        for (let spot of results){
-
-
-
-        }
-        
         res.json({ 
             Spots: result,
             page,
@@ -165,20 +158,17 @@ router.get('/', queryParams, async (req, res, next) => {
 
 //Get all Spots by current user
 router.get('/current', requireAuth, async (req, res, next) => {
+
     try {
         const { user } = req;
         const spots = await Spot.findAll({
             include: [
                 { model: SpotImage },
                 { model: Review }
-            ],
-            where: {
-                ownerId: user.id
-            }
+            ]
         });
 
         const result = spots.map(spot => {
-
             // Preview Image
             let previewImage = spot.SpotImages.find(image => image.preview);
             previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
@@ -209,7 +199,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         })
 
-        res.json({ Spots: result })
+        res.json({ Spots: spots })
     } catch (e) {
         next(e)
     }
