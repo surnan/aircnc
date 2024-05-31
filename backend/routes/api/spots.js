@@ -37,6 +37,20 @@ const validateReview = [
     handleValidationErrors
 ];
 
+//validator for the spots search query.
+const queryParams = [
+    check('page', 'isInt({ min: 1 })', 'Page must be greater than or equal to 1'),
+    check('size', 'isInt({ min: 1 })', 'Size must be greater than or equal to 1'),
+    check('maxLat', 'isFloat({ max: 90.0000000 })', 'Maximum latitude is invalid'),
+    check('minLat', 'isFloat({ min: -90.0000000 })', 'Minimum latitude is invalid'),
+    check('maxLng', 'isFloat({ max: 180.0000000 })', 'Maximum longitude is invalid'),
+    check('minLng', 'isFloat({ min: -180.0000000 })', 'Minimum longitude is invalid'),
+    check('minPrice', 'isCurrency({ min: 1.00 })', 'Minimum price must be greater than or equal to 0'),
+    check('maxPrice', 'isCurrency({ min: 1.00 })', 'Maximum price must be greater than or equal to 0'),
+    handleValidationErrors
+];
+
+
 // Both Helper functions not working?!
 const getAvgRating = (reviews) => {
     const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
@@ -49,14 +63,54 @@ const getPreviewImage = (images) => {
 };
 
 
-router.get('/', async (req, res, next) => {
+router.get('/', queryParams, async (req, res, next) => {
     try {
+
+        let { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+        page = Math.min(Math.max(parseInt(page), 1), 10);
+        size = Math.min(Math.max(parseInt(size), 1), 20);
+
+        const parseNumber = (value) => value ? Number(value) : null;
+
+        minPrice = parseNumber(minPrice);
+        maxPrice = parseNumber(maxPrice);
+        minLat = parseNumber(minLat);
+        maxLat = parseNumber(maxLat);
+        minLng = parseNumber(minLng);
+        maxLng = parseNumber(maxLng);
+
+        const where = {};
+
+        if (minPrice !== null || maxPrice !== null) {
+            where.price = {};
+            if (minPrice !== null) where.price[Op.gte] = minPrice;
+            if (maxPrice !== null) where.price[Op.lte] = maxPrice;
+            if (minPrice !== null && maxPrice !== null) where.price = { [Op.between]: [minPrice, maxPrice] };
+        }
+
+        if (minLat !== null || maxLat !== null) {
+            where.lat = {};
+            if (minLat !== null) where.lat[Op.gte] = minLat;
+            if (maxLat !== null) where.lat[Op.lte] = maxLat;
+            if (minLat !== null && maxLat !== null) where.lat = { [Op.between]: [minLat, maxLat] };
+        }
+
+        if (minLng !== null || maxLng !== null) {
+            where.lng = {};
+            if (minLng !== null) where.lng[Op.gte] = minLng;
+            if (maxLng !== null) where.lng[Op.lte] = maxLng;
+            if (minLng !== null && maxLng !== null) where.lng = { [Op.between]: [minLng, maxLng] };
+        }
 
         const spots = await Spot.findAll({
             include: [
                 { model: SpotImage },
                 { model: Review }
-            ]
+            ],
+            where,
+            limit: size,
+            offset: parseInt(page-1) * size
         });
 
         const result = spots.map(spot => {
@@ -91,7 +145,19 @@ router.get('/', async (req, res, next) => {
                 previewImage: previewImage.url,
             }
         });
-        res.json({ Spots: result })
+
+        let answer = []
+        for (let spot of results){
+
+
+
+        }
+        
+        res.json({ 
+            Spots: result,
+            page,
+            size
+        })
     } catch (e) {
         next(e)
     }
@@ -158,8 +224,8 @@ router.get('/:spotId', async (req, res, next) => {
         const currentSpot = await Spot.findByPk(spotId, {
             include: [
                 {
-                    model: SpotImage,
-                    attributes: ['id', 'url', 'preview']
+                    model: Spot,
+
                 },
                 {
                     model: Review,
