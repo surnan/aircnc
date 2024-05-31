@@ -13,48 +13,69 @@ const { append } = require('vary');
 
 var today = new Date();
 const validateBooking = [
-    check('startDate')
-        .exists({ checkFalsy: true })
-        .isBefore(today)
-        .withMessage('startDate cannot be in the past.'),
-    check('endDate')
-        .exists({ checkFalsy: true })
+    check('startDate').exists({ checkFalsy: true }).isBefore(today).withMessage('startDate cannot be in the past.'),
+    check('endDate').exists({ checkFalsy: true })
         .custom((endDate, { req }) => {
             const startDate = req.body.startDate;
             if (endDate <= startDate) {
-                throw new Error("endDate cannot be on or before startDate")
+                throw new Error("End before Start")
             }
         }),
     handleValidationErrors
 ];
 
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
+
+
+
+// delete a existing booking by id
+// delete an existing review
+router.delete('/:bookingId', requireAuth, async (req, res, next) => {
+    try {
+        const { bookingId } = req.params;
+
+        const { user } = req;
+        const currentBooking = await Booking.findByPk(bookingId);
+        if (!currentBooking) {
+            const err = new Error;
+            err.message = "Booking couldn't be found"
+            err.status = 404;
+            throw err;
+        };
+
+        if (currentBooking.userId !== user.id) {
+            const err = new Error('Forbidden');
+            err.status = 403;
+            throw err;
+        };
+        const deletedbooking = await currentBooking.destroy();
+        res.json({ message: 'Successfully deleted' });
+    } catch (error) {
+        next(error);
+    };
+});
 
 //NEEDS PREVIEW IMAGE ON BOOKINGS.SPOT
-router.get('/current', requireAuth, async (req, res, next) => {
-    const { user } = req;
-    const userId = req.user.id;
+// router.get('/current', requireAuth, async (req, res, next) => {
+router.get('/current', async (req, res, next) => {
+    try {
+        const { user } = req;
+        const userId = user.id
 
-    if (userId !== user.id) {
-        return res.status(403).json({ message: "Forbidden" })
-    }
-
-    if (user) {
-        const safeUser = {
-            id: user.id,
-            email: user.email,
-            username: user.username,
-        }
-
-        const usersBookings = await Booking.findAll({
-            include: {
-                model: Spot,
-                where: {
-                    ownerId: safeUser.id
-                }
-            },
-        });
-        res.json({ "Bookings": usersBookings });
-    }
+        const allBookings = await Booking.findAll({
+            include: [
+                {
+                    model: Spot,
+                },            
+            ],
+            where: {
+                userId
+            }
+        })
+        res.json({ "Bookings": allBookings });
+    } catch (e) {
+    next(e)
+}
 });
 
 //Edit a Booking
@@ -86,7 +107,40 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
 });
 
 
+router.put('/:bookingId', requireAuth, validateBooking, async(req, res, next) =>{
+    const {bookingId} = req.params;
+    const booking = await Booking.findByPk(bookingId);
+    if(!booking){
+      res.status(404).json({
+       message: "Booking couldn't be found"
+     });
+    }
 
+    const userId = req.user.id;
+    if(userId !== booking.userId){
+      return res.status(403).json({message: "Forbidden"})
+   }
+
+  
+   const reqStartDate = Date.parse(req.body.startDate); 
+   const reqEndDate = Date.parse(req.body.endDate);
+
+    let {startDate, endDate} = booking;
+    startDate = Date.parse(startDate);
+    endDate = Date.parse(endDate);
+
+    await booking.update(
+      { 
+       userId: req.body.userId, 
+       spotId: req.body.spotId,
+       startDate: req.body.startDate,
+       endDate: req.body.endDate
+      }
+  );
+
+  
+  res.json(booking);
+});
 
 
 module.exports = router;

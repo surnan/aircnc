@@ -60,8 +60,12 @@ router.post('/', validateLogin, async (req, res, next) => {
 
 // Log out
 router.delete('/', (_req, res) => {
-  res.clearCookie('token');
-  return res.json({ message: 'success' });
+  try {
+    res.clearCookie('token');
+    return res.json({ message: 'success' });  
+  } catch (e) {
+    next(e)
+  }
 });
 
 
@@ -69,18 +73,19 @@ router.delete('/', (_req, res) => {
 // Gets User Object of current session
 router.get('/', (req, res) => {
   const { user } = req;
-  const { id, firstName, lastName, email, username } = user
 
   if (user) {
-    const safeUser = {
-      id,
-      firstName,
-      lastName,
-      email,
-      username
-    };
-    return res.json({ user: safeUser });
-  } else return res.json({ user: null });
+      const safeUser = {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          username: user.username,
+      };
+      return res.json({
+          user: safeUser
+      });
+  } else return res.json({ user: null});
 });
 
 
