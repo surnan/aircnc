@@ -18,16 +18,10 @@ const router = express.Router();
 // username field is an email
 // password field is only 5 characters long
 const validateLogin = [
-  check('credential')
-    .exists({ checkFalsy: true })
-    .notEmpty()
-    .withMessage('Email or username is required'),
-  check('password')
-    .exists({ checkFalsy: true })
-    .withMessage('Password is required'),
+  check('credential').exists({ checkFalsy: true}).notEmpty().withMessage('Email or username is required'),
+  check('password').exists({ checkFalsy: true }).withMessage('Password is required'),
   handleValidationErrors
 ];
-
 
 
 // Log in
@@ -43,25 +37,24 @@ router.post('/', validateLogin, async (req, res, next) => {
   });
   
   if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
-    const err = new Error('Login failed');
-    err.status = 401;
+    const err = new Error;
     err.message = 'Invalid credentials'
-    return next(err);
+    err.status = 401;
+    return next(err)
   }
 
   const { id, email, username, firstName, lastName } = user;
 
-  const safeUser = { //travels with the login token object
+  const safeUser = {
     id,
     firstName,
     lastName,
     email,
     username
   };
+
   await setTokenCookie(res, safeUser); //Login Token
-  return res.json({
-    user: safeUser
-  });
+  return res.json({user: safeUser});
 });
 
 
