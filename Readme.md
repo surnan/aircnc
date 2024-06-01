@@ -3,7 +3,7 @@
 ## Database Schema Design
 
 
-![db-schema](./images/diagram1.png)
+![db-schema](./images/Diagram1.png)
 
 
 
