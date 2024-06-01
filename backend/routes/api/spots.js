@@ -217,23 +217,40 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
 
     try {
         const { user } = req;
-        const { lat, lng, address, name, country, city, state, description, price } = req.body;
+        user.id = parseInt(req.user.id)
 
-        const spot = await Spot.create(
-            {
-                ownerId: user.id,
-                address,
-                city,
-                state,
-                country,
-                lat,
-                lng,
-                name,
-                description,
-                price
-            }
-        )
-        res.status(201).json(spot)
+        let {lat, lng, price}= req.body;
+        const {city, state, description, address, name, country } = req.body;
+
+        lat = parseFloat(lat.toFixed(6))
+        lng = parseFloat(lng.toFixed(6))
+        price = parseFloat(price)
+
+        if (user) {
+            const newSpot = await Spot.create(
+                {   
+                    ownerId: user.id,
+                    address,
+                    city,
+                    state,
+                    country,
+                    lat, 
+                    lng, 
+                    name,
+                    description,
+                    price
+                }
+            )
+
+            let newSpotJson = newSpot.toJSON();
+            let responseBody = {...newSpotJson};
+            responseBody.lat = lat
+            responseBody.lng = lng
+            responseBody.createdAt = formatDate(newSpotJson.createdAt)
+            responseBody.updatedAt = formatDate(newSpotJson.updatedAt)
+            responseBody.id = newSpotJson.id;
+            return res.status(201).json(responseBody)
+        }
     } catch (e) {
         next(e)
     }
@@ -243,8 +260,8 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
-        let { spotId } = req.params;
         let { url, preview } = req.body;
+        const spotId = Number(req.params.spotId)
 
         const currentSpot = await Spot.findByPk(spotId);
 
@@ -256,10 +273,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             return res.status(403).json({ message: "Forbidden" })
         }
 
-
-        //if preview is invalid, set to false
         preview = preview === "true" ? true : false
-        spotId = parseInt(spotId)
 
         const currentSpotImage = await SpotImage.create({
             url,
@@ -267,12 +281,11 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
             spotId
         })
 
-        res.json({
-            id: currentSpot.id,
+        res.status(201).json({
+            id: Number(currentSpotImage.id),
             url,
             preview
         })
-
     } catch (e) {
         next(e)
     }
