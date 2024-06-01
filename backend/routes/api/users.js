@@ -32,12 +32,6 @@ router.post('/', validateSignup, async (req, res, next) => {
             err.status = 500;
             err.message = "User already exists"
 
-            // if (emailIsUnique) {
-            //     err.errors = { "email": "User with that email already exists" }
-            // } else {
-            //     err.errors = { "username": "User with that username already exists" }
-            // }
-
             err.errors = emailIsUnique
                 ? { "email": "User with that email already exists" }
                 : { "username": "User with that username already exists" }
@@ -64,46 +58,3 @@ router.post('/', validateSignup, async (req, res, next) => {
 });
 
 module.exports = router;
-
-
-
-/*
-router.post('/', validateSignup, async (req, res, next) => {
-    try {
-        const { email, password, username, firstName, lastName } = req.body;
-        const hashedPassword = bcrypt.hashSync(password);
-
-        const emailIsUnique = await User.findOne({ where: { email } })
-        const usernameIsUnique = await User.findOne({ where: { username } })
-
-        if (emailIsUnique || usernameIsUnique) {
-            const err = new Error;
-            err.status = 500;
-            err.message = "User already exists"
-
-            if (emailIsUnique) {
-                err.errors = { "email": "User with that email already exists" }
-            } else {
-                err.errors = { "username": "User with that username already exists" }
-            }
-
-            return next(err)
-        }
-
-        const user = await User.create({ email, username, hashedPassword, firstName, lastName });
-
-        const safeUser = {
-            id: user.id,
-            firstName,
-            lastName,
-            email,
-            username
-        };
-
-        await setTokenCookie(res, safeUser);
-
-        return res.json({ user: safeUser });
-    } catch (e) {
-        next(e)
-    }
-});*/
