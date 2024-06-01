@@ -38,18 +38,6 @@ const validateReview = [
     handleValidationErrors
 ];
 
-//validator for the spots search query.
-// const queryParameters = [
-//     check('page', 'isInt({ min: 1 })', 'Page must be greater than or equal to 1'),
-//     check('size', 'isInt({ min: 1 })', 'Size must be greater than or equal to 1'),
-//     check('maxLat', 'isFloat({ max: 90.0000000 })', 'Maximum latitude is invalid'),
-//     check('minLat', 'isFloat({ min: -90.0000000 })', 'Minimum latitude is invalid'),
-//     check('maxLng', 'isFloat({ max: 180.0000000 })', 'Maximum longitude is invalid'),
-//     check('minLng', 'isFloat({ min: -180.0000000 })', 'Minimum longitude is invalid'),
-//     check('minPrice', 'isCurrency({ min: 1.00 })', 'Minimum price must be greater than or equal to 0'),
-//     check('maxPrice', 'isCurrency({ min: 1.00 })', 'Maximum price must be greater than or equal to 0'),
-//     handleValidationErrors
-// ];
 
 
 // Both Helper functions not working?!
@@ -100,28 +88,50 @@ function formatDateNoTime(dateString) {
     return `${year}-${month}-${day}`;
 }
 
+//validator for the spots search query.
+const validateQueryParameters = [
+    check('page').optional().isInt({ min: 1 }).withMessage('Page must be greater than or equal to 1'),
+    check('size').optional().isInt({ min: 1 }).withMessage('Size must be greater than or equal to 1'),
+    check('minLat').optional().isFloat({ min: -1000 }).withMessage("Minimum latitude is invalid"),
+    check('maxLat').optional().isFloat({ max: 100 }).withMessage("Maximum latitude is invalid"),
+    check('minLng').optional().isFloat({ min: -1000 }).withMessage("Minimum longitude is invalid"),
+    check('maxLng').optional().isFloat({ max: 100 }).withMessage("Maximum longitude is invalid"),
+    check('minPrice').optional().isInt({ min: 0 }).withMessage("Minimum price must be greater than or equal to 0"),
+    check('maxPrice').optional().isInt({ min: 0 }).withMessage("Maximum price must be greater than or equal to 0"),
+    handleValidationErrors
+];
 
-// router.get('/', queryParams, async (req, res, next) => {
-router.get('/', async (req, res, next) => {
+
+router.get('/', validateQueryParameters, async (req, res, next) => {
+    // router.get('/', async (req, res, next) => {
     try {
 
-        // if (minPrice || maxPrice) {
-        //     where.price = {};
-        //     if (minPrice) where.price[Op.gte] = minPrice;
-        //     if (maxPrice) where.price[Op.lte] = maxPrice;
-        // }
+        let where = {};
 
-        // if (minLat || maxLat) {
-        //     where.lat = {};
-        //     if (minLat) where.lat[Op.gte] = minLat;
-        //     if (maxLat) where.lat[Op.lte] = maxLat;
-        // }
+        let {page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice = 0, maxPrice = 0} = req.query;
 
-        // if (minLng || maxLng) {
-        //     where.lng = {};
-        //     if (minLng) where.lng[Op.gte] = minLng;
-        //     if (maxLng) where.lng[Op.lte] = maxLng;
-        // }
+        page = parseInt(page);
+        size = parseInt(size);
+
+        if (minPrice || maxPrice) {
+            where.price = {};
+            if (minPrice) where.price[Op.gte] = minPrice;
+            if (maxPrice) where.price[Op.lte] = maxPrice;
+        }
+
+        if (minLat || maxLat) {
+            where.lat = {};
+            if (minLat) where.lat[Op.gte] = minLat;
+            if (maxLat) where.lat[Op.lte] = maxLat;
+        }
+
+        if (minLng || maxLng) {
+            where.lng = {};
+            if (minLng) where.lng[Op.gte] = minLng;
+            if (maxLng) where.lng[Op.lte] = maxLng;
+        }
+
+
 
 
 
@@ -130,9 +140,9 @@ router.get('/', async (req, res, next) => {
                 { model: SpotImage },
                 { model: Review }
             ],
-            // where,
-            // limit: size,
-            // offset: (page - 1) * size
+            where,
+            limit: size,
+            offset: (page - 1) * size
         });
 
         const spotsMap = spots.map(spot => {
@@ -154,8 +164,8 @@ router.get('/', async (req, res, next) => {
 
         res.json({
             Spots: spotsMap,
-            // page,
-            // size
+            page,
+            size
         })
     } catch (e) {
         next(e)
@@ -291,7 +301,7 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
             let responseBody = { ...newSpotJson };
             responseBody.lat = lat
             responseBody.lng = lng
-            
+
             responseBody.createdAt = formatDate(newSpotJson.createdAt)
             responseBody.updatedAt = formatDate(newSpotJson.updatedAt)
             responseBody.id = newSpotJson.id;
@@ -628,3 +638,74 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
 
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+/*
+router.get('/', queryParams, async (req, res, next) => {
+    // router.get('/', async (req, res, next) => {
+    try {
+
+        // if (minPrice || maxPrice) {
+        //     where.price = {};
+        //     if (minPrice) where.price[Op.gte] = minPrice;
+        //     if (maxPrice) where.price[Op.lte] = maxPrice;
+        // }
+
+        // if (minLat || maxLat) {
+        //     where.lat = {};
+        //     if (minLat) where.lat[Op.gte] = minLat;
+        //     if (maxLat) where.lat[Op.lte] = maxLat;
+        // }
+
+        // if (minLng || maxLng) {
+        //     where.lng = {};
+        //     if (minLng) where.lng[Op.gte] = minLng;
+        //     if (maxLng) where.lng[Op.lte] = maxLng;
+        // }
+
+
+
+        const spots = await Spot.findAll({
+            include: [
+                { model: SpotImage },
+                { model: Review }
+            ],
+            // where,
+            // limit: size,
+            // offset: (page - 1) * size
+        });
+
+        const spotsMap = spots.map(spot => {
+            const spotJson = spot.toJSON();
+
+            const { SpotImages, Reviews, ...res } = spotJson;
+            const foundPreviewImage = SpotImages.find(e => e.preview)
+            const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
+            const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(1);
+
+            res.lat = res.lat.toFixed(6)
+            res.lng = res.lng.toFixed(6)
+            res.avgRating = Number(fixedRating);
+            res.createdAt = formatDate(res.createdAt)
+            res.updatedAt = formatDate(res.updatedAt)
+            res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
+            return res;
+        });
+
+        res.json({
+            Spots: spotsMap,
+            // page,
+            // size
+        })
+    } catch (e) {
+        next(e)
+    }
+});
+*/
