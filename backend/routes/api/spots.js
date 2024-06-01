@@ -58,95 +58,59 @@ const getPreviewImage = (images) => {
     return previewImage ? previewImage.url : "No Preview Image Available";
 };
 
+// function formatDate(dateString) {
+//     const date = new Date(dateString);
+
+//     return date.toLocaleString('en-US', {
+//       year: 'numeric',
+//       month: '2-digit',
+//       day: '2-digit',
+//       hour: '2-digit',
+//       minute: '2-digit',
+//       second: '2-digit',
+//       hour12: false,
+//     }).replace(',', '');
+//   }
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    const seconds = ('0' + date.getSeconds()).slice(-2);
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
 
 router.get('/', queryParams, async (req, res, next) => {
     try {
-
-        let { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
-
-        page = Math.min(Math.max(parseInt(page), 1), 10);
-        size = Math.min(Math.max(parseInt(size), 1), 20);
-
-        const parseNumber = (value) => value ? Number(value) : null;
-
-        minPrice = parseNumber(minPrice);
-        maxPrice = parseNumber(maxPrice);
-        minLat = parseNumber(minLat);
-        maxLat = parseNumber(maxLat);
-        minLng = parseNumber(minLng);
-        maxLng = parseNumber(maxLng);
-
-        const where = {};
-
-        if (minPrice !== null || maxPrice !== null) {
-            where.price = {};
-            if (minPrice !== null) where.price[Op.gte] = minPrice;
-            if (maxPrice !== null) where.price[Op.lte] = maxPrice;
-            if (minPrice !== null && maxPrice !== null) where.price = { [Op.between]: [minPrice, maxPrice] };
-        }
-
-        if (minLat !== null || maxLat !== null) {
-            where.lat = {};
-            if (minLat !== null) where.lat[Op.gte] = minLat;
-            if (maxLat !== null) where.lat[Op.lte] = maxLat;
-            if (minLat !== null && maxLat !== null) where.lat = { [Op.between]: [minLat, maxLat] };
-        }
-
-        if (minLng !== null || maxLng !== null) {
-            where.lng = {};
-            if (minLng !== null) where.lng[Op.gte] = minLng;
-            if (maxLng !== null) where.lng[Op.lte] = maxLng;
-            if (minLng !== null && maxLng !== null) where.lng = { [Op.between]: [minLng, maxLng] };
-        }
 
         const spots = await Spot.findAll({
             include: [
                 { model: SpotImage },
                 { model: Review }
-            ],
-            // where,
-            // limit: size,
-            // offset: parseInt(page-1) * size
+            ]
         });
 
-        const result = spots.map(spot => {
+        const spotsMap = spots.map(spot => {
+            const spotJson = spot.toJSON();
 
-            // // Preview Image
-            let previewImage = spot.SpotImages.find(image => image.preview);
-            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+            const { SpotImages, Reviews, ...res } = spotJson;
+            const foundPreviewImage = SpotImages.find(e => e.preview)
+            const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
+            const fixedRating = isNaN(avgRating) ? "NEW" : avgRating.toFixed(1);
 
-            // Average Stars
-            const totalStars = spot.Reviews.reduce((sum, review) => sum + review.stars, 0);
-            const avgRating = spot.Reviews.length ? totalStars / spot.Reviews.length : 0;
-
-
-            // Create new spot object
-            const { id, ownerId, address, city, state, country, lat, lng } = spot;
-            const { name, description, price, createdAt, updatedAt } = spot;
-
-            return {
-                id,
-                ownerId,
-                address,
-                city,
-                state,
-                country,
-                lat: lat.toFixed(latlngPrecision),
-                lng: lng.toFixed(latlngPrecision),
-                name,
-                description,
-                createdAt,
-                updatedAt,
-                avgRating: avgRating.toFixed(avgStarPrecision),
-                previewImage: previewImage.url,
-            }
+            res.avgRating = Number(fixedRating);
+            res.createdAt = formatDate(res.createdAt)
+            res.updatedAt = formatDate(res.updatedAt)
+            res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
+            return res;
         });
 
-        res.json({ 
-            Spots: result,
-            page,
-            size
-        })
+        res.json({ Spots: spotsMap })
     } catch (e) {
         next(e)
     }
@@ -450,3 +414,60 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
 });
 
 module.exports = router;
+
+
+
+/*
+
+router.get('/', queryParams, async (req, res, next) => {
+    try {
+
+        const spots = await Spot.findAll({
+            include: [
+                { model: SpotImage },
+                { model: Review }
+            ]
+        });
+
+        const spotsMap = spots.map(spot => {
+
+            // // Preview Image
+            let previewImage = spot.SpotImages.find(image => image.preview);
+            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+
+            // Average Stars
+            const totalStars = spot.Reviews.reduce((sum, review) => sum + review.stars, 0);
+            const avgRating = spot.Reviews.length ? totalStars / spot.Reviews.length : 0;
+
+
+            // Create new spot object
+            const { id, ownerId, address, city, state, country, lat, lng } = spot;
+            const { name, description, price, createdAt, updatedAt } = spot;
+
+            return {
+                id,
+                ownerId,
+                address,
+                city,
+                state,
+                country,
+                lat: lat.toFixed(latlngPrecision),
+                lng: lng.toFixed(latlngPrecision),
+                name,
+                description,
+                createdAt,
+                updatedAt,
+                avgRating: avgRating.toFixed(avgStarPrecision),
+                previewImage: previewImage.url,
+            }
+        });
+
+        res.json({ 
+            Spots: spotsMap
+        })
+    } catch (e) {
+        next(e)
+    }
+});
+
+*/
