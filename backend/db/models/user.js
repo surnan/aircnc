@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
 
-      User.hasMany(models.Spot, {foreignKey: 'ownerId'})
-      User.hasMany(models.Review, {foreignKey: 'userId'})
-      User.hasMany(models.Booking, {foreignKey: 'userId'})
+      User.hasMany(models.Spot, { foreignKey: 'ownerId' })
+      User.hasMany(models.Review, { foreignKey: 'userId' })
+      User.hasMany(models.Booking, { foreignKey: 'userId' })
 
       // User.belongsToMany(models.Spot, {through: models.Booking})
 
@@ -35,27 +35,15 @@ module.exports = (sequelize, DataTypes) => {
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: false,
         validate: {
-          len: [4, 30],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
-            }
-          }
+          len: [1, 30]
         }
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: false,
         validate: {
-          len: [4, 30],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
-              throw new Error("Cannot be an email.");
-            }
-          }
+          len: [1, 30]
         }
       },
       email: {
