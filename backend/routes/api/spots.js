@@ -23,10 +23,6 @@ const validateSpot = [
     check('name').exists({ checkFalsy: true }).isString().isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
     check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day must be a positive number'),
-    //Without this entry, errors above enter body but just sit there like an appended string
-    //handleValidationErrors searches REQ for validation errors
-    //This line/function is the ONLY ".next"
-    //which causes flow to bypass route handler code and jump back to app.js
     handleValidationErrors
 ];
 
