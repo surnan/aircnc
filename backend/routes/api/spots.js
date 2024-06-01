@@ -119,7 +119,6 @@ router.get('/', queryParams, async (req, res, next) => {
 });
 
 //Get all Spots by current user
-
 // get all spots owned by the logged in user
 router.get('/current', requireAuth, async (req, res, next) => {
 
@@ -166,15 +165,15 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 //Get details of a Spot from an Id
-router.get('/:spotId', async (req, res, next) => {
-
+router.get('/:spotId', async (req, response, next) => {
     try {
-        const { spotId } = req.params
+        const spotId = parseInt(req.params.spotId)
+
         const currentSpot = await Spot.findByPk(spotId, {
             include: [
                 {
-                    model: Spot,
-
+                    model: SpotImage,
+                    attributes: ['id', 'url', 'preview']
                 },
                 {
                     model: Review,
@@ -187,36 +186,27 @@ router.get('/:spotId', async (req, res, next) => {
             ]
         })
 
-
-        // Average Stars
-        const totalStars = currentSpot.Reviews.reduce((sum, review) => sum + review.stars, 0);
-        const avgRating = currentSpot.Reviews.length ? totalStars / currentSpot.Reviews.length : 0;
-
-        const { id, ownerId, address, city, state, country, lat, lng } = currentSpot;
-        const { name, description, price, createdAt, updatedAt, Owner } = currentSpot;
-
-
-        const result = {
-            id,
-            ownerId,
-            address,
-            city,
-            state,
-            country,
-            lat: lat.toFixed(latlngPrecision),
-            lng: lng.toFixed(latlngPrecision),
-            name,
-            description,
-            price,
-            createdAt,
-            updatedAt,
-            numReviews: currentSpot.Reviews.length,
-            avgStarRating: avgRating.toFixed(avgStarPrecision),
-            SpotImages: currentSpot.SpotImages,
-            Owner
+        if (!currentSpot) {
+            const err = new Error;
+            err.message = "Spot couldn't be found"
+            err.status = 404;
+            return next(err)
         }
 
-        res.json(result)
+        const currentSpotJson = currentSpot.toJSON()
+        const { Reviews, SpotImages, Owner, ...res } = currentSpotJson;
+
+        const sum = Reviews.reduce((sum, e) => sum += Number(e.stars), 0)
+        const length = Reviews.length;
+
+        res.numReviews = length
+        res.avgStarRating = length ? (sum / length).toFixed(1) : 0;
+        res.avgStarRating = Number(res.avgStarRating)
+        res.lat = res.lat.toFixed(6)
+        res.lng = res.lng.toFixed(6)
+        res.createdAt = formatDate(res.createdAt)
+        res.updatedAt = formatDate(res.updatedAt)
+        response.json({ ...res, SpotImages, Owner })
     } catch (e) {
         next(e)
     }
