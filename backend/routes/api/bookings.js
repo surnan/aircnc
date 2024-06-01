@@ -11,20 +11,23 @@ const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth')
 const { append } = require('vary');
 
 
-var today = new Date();
+// const validateBooking = [
+//     check('startDate').exists({ checkFalsy: true }).isBefore(today).withMessage('startDate cannot be in the past.'),
+//     check('endDate').exists({ checkFalsy: true })
+//         .custom((endDate, { req }) => {
+//             const startDate = req.body.startDate;
+//             if (endDate <= startDate) {
+//                 throw new Error("End before Start")
+//             }
+//         }),
+//     handleValidationErrors
+// ];
+
 const validateBooking = [
-    check('startDate').exists({ checkFalsy: true }).isBefore(today).withMessage('startDate cannot be in the past.'),
-    check('endDate').exists({ checkFalsy: true })
-        .custom((endDate, { req }) => {
-            const startDate = req.body.startDate;
-            if (endDate <= startDate) {
-                throw new Error("End before Start")
-            }
-        }),
+    check('startDate').exists({ checkFalsy: true }).withMessage('Start date is required'),
+    check('endDate').exists({ checkFalsy: true }).withMessage('End date is required'),
     handleValidationErrors
 ];
-
-//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date
 
 
 
@@ -36,7 +39,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
         const bookingId = parseInt(req.params.bookingId);
         const userId = parseInt(req.user.id);
         const { user } = req;
-        
+
         const currentBooking = await Booking.findByPk(bookingId);
 
         if (!currentBooking) {
@@ -51,13 +54,19 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             })
         };
 
-        if(bookingToDelete.startDate >= currentDate) {
+
+        let today = new Date();
+        
+
+        if (currentBooking.startDate <= today) {
+            console.log("A")
             const err = new Error
             err.message = "Bookings that have been started can't be deleted"
             err.status = 403
             return next(err)
-          }
+        }
 
+        console.log("B")
 
         const deletedbooking = await currentBooking.destroy();
         res.json({ message: 'Successfully deleted' });
@@ -77,7 +86,7 @@ router.get('/current', async (req, res, next) => {
             include: [
                 {
                     model: Spot,
-                },            
+                },
             ],
             where: {
                 userId
@@ -85,8 +94,8 @@ router.get('/current', async (req, res, next) => {
         })
         res.json({ "Bookings": allBookings });
     } catch (e) {
-    next(e)
-}
+        next(e)
+    }
 });
 
 //Edit a Booking
@@ -118,39 +127,39 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
 });
 
 
-router.put('/:bookingId', requireAuth, validateBooking, async(req, res, next) =>{
-    const {bookingId} = req.params;
+router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
+    const { bookingId } = req.params;
     const booking = await Booking.findByPk(bookingId);
-    if(!booking){
-      res.status(404).json({
-       message: "Booking couldn't be found"
-     });
+    if (!booking) {
+        res.status(404).json({
+            message: "Booking couldn't be found"
+        });
     }
 
     const userId = req.user.id;
-    if(userId !== booking.userId){
-      return res.status(403).json({message: "Forbidden"})
-   }
+    if (userId !== booking.userId) {
+        return res.status(403).json({ message: "Forbidden" })
+    }
 
-  
-   const reqStartDate = Date.parse(req.body.startDate); 
-   const reqEndDate = Date.parse(req.body.endDate);
 
-    let {startDate, endDate} = booking;
+    const reqStartDate = Date.parse(req.body.startDate);
+    const reqEndDate = Date.parse(req.body.endDate);
+
+    let { startDate, endDate } = booking;
     startDate = Date.parse(startDate);
     endDate = Date.parse(endDate);
 
     await booking.update(
-      { 
-       userId: req.body.userId, 
-       spotId: req.body.spotId,
-       startDate: req.body.startDate,
-       endDate: req.body.endDate
-      }
-  );
+        {
+            userId: req.body.userId,
+            spotId: req.body.spotId,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate
+        }
+    );
 
-  
-  res.json(booking);
+
+    res.json(booking);
 });
 
 
