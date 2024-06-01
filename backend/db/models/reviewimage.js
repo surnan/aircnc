@@ -14,10 +14,15 @@ module.exports = (sequelize, DataTypes) => {
     reviewId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: 'Reviews' }
+      references: { model: 'Reviews' },
+      onDelete: "CASCADE"
     },
     url: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [1, 100]
+      }
     }
   }, {
     sequelize,

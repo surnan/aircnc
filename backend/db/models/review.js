@@ -14,20 +14,26 @@ module.exports = (sequelize, DataTypes) => {
     userId:{
        type: DataTypes.INTEGER,
        allowNull: false,
-       references: { model: 'Users' }
+       references: { model: 'Users' },
+       onDelete: "CASCADE"
     },
     spotId:{
        type: DataTypes.INTEGER,
        allowNull: false,
-       references: { model: 'Spots' }
+       references: { model: 'Spots' },
+       onDelete: "CASCADE"
     },
     review:{
        type: DataTypes.STRING,
-       allowNull: true
+       allowNull: true,
     },
     stars: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        min: 1,
+        max: 5
+      }
     },
   }, {
     sequelize,
