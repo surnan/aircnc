@@ -85,6 +85,17 @@ function formatDate(dateString) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+function formatDateNoTime(dateString) {
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
+    const day = ('0' + date.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
+}
+
+
 router.get('/', queryParams, async (req, res, next) => {
     try {
 
@@ -219,8 +230,8 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
         const { user } = req;
         user.id = parseInt(req.user.id)
 
-        let {lat, lng, price}= req.body;
-        const {city, state, description, address, name, country } = req.body;
+        let { lat, lng, price } = req.body;
+        const { city, state, description, address, name, country } = req.body;
 
         lat = parseFloat(lat.toFixed(6))
         lng = parseFloat(lng.toFixed(6))
@@ -228,14 +239,14 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
 
         if (user) {
             const newSpot = await Spot.create(
-                {   
+                {
                     ownerId: user.id,
                     address,
                     city,
                     state,
                     country,
-                    lat, 
-                    lng, 
+                    lat,
+                    lng,
                     name,
                     description,
                     price
@@ -243,7 +254,7 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
             )
 
             let newSpotJson = newSpot.toJSON();
-            let responseBody = {...newSpotJson};
+            let responseBody = { ...newSpotJson };
             responseBody.lat = lat
             responseBody.lng = lng
             responseBody.createdAt = formatDate(newSpotJson.createdAt)
@@ -327,8 +338,8 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
         const { user } = req;
         const userId = parseInt(req.user.id)
 
-        let {lat, lng, price}= req.body;
-        const {city, state, description, address, name, country } = req.body;
+        let { lat, lng, price } = req.body;
+        const { city, state, description, address, name, country } = req.body;
 
         lat = parseFloat(lat.toFixed(6))
         lng = parseFloat(lng.toFixed(6))
@@ -343,9 +354,9 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
 
         const ownerId = parseInt(currentSpot.ownerId);
 
-        
+
         if (userId !== ownerId) {
-            return response.status(403).json({ 
+            return response.status(403).json({
                 message: "Forbidden"
             })
         }
@@ -374,7 +385,13 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
 })
 
 //Create a Review for a Spot based on the Spot's id
-router.get('/:spotId/reviews', async (req, res) => {
+router.get('/:spotId/reviews', async (req, res, next) => {
+    try {
+
+    } catch (e) {
+        return next(e)
+
+    }
     const { spotId } = req.params;
     const spot = await Spot.findByPk(spotId);
     if (!spot) {
@@ -401,37 +418,107 @@ router.get('/:spotId/reviews', async (req, res) => {
 
 
 //Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) => {
-    const { spotId } = req.params;
-    const { review, stars } = req.body;
-    const spot = await Spot.findByPk(spotId);
+router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res, next) => {
+    try {
+        const { spotId } = req.params;
+        const { review, stars } = req.body;
+        const spot = await Spot.findByPk(spotId);
 
-    if (!spot) {
-        res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-    const userId = req.user.id;
-
-    const usersReview = await Review.findOne({ where: { userId: userId, spotId: spotId } });
-
-    if (usersReview) {
-        res.status(500).json({ message: "User already has a review for this spot" });
-    }
-
-    const spot_review = await Review.create(
-        {
-            userId,
-            spotId,
-            review,
-            stars: stars
+        if (!spot) {
+            res.status(404).json({ message: "Spot couldn't be found" });
         }
-    );
 
-    const spot_reviewJson = spot_review.toJSON()
-    spot_reviewJson.createdAt = formatDate(spot_reviewJson.createdAt)
-    spot_reviewJson.updatedAt = formatDate(spot_reviewJson.updatedAt)
+        const userId = req.user.id;
 
-    res.status(201).json(spot_reviewJson);
+        const usersReview = await Review.findOne({ where: { userId: userId, spotId: spotId } });
+
+        if (usersReview) {
+            res.status(500).json({ message: "User already has a review for this spot" });
+        }
+
+        const spot_review = await Review.create(
+            {
+                userId,
+                spotId,
+                review,
+                stars: stars
+            }
+        );
+
+        const spot_reviewJson = spot_review.toJSON()
+        spot_reviewJson.createdAt = formatDate(spot_reviewJson.createdAt)
+        spot_reviewJson.updatedAt = formatDate(spot_reviewJson.updatedAt)
+
+        res.status(201).json(spot_reviewJson);
+
+    } catch (e) {
+        return nexy(e)
+    }
+
 });
+
+//Get all Bookings for a Spot based on Spot's id
+router.get('/:spotId/bookings', requireAuth, async (req, response, next) => {
+    try {
+        const spotId = parseInt(req.params.spotId);
+        const user = req.user;
+        const userId = parseInt(req.user.id);
+
+        const currentSpot = await Spot.findByPk(spotId)
+
+        if (user) {
+            if (!currentSpot) {
+                const err = new Error;
+                err.message = "Spot couldn't be found"
+                err.status = 404
+                return next(err)
+            }
+
+            let bookingsCurrentSpot = await Booking.findAll({
+                include: [
+                    {
+                        model: User,
+                        attributes: ['id', 'firstName', 'lastName']
+                    }
+                ],
+                where: { spotId }
+            })
+
+            if (bookingsCurrentSpot.length === 0){
+                return response.json({Bookings: "None"})
+            }
+
+            if (userId === currentSpot.ownerId) {
+                const bookingsCurrentSpotMap = bookingsCurrentSpot.map(booking => {
+                    const bookingJson = booking.toJSON();
+                    const { User, ...res } = bookingJson
+                    res.createdAt = formatDate(res.createdAt)
+                    res.updatedAt = formatDate(res.updatedAt)
+                    res.startDate = formatDateNoTime(res.createdAt)
+                    res.endDate = formatDateNoTime(res.updatedAt)
+                    return ({ User, ...res })
+                })
+                return response.json({Bookings: bookingsCurrentSpotMap})
+            }
+
+            if (userId !== currentSpot.ownerId) {
+                const bookingsCurrentSpotMap = bookingsCurrentSpot.map(booking => {
+                    const bookingJson = booking.toJSON();
+                    const { User, ...res } = bookingJson
+                    let answer = {};
+
+                    answer.spotId = res.spotId
+                    answer.startDate = formatDateNoTime(res.createdAt)
+                    answer.endDate = formatDateNoTime(res.updatedAt)
+                    return (answer)
+                })
+                return response.json({Bookings: bookingsCurrentSpotMap})
+            }
+        }
+    } catch (e) {
+        next(e)
+    }
+})
+
 
 module.exports = router;
