@@ -8,22 +8,37 @@ const router = express.Router();
 
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
     try {
-        const { imageId } = req.params;
-        const spotImage = await SpotImage.findByPk(imageId);
-        if (!spotImage) {
-            res.status(404).json({
-                message: "Spot image couldn't be found"
-            });
-        }
+        const { user } = req;
+        const userId = parseInt(req.user.id);
+        const imageId = parseInt(req.params.imageId);
 
-        await spotImage.destroy();
-        return res.json({ message: 'Deleted successfully!' });
+
+        if (user) {
+            const currentSpotImage = await SpotImage.findByPk(imageId);
+
+            if (!currentSpotImage) {
+                return res.status(403).json({
+                    message: "Spot image couldn't be found"
+                });
+            }
+
+            const currentSpot = await Spot.findByPk(currentSpotImage.spotId);
+
+            if (userId !== currentSpot.ownerId) {
+                return res.status(403).json({
+                    message: "Forbidden"
+                })
+            }
+
+            await currentSpotImage.destroy();
+
+            return res.json({
+                "message": "Successfully deleted"
+            })
+        }
     } catch (e) {
         next(e)
     }
 });
-
-
-
 
 module.exports = router;
