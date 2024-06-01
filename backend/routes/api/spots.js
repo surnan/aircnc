@@ -113,26 +113,43 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
         page = parseInt(page);
         size = parseInt(size);
 
-        if (minPrice || maxPrice) {
+        // if (minPrice || maxPrice) {
+        //     where.price = {};
+        //     if (minPrice) where.price[Op.gte] = minPrice;
+        //     if (maxPrice) where.price[Op.lte] = maxPrice;
+        // }
+
+        // if (minLat || maxLat) {
+        //     where.lat = {};
+        //     if (minLat) where.lat[Op.gte] = minLat;
+        //     if (maxLat) where.lat[Op.lte] = maxLat;
+        // }
+
+        // if (minLng || maxLng) {
+        //     where.lng = {};
+        //     if (minLng) where.lng[Op.gte] = minLng;
+        //     if (maxLng) where.lng[Op.lte] = maxLng;
+        // }
+
+        if (minPrice !== undefined || maxPrice !== undefined) {
             where.price = {};
-            if (minPrice) where.price[Op.gte] = minPrice;
-            if (maxPrice) where.price[Op.lte] = maxPrice;
-        }
-
-        if (minLat || maxLat) {
+            if (minPrice !== undefined) where.price[Op.gte] = Number(minPrice);
+            if (maxPrice !== undefined) where.price[Op.lte] = Number(maxPrice);
+          }
+      
+          if (minLat !== undefined || maxLat !== undefined) {
             where.lat = {};
-            if (minLat) where.lat[Op.gte] = minLat;
-            if (maxLat) where.lat[Op.lte] = maxLat;
-        }
-
-        if (minLng || maxLng) {
+            if (minLat !== undefined) where.lat[Op.gte] = Number(minLat);
+            if (maxLat !== undefined) where.lat[Op.lte] = Number(maxLat);
+          }
+      
+          if (minLng !== undefined || maxLng !== undefined) {
             where.lng = {};
-            if (minLng) where.lng[Op.gte] = minLng;
-            if (maxLng) where.lng[Op.lte] = maxLng;
-        }
+            if (minLng !== undefined) where.lng[Op.gte] = Number(minLng);
+            if (maxLng !== undefined) where.lng[Op.lte] = Number(maxLng);
+          }
 
-
-
+        // return res.json({where})
 
 
         const spots = await Spot.findAll({
