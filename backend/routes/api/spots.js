@@ -292,11 +292,11 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 })
 
 //Delete Spot
-router.delete('/:spotId', requireAuth, async (req, res) => {
+router.delete('/:spotId', requireAuth, async (req, res, next) => {
     try {
-        const userId = req.user.id;
+        const userId = parseInt(req.user.id);
 
-        const { spotId } = req.params;
+        const spotId = parseInt(req.params.spotId);
         const currentSpot = await Spot.findByPk(spotId);
 
         if (!currentSpot) {
