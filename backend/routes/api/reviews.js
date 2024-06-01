@@ -26,10 +26,6 @@ const validateSpot = [
     check('name').exists({ checkFalsy: true }).isString().isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
     check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day must be a positive number'),
-    //Without this entry, errors above enter body but just sit there like an appended string
-    //handleValidationErrors searches REQ for validation errors
-    //This line/function is the ONLY ".next"
-    //which causes flow to bypass route handler code and jump back to app.js
     handleValidationErrors
 ];
 
@@ -78,8 +74,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
 })
 
 //Create a Review for a Spot based on the Spot's Id
-router.post('/', requireAuth, validateSpot, async(req, res) => {
-    const {user} = req;
+router.post('/', requireAuth, validateSpot, async (req, res) => {
+    const { user } = req;
     const { lat, lng, address, name, country, city, state, description, price } = req.body
     const spot = await Spot.create(
         {
@@ -102,39 +98,45 @@ router.post('/', requireAuth, validateSpot, async(req, res) => {
 //Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     try {
-        const { reviewId } = req.params;
-        const review = await Review.findByPk(reviewId)
+        const reviewId = parseInt(req.params.reviewId);
+        const review = await Review.findByPk(reviewId);
+        const { user } = req.user;
 
         if (!review) {
             return res.status(404).json({ message: "Review couldn't be found" })
         }
 
-        const user = req.user
-        const userId = user.id
+        if (user) {
+            const userId = parseInt(user.id)
 
-        if (userId !== review.userId) { //verify review belongs to user
-            return res.status(403).json({ message: "Forbidden" })
-        }
-
-        const images = await review.getReviewImages();
-        console.log(images.length);
-
-        if (images.length > 10) {
-            res.status(403).json({ message: "Maximum number of images for this resource was reached" });
-        }
-
-
-        const reviewImage = await ReviewImage.create(
-            {
-                url: req.body.url,
-                reviewId
+            if (userId !== review.userId) { //verify review belongs to user
+                return res.status(403).json({ message: "Forbidden" })
             }
-        );
 
-        res.json({
-            "id": reviewImage.id,
-            "url": reviewImage.url
-        });
+            const images = await review.getReviewImages();
+
+            if (images.length > 10) {
+                return res.status(403).json({ message: "Maximum number of images for this resource was reached" });
+            }
+
+
+            const reviewImage = await ReviewImage.create(
+                {
+                    url: req.body.url,
+                    reviewId
+                }
+            );
+
+            res.status(201).json({
+                "id": reviewImage.id,
+                "url": reviewImage.url
+            });
+        } else {
+            const err = new Error;
+            err.message = "Review couldn't be found"
+            err.status = 404;
+            throw err;
+        }
     } catch (e) {
         next(e)
     }
@@ -174,11 +176,11 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
 });
 
 //Delete a Review
-router.delete('/:reviewId', requireAuth, async (req, res) => {
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     try {
-        const userId = req.user.id;
+        const userId = parseInt(req.user.id);
 
-        const { reviewId } = req.params;
+        const reviewId = parseInt(req.params.reviewId);
         const currentReview = await Review.findByPk(reviewId);
 
         if (!currentReview) {
@@ -189,9 +191,7 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
 
         if (userId !== currentReview.userId) {
             return res.status(403).json({
-                message: "Forbidden",
-                userId,
-                reviewUserId: currentReview.userId
+                message: "Forbidden"
             })
         }
 
