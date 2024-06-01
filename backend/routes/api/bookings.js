@@ -98,6 +98,8 @@ router.get('/current', async (req, res, next) => {
     }
 });
 
+
+//Create a Booking from a Spot based on the Spot's id
 //Edit a Booking
 router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
     const { bookingId } = req.params;
@@ -125,42 +127,5 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
     );
     res.json(booking);
 });
-
-
-router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
-    const { bookingId } = req.params;
-    const booking = await Booking.findByPk(bookingId);
-    if (!booking) {
-        res.status(404).json({
-            message: "Booking couldn't be found"
-        });
-    }
-
-    const userId = req.user.id;
-    if (userId !== booking.userId) {
-        return res.status(403).json({ message: "Forbidden" })
-    }
-
-
-    const reqStartDate = Date.parse(req.body.startDate);
-    const reqEndDate = Date.parse(req.body.endDate);
-
-    let { startDate, endDate } = booking;
-    startDate = Date.parse(startDate);
-    endDate = Date.parse(endDate);
-
-    await booking.update(
-        {
-            userId: req.body.userId,
-            spotId: req.body.spotId,
-            startDate: req.body.startDate,
-            endDate: req.body.endDate
-        }
-    );
-
-
-    res.json(booking);
-});
-
 
 module.exports = router;
