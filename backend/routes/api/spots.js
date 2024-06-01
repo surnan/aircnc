@@ -39,18 +39,6 @@ const validateReview = [
 ];
 
 
-
-// Both Helper functions not working?!
-const getAvgRating = (reviews) => {
-    const totalStars = reviews.reduce((sum, review) => sum + review.stars, 0);
-    return reviews.length ? (totalStars / reviews.length).toFixed(avgStarPrecision) : 0;
-};
-
-const getPreviewImage = (images) => {
-    const previewImage = images.find(image => image.preview);
-    return previewImage ? previewImage.url : "No Preview Image Available";
-};
-
 // function formatDate(dateString) {
 //     const date = new Date(dateString);
 
@@ -103,54 +91,36 @@ const validateQueryParameters = [
 
 
 router.get('/', validateQueryParameters, async (req, res, next) => {
-    // router.get('/', async (req, res, next) => {
     try {
 
         let where = {};
 
-        let {page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice = 0, maxPrice = 0} = req.query;
+        let { page = 1, size = 20, minLat, maxLat, minLng, maxLng, minPrice = 0, maxPrice } = req.query;
+
+        const sizePageShow = (Object.entries(req.query).length === 0)
+            ? false
+            : true
 
         page = parseInt(page);
         size = parseInt(size);
-
-        // if (minPrice || maxPrice) {
-        //     where.price = {};
-        //     if (minPrice) where.price[Op.gte] = minPrice;
-        //     if (maxPrice) where.price[Op.lte] = maxPrice;
-        // }
-
-        // if (minLat || maxLat) {
-        //     where.lat = {};
-        //     if (minLat) where.lat[Op.gte] = minLat;
-        //     if (maxLat) where.lat[Op.lte] = maxLat;
-        // }
-
-        // if (minLng || maxLng) {
-        //     where.lng = {};
-        //     if (minLng) where.lng[Op.gte] = minLng;
-        //     if (maxLng) where.lng[Op.lte] = maxLng;
-        // }
 
         if (minPrice !== undefined || maxPrice !== undefined) {
             where.price = {};
             if (minPrice !== undefined) where.price[Op.gte] = Number(minPrice);
             if (maxPrice !== undefined) where.price[Op.lte] = Number(maxPrice);
-          }
-      
-          if (minLat !== undefined || maxLat !== undefined) {
+        }
+
+        if (minLat !== undefined || maxLat !== undefined) {
             where.lat = {};
             if (minLat !== undefined) where.lat[Op.gte] = Number(minLat);
             if (maxLat !== undefined) where.lat[Op.lte] = Number(maxLat);
-          }
-      
-          if (minLng !== undefined || maxLng !== undefined) {
+        }
+
+        if (minLng !== undefined || maxLng !== undefined) {
             where.lng = {};
             if (minLng !== undefined) where.lng[Op.gte] = Number(minLng);
             if (maxLng !== undefined) where.lng[Op.lte] = Number(maxLng);
-          }
-
-        // return res.json({where})
-
+        }
 
         const spots = await Spot.findAll({
             include: [
@@ -159,8 +129,9 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
             ],
             where,
             limit: size,
-            offset: (page - 1) * size
+            offset: parseInt((page - 1)) * size
         });
+
 
         const spotsMap = spots.map(spot => {
             const spotJson = spot.toJSON();
@@ -168,22 +139,30 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
             const { SpotImages, Reviews, ...res } = spotJson;
             const foundPreviewImage = SpotImages.find(e => e.preview)
             const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
-            const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(1);
+            const fixedRating = isNaN(avgRating) ? "n/a" : Number(avgRating.toFixed(1));
 
-            res.lat = res.lat.toFixed(6)
-            res.lng = res.lng.toFixed(6)
-            res.avgRating = Number(fixedRating);
+            res.lat = Number(res.lat.toFixed(7))
+            res.lng = Number(res.lng.toFixed(7))
+
+            res.avgRating = fixedRating
+
             res.createdAt = formatDate(res.createdAt)
             res.updatedAt = formatDate(res.updatedAt)
-            res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
+            res.previewImage = foundPreviewImage ? foundPreviewImage.url : 'image url'
             return res;
         });
 
-        res.json({
-            Spots: spotsMap,
-            page,
-            size
-        })
+        if (sizePageShow){
+            res.status(200).json({
+                Spots: spotsMap,
+                page,
+                size
+            })
+        } else {
+            res.status(200).json({ 
+                Spots: spotsMap 
+            })
+        }
     } catch (e) {
         next(e)
     }
@@ -216,8 +195,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
                 const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(1);
 
-                res.lat = res.lat.toFixed(6)
-                res.lng = res.lng.toFixed(6)
+                res.lat = res.lat.toFixed(7)
+                res.lng = res.lng.toFixed(7)
                 res.avgRating = Number(fixedRating);
                 res.createdAt = formatDate(res.createdAt)
                 res.updatedAt = formatDate(res.updatedAt)
@@ -271,8 +250,8 @@ router.get('/:spotId', async (req, response, next) => {
         res.numReviews = length
         res.avgStarRating = length ? (sum / length).toFixed(1) : 0;
         res.avgStarRating = Number(res.avgStarRating)
-        res.lat = res.lat.toFixed(6)
-        res.lng = res.lng.toFixed(6)
+        res.lat = res.lat.toFixed(7)
+        res.lng = res.lng.toFixed(7)
         res.createdAt = formatDate(res.createdAt)
         res.updatedAt = formatDate(res.updatedAt)
         response.json({ ...res, SpotImages, Owner })
@@ -291,8 +270,8 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
         let { lat, lng, price } = req.body;
         const { city, state, description, address, name, country } = req.body;
 
-        lat = parseFloat(lat.toFixed(6))
-        lng = parseFloat(lng.toFixed(6))
+        lat = parseFloat(lat.toFixed(7))
+        lng = parseFloat(lng.toFixed(7))
         price = parseFloat(price)
 
         if (user) {
@@ -403,8 +382,8 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
         let { lat, lng, price } = req.body;
         const { city, state, description, address, name, country } = req.body;
 
-        lat = parseFloat(lat.toFixed(6))
-        lng = parseFloat(lng.toFixed(6))
+        lat = parseFloat(lat.toFixed(7))
+        lng = parseFloat(lng.toFixed(7))
         price = parseFloat(price.toFixed(2))
 
 
@@ -655,74 +634,3 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-/*
-router.get('/', queryParams, async (req, res, next) => {
-    // router.get('/', async (req, res, next) => {
-    try {
-
-        // if (minPrice || maxPrice) {
-        //     where.price = {};
-        //     if (minPrice) where.price[Op.gte] = minPrice;
-        //     if (maxPrice) where.price[Op.lte] = maxPrice;
-        // }
-
-        // if (minLat || maxLat) {
-        //     where.lat = {};
-        //     if (minLat) where.lat[Op.gte] = minLat;
-        //     if (maxLat) where.lat[Op.lte] = maxLat;
-        // }
-
-        // if (minLng || maxLng) {
-        //     where.lng = {};
-        //     if (minLng) where.lng[Op.gte] = minLng;
-        //     if (maxLng) where.lng[Op.lte] = maxLng;
-        // }
-
-
-
-        const spots = await Spot.findAll({
-            include: [
-                { model: SpotImage },
-                { model: Review }
-            ],
-            // where,
-            // limit: size,
-            // offset: (page - 1) * size
-        });
-
-        const spotsMap = spots.map(spot => {
-            const spotJson = spot.toJSON();
-
-            const { SpotImages, Reviews, ...res } = spotJson;
-            const foundPreviewImage = SpotImages.find(e => e.preview)
-            const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
-            const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(1);
-
-            res.lat = res.lat.toFixed(6)
-            res.lng = res.lng.toFixed(6)
-            res.avgRating = Number(fixedRating);
-            res.createdAt = formatDate(res.createdAt)
-            res.updatedAt = formatDate(res.updatedAt)
-            res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
-            return res;
-        });
-
-        res.json({
-            Spots: spotsMap,
-            // page,
-            // size
-        })
-    } catch (e) {
-        next(e)
-    }
-});
-*/
