@@ -319,24 +319,35 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     }
 })
 
-router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
+//Edit Spot
+router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) => {
+    // res.json("hello")
     try {
-        const { spotId } = req.params;
+        const spotId = parseInt(req.params.spotId);
+        const { user } = req;
+        const userId = parseInt(req.user.id)
 
-        const userId = req.user.id;
+        let {lat, lng, price}= req.body;
+        const {city, state, description, address, name, country } = req.body;
 
-        const { address, city, state, country } = req.body;
-        const { lat, lng, name, description, price } = req.body;
+        lat = parseFloat(lat.toFixed(6))
+        lng = parseFloat(lng.toFixed(6))
+        price = parseFloat(price.toFixed(2))
+
+
 
         const currentSpot = await Spot.findByPk(spotId);
         if (!currentSpot) {
-            res.status(404).json({ message: "Spot couldn't be found" });
+            response.status(404).json({ message: "Spot couldn't be found" });
         }
 
-        const { ownerId } = currentSpot;
+        const ownerId = parseInt(currentSpot.ownerId);
 
-        if (parseInt(userId) !== parseInt(ownerId)) {
-            return res.status(403).json({ message: "Forbidden" })
+        
+        if (userId !== ownerId) {
+            return response.status(403).json({ 
+                message: "Forbidden"
+            })
         }
 
         await currentSpot.update(
@@ -352,7 +363,11 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, res) => {
                 price
             }
         )
-        res.json(currentSpot)
+
+        let res = currentSpot.toJSON();
+        res.createdAt = formatDate(res.createdAt)
+        res.updatedAt = formatDate(res.updatedAt)
+        response.json(res)
     } catch (e) {
         next(e)
     }
