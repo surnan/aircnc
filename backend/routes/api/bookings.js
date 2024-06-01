@@ -10,19 +10,6 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
 const { append } = require('vary');
 
-
-// const validateBooking = [
-//     check('startDate').exists({ checkFalsy: true }).isBefore(today).withMessage('startDate cannot be in the past.'),
-//     check('endDate').exists({ checkFalsy: true })
-//         .custom((endDate, { req }) => {
-//             const startDate = req.body.startDate;
-//             if (endDate <= startDate) {
-//                 throw new Error("End before Start")
-//             }
-//         }),
-//     handleValidationErrors
-// ];
-
 const validateBooking = [
     check('startDate').exists({ checkFalsy: true }).withMessage('Start date is required'),
     check('endDate').exists({ checkFalsy: true }).withMessage('End date is required'),
