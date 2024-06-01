@@ -7,10 +7,10 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth, restoreUser, setTokenCookie } = require('../../utils/auth');
+const { Op } = require('sequelize')
 const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../db/models');
 
-const avgStarPrecision = 1;
-const latlngPrecision = 6;
+// const avgStarPrecision = 1;
 
 //Get all Spots
 const validateSpot = [
@@ -26,6 +26,11 @@ const validateSpot = [
     handleValidationErrors
 ];
 
+const validateBooking = [
+    check('startDate').exists({ checkFalsy: true }).withMessage('Start date is required'),
+    check('endDate').exists({ checkFalsy: true }).withMessage('End date is required'),
+    handleValidationErrors
+];
 
 const validateReview = [
     check('review').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Review text is required'),
@@ -34,17 +39,17 @@ const validateReview = [
 ];
 
 //validator for the spots search query.
-const queryParams = [
-    check('page', 'isInt({ min: 1 })', 'Page must be greater than or equal to 1'),
-    check('size', 'isInt({ min: 1 })', 'Size must be greater than or equal to 1'),
-    check('maxLat', 'isFloat({ max: 90.0000000 })', 'Maximum latitude is invalid'),
-    check('minLat', 'isFloat({ min: -90.0000000 })', 'Minimum latitude is invalid'),
-    check('maxLng', 'isFloat({ max: 180.0000000 })', 'Maximum longitude is invalid'),
-    check('minLng', 'isFloat({ min: -180.0000000 })', 'Minimum longitude is invalid'),
-    check('minPrice', 'isCurrency({ min: 1.00 })', 'Minimum price must be greater than or equal to 0'),
-    check('maxPrice', 'isCurrency({ min: 1.00 })', 'Maximum price must be greater than or equal to 0'),
-    handleValidationErrors
-];
+// const queryParameters = [
+//     check('page', 'isInt({ min: 1 })', 'Page must be greater than or equal to 1'),
+//     check('size', 'isInt({ min: 1 })', 'Size must be greater than or equal to 1'),
+//     check('maxLat', 'isFloat({ max: 90.0000000 })', 'Maximum latitude is invalid'),
+//     check('minLat', 'isFloat({ min: -90.0000000 })', 'Minimum latitude is invalid'),
+//     check('maxLng', 'isFloat({ max: 180.0000000 })', 'Maximum longitude is invalid'),
+//     check('minLng', 'isFloat({ min: -180.0000000 })', 'Minimum longitude is invalid'),
+//     check('minPrice', 'isCurrency({ min: 1.00 })', 'Minimum price must be greater than or equal to 0'),
+//     check('maxPrice', 'isCurrency({ min: 1.00 })', 'Maximum price must be greater than or equal to 0'),
+//     handleValidationErrors
+// ];
 
 
 // Both Helper functions not working?!
@@ -96,14 +101,38 @@ function formatDateNoTime(dateString) {
 }
 
 
-router.get('/', queryParams, async (req, res, next) => {
+// router.get('/', queryParams, async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
+
+        // if (minPrice || maxPrice) {
+        //     where.price = {};
+        //     if (minPrice) where.price[Op.gte] = minPrice;
+        //     if (maxPrice) where.price[Op.lte] = maxPrice;
+        // }
+
+        // if (minLat || maxLat) {
+        //     where.lat = {};
+        //     if (minLat) where.lat[Op.gte] = minLat;
+        //     if (maxLat) where.lat[Op.lte] = maxLat;
+        // }
+
+        // if (minLng || maxLng) {
+        //     where.lng = {};
+        //     if (minLng) where.lng[Op.gte] = minLng;
+        //     if (maxLng) where.lng[Op.lte] = maxLng;
+        // }
+
+
 
         const spots = await Spot.findAll({
             include: [
                 { model: SpotImage },
                 { model: Review }
-            ]
+            ],
+            // where,
+            // limit: size,
+            // offset: (page - 1) * size
         });
 
         const spotsMap = spots.map(spot => {
@@ -123,7 +152,11 @@ router.get('/', queryParams, async (req, res, next) => {
             return res;
         });
 
-        res.json({ Spots: spotsMap })
+        res.json({ 
+            Spots: spotsMap,
+            // page,
+            // size
+        })
     } catch (e) {
         next(e)
     }
@@ -164,9 +197,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
                 return res;
             });
-
             res.json({ Spots: spotsMap })
-
         }
 
     } catch (e) {
@@ -484,8 +515,8 @@ router.get('/:spotId/bookings', requireAuth, async (req, response, next) => {
                 where: { spotId }
             })
 
-            if (bookingsCurrentSpot.length === 0){
-                return response.json({Bookings: "None"})
+            if (bookingsCurrentSpot.length === 0) {
+                return response.json({ Bookings: "None" })
             }
 
             if (userId === currentSpot.ownerId) {
@@ -498,7 +529,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, response, next) => {
                     res.endDate = formatDateNoTime(res.updatedAt)
                     return ({ User, ...res })
                 })
-                return response.json({Bookings: bookingsCurrentSpotMap})
+                return response.json({ Bookings: bookingsCurrentSpotMap })
             }
 
             if (userId !== currentSpot.ownerId) {
@@ -512,7 +543,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, response, next) => {
                     answer.endDate = formatDateNoTime(res.updatedAt)
                     return (answer)
                 })
-                return response.json({Bookings: bookingsCurrentSpotMap})
+                return response.json({ Bookings: bookingsCurrentSpotMap })
             }
         }
     } catch (e) {
@@ -520,5 +551,49 @@ router.get('/:spotId/bookings', requireAuth, async (req, response, next) => {
     }
 })
 
+//Create a Booking from a Spot based on the Spot's id
+router.post(':spotId/bookings', requireAuth, validateBooking, async (req, res, next) => {
+
+})
+
+
 
 module.exports = router;
+
+
+
+/*
+router.get('/', queryParams, async (req, res, next) => {
+    try {
+
+        const spots = await Spot.findAll({
+            include: [
+                { model: SpotImage },
+                { model: Review }
+            ]
+        });
+
+        const spotsMap = spots.map(spot => {
+            const spotJson = spot.toJSON();
+
+            const { SpotImages, Reviews, ...res } = spotJson;
+            const foundPreviewImage = SpotImages.find(e => e.preview)
+            const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
+            const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(1);
+
+            res.lat = res.lat.toFixed(6)
+            res.lng = res.lng.toFixed(6)
+            res.avgRating = Number(fixedRating);
+            res.createdAt = formatDate(res.createdAt)
+            res.updatedAt = formatDate(res.updatedAt)
+            res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
+            return res;
+        });
+
+        res.json({ Spots: spotsMap })
+    } catch (e) {
+        next(e)
+    }
+});
+
+*/
