@@ -101,8 +101,10 @@ router.get('/', queryParams, async (req, res, next) => {
             const { SpotImages, Reviews, ...res } = spotJson;
             const foundPreviewImage = SpotImages.find(e => e.preview)
             const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
-            const fixedRating = isNaN(avgRating) ? "NEW" : avgRating.toFixed(1);
+            const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(1);
 
+            res.lat = res.lat.toFixed(6)
+            res.lng = res.lng.toFixed(6)
             res.avgRating = Number(fixedRating);
             res.createdAt = formatDate(res.createdAt)
             res.updatedAt = formatDate(res.updatedAt)
@@ -117,49 +119,46 @@ router.get('/', queryParams, async (req, res, next) => {
 });
 
 //Get all Spots by current user
+
+// get all spots owned by the logged in user
 router.get('/current', requireAuth, async (req, res, next) => {
 
     try {
+
         const { user } = req;
-        const spots = await Spot.findAll({
-            include: [
-                { model: SpotImage },
-                { model: Review }
-            ]
-        });
 
-        const result = spots.map(spot => {
-            // Preview Image
-            let previewImage = spot.SpotImages.find(image => image.preview);
-            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+        if (user) {
+            const spots = await Spot.findAll({
+                include: [
+                    { model: SpotImage },
+                    { model: Review }
+                ],
+                where: {
+                    ownerId: user.id
+                }
+            });
 
-            // Average Stars
-            const totalStars = spot.Reviews.reduce((sum, review) => sum + review.stars, 0);
-            const avgRating = spot.Reviews.length ? totalStars / spot.Reviews.length : 0;
+            const spotsMap = spots.map(spot => {
+                const spotJson = spot.toJSON();
 
-            // Create the new spot object
-            const { id, ownerId, address, city, state, country, lat, lng } = spot;
-            const { name, description, price, createdAt, updatedAt } = spot;
+                const { SpotImages, Reviews, ...res } = spotJson;
+                const foundPreviewImage = SpotImages.find(e => e.preview)
+                const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
+                const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(1);
 
-            return {
-                id,
-                ownerId,
-                address,
-                city,
-                state,
-                country,
-                lat: lat.toFixed(latlngPrecision),
-                lng: lng.toFixed(latlngPrecision),
-                name,
-                description,
-                createdAt,
-                updatedAt,
-                avgRating: avgRating.toFixed(avgStarPrecision),
-                previewImage: previewImage.url,
-            }
-        })
+                res.lat = res.lat.toFixed(6)
+                res.lng = res.lng.toFixed(6)
+                res.avgRating = Number(fixedRating);
+                res.createdAt = formatDate(res.createdAt)
+                res.updatedAt = formatDate(res.updatedAt)
+                res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
+                return res;
+            });
 
-        res.json({ Spots: spots })
+            res.json({ Spots: spotsMap })
+
+        }
+
     } catch (e) {
         next(e)
     }
@@ -414,60 +413,3 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
 });
 
 module.exports = router;
-
-
-
-/*
-
-router.get('/', queryParams, async (req, res, next) => {
-    try {
-
-        const spots = await Spot.findAll({
-            include: [
-                { model: SpotImage },
-                { model: Review }
-            ]
-        });
-
-        const spotsMap = spots.map(spot => {
-
-            // // Preview Image
-            let previewImage = spot.SpotImages.find(image => image.preview);
-            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
-
-            // Average Stars
-            const totalStars = spot.Reviews.reduce((sum, review) => sum + review.stars, 0);
-            const avgRating = spot.Reviews.length ? totalStars / spot.Reviews.length : 0;
-
-
-            // Create new spot object
-            const { id, ownerId, address, city, state, country, lat, lng } = spot;
-            const { name, description, price, createdAt, updatedAt } = spot;
-
-            return {
-                id,
-                ownerId,
-                address,
-                city,
-                state,
-                country,
-                lat: lat.toFixed(latlngPrecision),
-                lng: lng.toFixed(latlngPrecision),
-                name,
-                description,
-                createdAt,
-                updatedAt,
-                avgRating: avgRating.toFixed(avgStarPrecision),
-                previewImage: previewImage.url,
-            }
-        });
-
-        res.json({ 
-            Spots: spotsMap
-        })
-    } catch (e) {
-        next(e)
-    }
-});
-
-*/
