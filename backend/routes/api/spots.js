@@ -427,7 +427,11 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async (req, res) =>
         }
     );
 
-    res.status(201).json(spot_review);
+    const spot_reviewJson = spot_review.toJSON()
+    spot_reviewJson.createdAt = formatDate(spot_reviewJson.createdAt)
+    spot_reviewJson.updatedAt = formatDate(spot_reviewJson.updatedAt)
+
+    res.status(201).json(spot_reviewJson);
 });
 
 module.exports = router;
