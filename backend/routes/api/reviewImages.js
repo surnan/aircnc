@@ -11,18 +11,46 @@ const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../d
 
 
 
-router.delete('/:reviewId', requireAuth, async (req, res) => {
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     try {
-        const { imageId } = req.params;
-        const spotImage = await ReviewImage.findByPk(imageId);
-        if (!spotImage) {
-            res.status(404).json({
-                message: "Spot image couldn't be found"
-            });
-        }
+        const { user } = req;
+        const userId = parseInt(req.user.id);
+        const imageId = parseInt(req.params.reviewId);
 
-        await spotImage.destroy();
-        return res.json({ message: 'Deleted successfully!' });
+        if (user) {
+            const currentReviewImage = await ReviewImage.findByPk(imageId);
+
+            if (!currentReviewImage) {
+                return res.status(404).json({
+                    message: "Review Image couldn't be found"
+                });
+            }
+
+            const currentReview = await Review.findByPk(currentReviewImage.reviewId);
+
+            // return res.json({
+            //     userId,
+            //     currentReview: currentReview
+            // })
+
+            if (userId !== currentReview.userId) {
+                return res.status(403).json({
+                    message: "Forbidden"
+                })
+            }
+
+            await currentReviewImage.destroy();
+
+            return res.json({
+                "message": "Successfully deleted"
+            })
+
+            // await currentReviewImage.destroy();
+
+            // return res.json({
+            //     "message": "Successfully deleted"
+            // })
+        }
     } catch (e) {
         next(e)
     }

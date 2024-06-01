@@ -12,13 +12,12 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
         const userId = parseInt(req.user.id);
         const imageId = parseInt(req.params.imageId);
 
-
         if (user) {
             const currentSpotImage = await SpotImage.findByPk(imageId);
 
             if (!currentSpotImage) {
-                return res.status(403).json({
-                    message: "Spot image couldn't be found"
+                return res.status(404).json({
+                    message: "Spot Image couldn't be found"
                 });
             }
 
