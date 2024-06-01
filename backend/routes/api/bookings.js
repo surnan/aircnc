@@ -32,9 +32,11 @@ const validateBooking = [
 // delete an existing review
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     try {
+
         const bookingId = parseInt(req.params.bookingId);
-        
+        const userId = parseInt(req.user.id);
         const { user } = req;
+        
         const currentBooking = await Booking.findByPk(bookingId);
 
         if (!currentBooking) {
@@ -48,6 +50,15 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
                 message: "Forbidden"
             })
         };
+
+        if(bookingToDelete.startDate >= currentDate) {
+            const err = new Error
+            err.message = "Bookings that have been started can't be deleted"
+            err.status = 403
+            return next(err)
+          }
+
+
         const deletedbooking = await currentBooking.destroy();
         res.json({ message: 'Successfully deleted' });
     } catch (error) {
