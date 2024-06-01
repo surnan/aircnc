@@ -284,10 +284,14 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
                 }
             )
 
+            // function formatDate(dateString) {
+            // function formatDateNoTime(dateString) {
+
             let newSpotJson = newSpot.toJSON();
             let responseBody = { ...newSpotJson };
             responseBody.lat = lat
             responseBody.lng = lng
+            
             responseBody.createdAt = formatDate(newSpotJson.createdAt)
             responseBody.updatedAt = formatDate(newSpotJson.updatedAt)
             responseBody.id = newSpotJson.id;
@@ -523,9 +527,9 @@ router.get('/:spotId/bookings', requireAuth, async (req, response, next) => {
                 const bookingsCurrentSpotMap = bookingsCurrentSpot.map(booking => {
                     const bookingJson = booking.toJSON();
                     const { User, ...res } = bookingJson
-                    res.createdAt = formatDate(res.createdAt)
+                    res.createdAt = formatDate(Date(res.createdAt))
                     res.updatedAt = formatDate(res.updatedAt)
-                    res.startDate = formatDateNoTime(res.createdAt)
+                    res.startDate = formatDateNoTime(Date(res.createdAt))
                     res.endDate = formatDateNoTime(res.updatedAt)
                     return ({ User, ...res })
                 })
@@ -556,11 +560,10 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
     try {
         const spotId = parseInt(req.params.spotId);
         const { startDate, endDate } = req.body;
-        const userId = req.user.id; // Assuming you have user ID from the authenticated user
+        const userId = parseInt(req.user.id); // Assuming you have user ID from the authenticated user
 
         const start = new Date(startDate);
         const end = new Date(endDate);
-
 
         const verifySpot = await Spot.findByPk(spotId)
         if (!verifySpot) {
@@ -569,7 +572,6 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
             err.status = 404;
             return next(err)
         }
-
 
         // Check if end date is before or on the start date
         if (end <= start) {
@@ -621,6 +623,7 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
         next(e);
     }
 });
+
 
 
 
