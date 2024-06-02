@@ -86,7 +86,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
 //NEEDS PREVIEW IMAGE ON BOOKINGS.SPOT
 // router.get('/current', requireAuth, async (req, res, next) => {
-router.get('/current', async (req, res, next) => {
+router.get('/current', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
         const userId = user.id
@@ -95,13 +95,49 @@ router.get('/current', async (req, res, next) => {
             include: [
                 {
                     model: Spot,
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt', 'description']
+                    }
                 },
             ],
             where: {
                 userId
-            }
+            },
+            // attributes: {
+            //     exclude: ['spotId', 'id']
+            // }
         })
-        res.json({ "Bookings": allBookings });
+
+        let bookingsMap = await Promise.all(allBookings.map(async booking => {
+            let bookingJson = booking.toJSON();
+
+            const { Spot, ...stuff } = bookingJson
+            stuff.startDate = formatDateNoTime(stuff.startDate)
+            stuff.endDate = formatDateNoTime(stuff.endDate)
+            stuff.createdAt = formatDate(stuff.startDate)
+            stuff.updatedAt = formatDate(stuff.endDate)
+
+            const foundPreviewImage = await SpotImage.findOne({
+                where: {
+                    preview: true,
+                    spotId: Spot.id
+                }
+            })
+
+            if (foundPreviewImage) {
+                Spot.previewImage = foundPreviewImage.url
+            }
+
+            return {
+                ...stuff,
+                Spot: {
+                    ...Spot,
+                    lat: Number(Spot.lat.toFixed(7)),
+                    lng: Number(Spot.lng.toFixed(7))
+                }
+            }
+        }))
+        res.status(200).json({ "Bookings": bookingsMap });
     } catch (e) {
         next(e)
     }
@@ -114,10 +150,10 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
         const bookingId = parseInt(req.params.bookingId);
         const { startDate, endDate } = req.body;
         const userId = parseInt(req.user.id); // Assuming you have user ID from the authenticated user
-        
+
         const start = new Date(startDate);
         const end = new Date(endDate);
-        
+
         let currentBooking = await Booking.findByPk(bookingId)
         const spotId = parseInt(currentBooking.spotId)
 
@@ -175,7 +211,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
         await currentBooking.update({
             bookingId,
             userId,
-            startDate:start,
+            startDate: start,
             endDate: end
         });
 

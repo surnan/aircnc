@@ -34,7 +34,7 @@ module.exports = {
         preview: false
       },
       {
-        spotId: 5,
+        spotId: 4,
         url: 'www.googleE.com',
         preview: false
       },
@@ -62,10 +62,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    // const Op = Sequelize.Op;
-    // return queryInterface.bulkDelete(options, {
-    //   spotId: { [Op.in]: [1, 2, 3] }
-    // }, {});
     return queryInterface.bulkDelete(options, {}, {});
   }
 };
