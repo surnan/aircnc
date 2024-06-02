@@ -52,7 +52,6 @@ function formatDateNoTime(dateString) {
     return `${year}-${month}-${day}`;
 }
 
-//!!!NEEDS PREVIEW IMAGE !!!!
 //Get current user reviews
 router.get('/current', requireAuth, async (req, res, next) => {
     try {
@@ -82,14 +81,50 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         )
 
-        for (let review of reviews) {
-            let spot = await Spot.findByPk(review.spotId);
-            if (!spot) continue
-            let previewImage = spot.SpotImages.find(image => image.preview);
-            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
-            review.Spot = { ...review.Spot, "hello": "world" }
-        }
-        res.json({ Review: reviews })
+        // for (let review of reviews) {
+        //     let spot = await Spot.findByPk(review.spotId);
+        //     if (!spot) continue
+        //     let previewImage = spot.SpotImages.find(image => image.preview);
+        //     previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+        //     review.Spot = { ...review.Spot, "hello": "world" }
+        // }
+
+        const reviewsMap = await Promise.all(reviews.map(async review =>{
+            let reviewJson = review.toJSON();
+
+            const {Spot, ReviewImages, ...stuff} = reviewJson;
+            stuff.createdAt = formatDate(stuff.createdAt)
+            stuff.updatedAt = formatDate(stuff.updatedAt)
+
+            const foundPreviewImage = await SpotImage.findOne({
+                where: {
+                    preview: true,
+                    spotId: Spot.id
+                }
+            })
+
+            if (foundPreviewImage) {
+                Spot.previewImage = foundPreviewImage.url
+            }
+
+            return {
+                ...stuff,
+                Spot: {
+                    ...Spot,
+                    lat: Number(Spot.lat.toFixed(7)),
+                    lng: Number(Spot.lng.toFixed(7))
+                },
+                ReviewImages
+            }
+
+
+
+        }))
+
+
+
+
+        res.json({ Review: reviewsMap })
     } catch (e) {
         next(e)
     }
