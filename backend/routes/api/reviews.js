@@ -23,20 +23,38 @@ const validateSpot = [
     check('country').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Country is required.'),
     check('lat').exists({ checkFalsy: true }).isFloat({ min: -90, max: 90 }).withMessage('Latitude is not valid'),
     check('lng').exists({ checkFalsy: true }).isFloat({ min: -180, max: 180 }).withMessage('Longitude is not valid'),
+    check('name').exists({ checkFalsy: true }).isString().isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
     check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day is required'),
-    check('name')
-        .exists({ checkFalsy: true }).withMessage('Name must be less than 50 characters')
-        .bail() // stop running validations if the previous one fails
-        .isString().withMessage('Name must be a string') //Can't handle empty/null strings
-        .isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     handleValidationErrors
 ];
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    const seconds = ('0' + date.getSeconds()).slice(-2);
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+function formatDateNoTime(dateString) {
+    const date = new Date(dateString);
+
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
+    const day = ('0' + date.getDate()).slice(-2);
+
+    return `${year}-${month}-${day}`;
+}
 
 //!!!NEEDS PREVIEW IMAGE !!!!
 //Get current user reviews
-router.get('/current', requireAuth, async (req, response, next) => {
+router.get('/current', requireAuth, async (req, res, next) => {
     try {
         const { user } = req
         const userId = user.id;
@@ -64,34 +82,14 @@ router.get('/current', requireAuth, async (req, response, next) => {
             }
         )
 
-        const reviewsMap = await Promise.all(reviews.map(async review => {
-            const reviewJson = review.toJSON();
-            let { Spot, ReviewImages, ...stuff } = reviewJson;
-
-            const spotId = Spot.ownerId
-
-            let newImage = await SpotImage.findOne({
-                where: {
-                    preview: true,
-                    spotId
-                }
-            })
-
-            if (newImage?.url){
-                Spot.previewImage = newImage.url
-            }
-
-            if (ReviewImages.length === 0){
-                ReviewImages = "NEW"
-            }
-
-            return {
-                ...stuff,
-                Spot,
-                ReviewImages
-            };
-        }));
-        response.status(200).json({Reviews: reviewsMap})
+        for (let review of reviews) {
+            let spot = await Spot.findByPk(review.spotId);
+            if (!spot) continue
+            let previewImage = spot.SpotImages.find(image => image.preview);
+            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
+            review.Spot = { ...review.Spot, "hello": "world" }
+        }
+        res.json({ Review: reviews })
     } catch (e) {
         next(e)
     }
@@ -122,15 +120,17 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 //Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     try {
-        const reviewId = parseInt(req.params.reviewId);
-        const review = await Review.findByPk(reviewId);
-        const { user } = req.user;
-
-        if (!review) {
-            return res.status(404).json({ message: "Review couldn't be found" })
-        }
+        const { user } = req;
 
         if (user) {
+
+            const reviewId = parseInt(req.params.reviewId);
+            const review = await Review.findByPk(reviewId);
+
+            if (!review) {
+                return res.status(404).json({ message: "Review couldn't be found" })
+            }
+
             const userId = parseInt(user.id)
 
             if (userId !== review.userId) { //verify review belongs to user
@@ -139,7 +139,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
             const images = await review.getReviewImages();
 
-            if (images.length > 10) {
+            if (images.length >= 10) {
                 return res.status(403).json({ message: "Maximum number of images for this resource was reached" });
             }
 
@@ -193,7 +193,19 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
                 stars
             }
         );
-        res.json(currentReview);
+        
+
+        const {id, spotId, createdAt, updatedAt} = currentReview;
+
+        res.status(200).json({
+            id,
+            userId,
+            spotId,
+            review,
+            stars,
+            createdAt: formatDate(createdAt),
+            updatedAt: formatDate(updatedAt)
+        });
     } catch (e) {
         next(e)
     }
