@@ -594,6 +594,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, response, next) => {
 //Create a Booking from a Spot based on the Spot's id
 router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, next) => {
     try {
+
         const spotId = parseInt(req.params.spotId);
         const { startDate, endDate } = req.body;
         const userId = parseInt(req.user.id); // Assuming you have user ID from the authenticated user
@@ -608,6 +609,13 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
             err.status = 404;
             return next(err)
         }
+
+
+        if (verifySpot.ownerId === userId) {
+            return res.status(403).json({
+                message: "Forbidden"
+            })
+        };
 
         // Check if end date is before or on the start date
         if (end <= start) {
