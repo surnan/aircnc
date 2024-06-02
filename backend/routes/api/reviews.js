@@ -67,7 +67,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     {
                         model: Spot,
                         attributes: {
-                            exclude: ['createdAt', 'updatedAt']
+                            exclude: ['createdAt', 'updatedAt', 'description']
                         }
                     },
                     {
@@ -80,14 +80,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 }
             }
         )
-
-        // for (let review of reviews) {
-        //     let spot = await Spot.findByPk(review.spotId);
-        //     if (!spot) continue
-        //     let previewImage = spot.SpotImages.find(image => image.preview);
-        //     previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
-        //     review.Spot = { ...review.Spot, "hello": "world" }
-        // }
 
         const reviewsMap = await Promise.all(reviews.map(async review =>{
             let reviewJson = review.toJSON();
@@ -116,15 +108,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 },
                 ReviewImages
             }
-
-
-
         }))
-
-
-
-
-        res.json({ Review: reviewsMap })
+        res.json({ Reviews: reviewsMap })
     } catch (e) {
         next(e)
     }
@@ -156,9 +141,7 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
-
         if (user) {
-
             const reviewId = parseInt(req.params.reviewId);
             const review = await Review.findByPk(reviewId);
 
@@ -177,7 +160,6 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
             if (images.length >= 10) {
                 return res.status(403).json({ message: "Maximum number of images for this resource was reached" });
             }
-
 
             const reviewImage = await ReviewImage.create(
                 {
