@@ -23,16 +23,20 @@ const validateSpot = [
     check('country').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Country is required.'),
     check('lat').exists({ checkFalsy: true }).isFloat({ min: -90, max: 90 }).withMessage('Latitude is not valid'),
     check('lng').exists({ checkFalsy: true }).isFloat({ min: -180, max: 180 }).withMessage('Longitude is not valid'),
-    check('name').exists({ checkFalsy: true }).isString().isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
     check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day is required'),
+    check('name')
+        .exists({ checkFalsy: true }).withMessage('Name must be less than 50 characters')
+        .bail() // stop running validations if the previous one fails
+        .isString().withMessage('Name must be a string') //Can't handle empty/null strings
+        .isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     handleValidationErrors
 ];
 
 
 //!!!NEEDS PREVIEW IMAGE !!!!
 //Get current user reviews
-router.get('/current', requireAuth, async (req, res, next) => {
+router.get('/current', requireAuth, async (req, response, next) => {
     try {
         const { user } = req
         const userId = user.id;
@@ -60,14 +64,34 @@ router.get('/current', requireAuth, async (req, res, next) => {
             }
         )
 
-        for (let review of reviews) {
-            let spot = await Spot.findByPk(review.spotId);
-            if (!spot) continue
-            let previewImage = spot.SpotImages.find(image => image.preview);
-            previewImage = previewImage ? previewImage : { url: "No Preview Image Available" }
-            review.Spot = { ...review.Spot, "hello": "world" }
-        }
-        res.json({ Review: reviews })
+        const reviewsMap = await Promise.all(reviews.map(async review => {
+            const reviewJson = review.toJSON();
+            let { Spot, ReviewImages, ...stuff } = reviewJson;
+
+            const spotId = Spot.ownerId
+
+            let newImage = await SpotImage.findOne({
+                where: {
+                    preview: true,
+                    spotId
+                }
+            })
+
+            if (newImage?.url){
+                Spot.previewImage = newImage.url
+            }
+
+            if (ReviewImages.length === 0){
+                ReviewImages = "NEW"
+            }
+
+            return {
+                ...stuff,
+                Spot,
+                ReviewImages
+            };
+        }));
+        response.status(200).json({Reviews: reviewsMap})
     } catch (e) {
         next(e)
     }
