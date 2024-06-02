@@ -21,11 +21,11 @@ const validateSpot = [
     check('city').exists({ checkFalsy: true }).isString().notEmpty().withMessage('City is required'),
     check('state').exists({ checkFalsy: true }).isString().notEmpty().withMessage('State is required'),
     check('country').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Country is required.'),
-    check('lat').exists({ checkFalsy: true }).isFloat({ min: -90, max: 90 }).withMessage('Latitude must be within -90 and 90'),
-    check('lng').exists({ checkFalsy: true }).isFloat({ min: -180, max: 180 }).withMessage('Longitude must be within -180 and 180'),
+    check('lat').exists({ checkFalsy: true }).isFloat({ min: -90, max: 90 }).withMessage('Latitude is not valid'),
+    check('lng').exists({ checkFalsy: true }).isFloat({ min: -180, max: 180 }).withMessage('Longitude is not valid'),
     check('name').exists({ checkFalsy: true }).isString().isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
-    check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day must be a positive number'),
+    check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day is required'),
     handleValidationErrors
 ];
 
