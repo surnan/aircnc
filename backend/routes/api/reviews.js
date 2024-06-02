@@ -29,6 +29,19 @@ const validateSpot = [
     handleValidationErrors
 ];
 
+function convertNumber(strNum, precision= 7) {
+    if (typeof(strNum) === 'number') {
+        let temp = strNum.toFixed(precision);
+        return parseFloat(temp);
+    } 
+
+    if (typeof(strNum) === 'string') {
+        let tempStuff = parseFloat(strNum);
+        let temp = tempStuff.toFixed(precision);
+        return parseFloat(temp);
+    }
+}
+
 function formatDate(dateString) {
     const date = new Date(dateString);
 
@@ -103,8 +116,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 ...stuff,
                 Spot: {
                     ...Spot,
-                    lat: Number(Spot.lat.toFixed(7)),
-                    lng: Number(Spot.lng.toFixed(7))
+                    lat: convertNumber(Spot.lat),
+                    lng: convertNumber(Spot.lng),
                 },
                 ReviewImages
             }

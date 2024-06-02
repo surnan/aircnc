@@ -95,20 +95,16 @@ const validateQueryParameters = [
     handleValidationErrors
 ];
 
-function convertNumber(stuff, precision) {
-    if (typeof(stuff) === 'number') {
-        console.log("A");
-        let temp = Number(stuff).toFixed(precision);
-        let ftemp = parseFloat(temp);
-        return ftemp;
+function convertNumber(strNum, precision= 7) {
+    if (typeof(strNum) === 'number') {
+        let temp = strNum.toFixed(precision);
+        return parseFloat(temp);
     } 
 
-    if (typeof(stuff) === 'string') {
-        console.log("B");
-        let tempStuff = parseFloat(stuff);
+    if (typeof(strNum) === 'string') {
+        let tempStuff = parseFloat(strNum);
         let temp = tempStuff.toFixed(precision);
-        let ftemp = parseFloat(temp);
-        return ftemp;
+        return parseFloat(temp);
     }
 }
 
@@ -160,27 +156,18 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
             const { SpotImages, Reviews, ...res } = spotJson;
             const foundPreviewImage = SpotImages.find(e => e.preview)
 
-            ////////////////
-            ////////////////
             if (Reviews.length > 0) {
                 const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
-                res.avgRating = Number(avgRating.toFixed(1));
+                res.avgRating = convertNumber(avgRating, 1)
             } else {
                 res.avgRating = "NEW"
             }
 
-            // res.lat = Number(res.lat.toFixed(7))
-            // res.lng = Number(res.lng.toFixed(7))
-
             // convertNumber
-            res.lat = convertNumber(res.lat, 7)
-            res.lng = convertNumber(res.lng, 7)
-            res.price = convertNumber(res.price, 1)
+            res.lat = convertNumber(res.lat)
+            res.lng = convertNumber(res.lng)
+            res.price = convertNumber(res.price)
             
-
-
-
-
             res.createdAt = formatDate(res.createdAt)
             res.updatedAt = formatDate(res.updatedAt)
 
@@ -238,13 +225,14 @@ router.get('/current', requireAuth, async (req, res, next) => {
                 ///////
                 if (Reviews.length > 0) {
                     const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
-                    res.avgRating = Number(avgRating.toFixed(1));
+                    res.avgRating = convertNumber(avgRating, 1);
                 } else {
                     res.avgRating = "NEW"
                 }
 
-                res.lat = Number(   Float(res.lat).toFixed(7)   )
-                res.lng = Number(res.lng.toFixed(7))
+                res.lat = convertNumber(res.lat)
+                res.lng = convertNumber(res.lng)
+                res.price = convertNumber(res.price)
 
                 res.createdAt = formatDate(res.createdAt)
                 res.updatedAt = formatDate(res.updatedAt)
@@ -303,10 +291,14 @@ router.get('/:spotId', async (req, response, next) => {
         const length = Reviews.length;
 
         res.numReviews = length
-        res.avgStarRating = length ? (sum / length).toFixed(1) : 0;
+        
+        // res.avgStarRating = length ? (sum / length).toFixed(1) : 0;
+        res.avgStarRating = length ? convertNumber(sum / length, 1) : 0;
+
         res.avgStarRating = Number(res.avgStarRating)
-        res.lat = Number(res.lat.toFixed(7))
-        res.lng = Number(res.lng.toFixed(7))
+        res.lat = convertNumber(res.lat)
+        res.lng = convertNumber(res.lng)
+        res.price = convertNumber(res.price)
         res.createdAt = formatDate(res.createdAt)
         res.updatedAt = formatDate(res.updatedAt)
         response.status(200).json({ ...res, SpotImages, Owner })
@@ -325,9 +317,9 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
         let { lat, lng, price } = req.body;
         const { city, state, description, address, name, country } = req.body;
 
-        lat = parseFloat(lat.toFixed(7))
-        lng = parseFloat(lng.toFixed(7))
-        price = parseFloat(price)
+        lat = convertNumber(lat)
+        lng = convertNumber(lng)
+        price = convertNumber(price)
 
         if (user) {
             const newSpot = await Spot.create(
@@ -345,13 +337,16 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
                 }
             )
 
-            // function formatDate(dateString) {
-            // function formatDateNoTime(dateString) {
-
             let newSpotJson = newSpot.toJSON();
             let responseBody = { ...newSpotJson };
+
+            lat = convertNumber(res.lat)
+            lng = convertNumber(res.lng)
+            price = convertNumber(res.price)
+
             responseBody.lat = lat
             responseBody.lng = lng
+            responseBody.price = price
 
             responseBody.createdAt = formatDate(newSpotJson.createdAt)
             responseBody.updatedAt = formatDate(newSpotJson.updatedAt)
@@ -437,9 +432,9 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
         let { lat, lng, price } = req.body;
         const { city, state, description, address, name, country } = req.body;
 
-        lat = parseFloat(lat.toFixed(7))
-        lng = parseFloat(lng.toFixed(7))
-        price = parseFloat(price.toFixed(2))
+        lat = convertNumber(res.lat)
+        lng = convertNumber(res.lng)
+        price = convertNumber(res.price)
 
 
 
@@ -703,14 +698,3 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
 
 
 module.exports = router;
-
-/*
-// const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
-// const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(
-// res.lat = Number(res.lat.toFixed(7))
-// res.lng = Number(res.lng.toFixed(7))
-// res.avgRating = Number(fixedRating);
-// res.createdAt = formatDate(res.createdAt)
-// res.updatedAt = formatDate(res.updatedAt)
-// res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
-*/
