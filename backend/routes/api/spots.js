@@ -95,6 +95,22 @@ const validateQueryParameters = [
     handleValidationErrors
 ];
 
+function convertNumber(stuff, precision) {
+    if (typeof(stuff) === 'number') {
+        console.log("A");
+        let temp = Number(stuff).toFixed(precision);
+        let ftemp = parseFloat(temp);
+        return ftemp;
+    } 
+
+    if (typeof(stuff) === 'string') {
+        console.log("B");
+        let tempStuff = parseFloat(stuff);
+        let temp = tempStuff.toFixed(precision);
+        let ftemp = parseFloat(temp);
+        return ftemp;
+    }
+}
 
 router.get('/', validateQueryParameters, async (req, res, next) => {
     try {
@@ -153,8 +169,17 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
                 res.avgRating = "NEW"
             }
 
-            res.lat = Number(res.lat.toFixed(7))
-            res.lng = Number(res.lng.toFixed(7))
+            // res.lat = Number(res.lat.toFixed(7))
+            // res.lng = Number(res.lng.toFixed(7))
+
+            // convertNumber
+            res.lat = convertNumber(res.lat, 7)
+            res.lng = convertNumber(res.lng, 7)
+            res.price = convertNumber(res.price, 1)
+            
+
+
+
 
             res.createdAt = formatDate(res.createdAt)
             res.updatedAt = formatDate(res.updatedAt)
