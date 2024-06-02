@@ -12,19 +12,7 @@ const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../d
 
 // const avgStarPrecision = 1;
 
-//Get all Spots
-const validateSpot = [
-    check('address').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Street address is required'),
-    check('city').exists({ checkFalsy: true }).isString().notEmpty().withMessage('City is required'),
-    check('state').exists({ checkFalsy: true }).isString().notEmpty().withMessage('State is required'),
-    check('country').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Country is required.'),
-    check('lat').exists({ checkFalsy: true }).isFloat({ min: -90, max: 90 }).withMessage('Latitude must be within -90 and 90'),
-    check('lng').exists({ checkFalsy: true }).isFloat({ min: -180, max: 180 }).withMessage('Longitude must be within -180 and 180'),
-    check('name').exists({ checkFalsy: true }).isString().isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
-    check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
-    check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day must be a positive number'),
-    handleValidationErrors
-];
+
 
 const validateBooking = [
     check('startDate').exists({ checkFalsy: true }).withMessage('Start date is required'),
@@ -75,6 +63,24 @@ function formatDateNoTime(dateString) {
 
     return `${year}-${month}-${day}`;
 }
+
+//Get all Spots
+const validateSpot = [
+    check('address').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Street address is required'),
+    check('city').exists({ checkFalsy: true }).isString().notEmpty().withMessage('City is required'),
+    check('state').exists({ checkFalsy: true }).isString().notEmpty().withMessage('State is required'),
+    check('country').exists({ checkFalsy: true }).isString().notEmpty().withMessage('Country is required.'),
+    check('lat').exists({ checkFalsy: true }).isFloat({ min: -90, max: 90 }).withMessage('Latitude is not valid'),
+    check('lng').exists({ checkFalsy: true }).isFloat({ min: -180, max: 180 }).withMessage('Longitude is not valid'),
+    check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
+    check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day is required'),
+    check('name')
+    .exists({ checkFalsy: true }).withMessage('Name must be less than 50 characters')
+    .bail() // stop running validations if the previous one fails
+    .isString().withMessage('Name must be a string') //Can't handle empty/null strings
+    .isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
+    handleValidationErrors
+];
 
 //validator for the spots search query.
 const validateQueryParameters = [
@@ -132,40 +138,19 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
             offset: parseInt((page - 1)) * size
         });
 
-
-
-        // const spotsMap = spots.map(spot => {
-        //     const spotJson = spot.toJSON();
-
-        //     const { SpotImages, Reviews, ...res } = spotJson;
-        //     const foundPreviewImage = SpotImages.find(e => e.preview)
-        //     const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
-        //     const fixedRating = isNaN(avgRating) ? "n/a" : Number(avgRating.toFixed(1));
-
-        //     res.lat = Number(res.lat.toFixed(7))
-        //     res.lng = Number(res.lng.toFixed(7))
-
-        //     res.avgRating = fixedRating
-
-        //     res.createdAt = formatDate(res.createdAt)
-        //     res.updatedAt = formatDate(res.updatedAt)
-
-        //     if (foundPreviewImage) {
-        //         res.previewImage = foundPreviewImage.url
-        //     }
-
-        //     return res;
-        // });
-
         const spotsMap = spots.map(spot => {
             const spotJson = spot.toJSON();
 
             const { SpotImages, Reviews, ...res } = spotJson;
             const foundPreviewImage = SpotImages.find(e => e.preview)
 
+            ////////////////
+            ////////////////
             if (Reviews.length > 0) {
                 const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
                 res.avgRating = Number(avgRating.toFixed(1));
+            } else {
+                res.avgRating = "NEW"
             }
 
             res.lat = Number(res.lat.toFixed(7))
@@ -177,6 +162,8 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
             if (foundPreviewImage) {
                 res.previewImage = foundPreviewImage.url
             }
+            ////////////////
+            ////////////////
 
             return res;
         });
@@ -221,15 +208,30 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
                 const { SpotImages, Reviews, ...res } = spotJson;
                 const foundPreviewImage = SpotImages.find(e => e.preview)
-                const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
-                const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(1);
+
+
+                ///////
+                if (Reviews.length > 0) {
+                    const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
+                    res.avgRating = Number(avgRating.toFixed(1));
+                } else {
+                    res.avgRating = "NEW"
+                }
 
                 res.lat = Number(res.lat.toFixed(7))
                 res.lng = Number(res.lng.toFixed(7))
-                res.avgRating = Number(fixedRating);
+
                 res.createdAt = formatDate(res.createdAt)
                 res.updatedAt = formatDate(res.updatedAt)
-                res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
+
+                if (foundPreviewImage) {
+                    res.previewImage = foundPreviewImage.url
+                }
+                /////
+
+
+
+
                 return res;
             });
             res.json({ Spots: spotsMap })
@@ -662,3 +664,14 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
 
 
 module.exports = router;
+
+/*
+// const avgRating = Reviews.reduce((sum, review) => sum += review.stars, 0) / Reviews.length;
+// const fixedRating = isNaN(avgRating) ? "n/a" : avgRating.toFixed(
+// res.lat = Number(res.lat.toFixed(7))
+// res.lng = Number(res.lng.toFixed(7))
+// res.avgRating = Number(fixedRating);
+// res.createdAt = formatDate(res.createdAt)
+// res.updatedAt = formatDate(res.updatedAt)
+// res.previewImage = foundPreviewImage ? foundPreviewImage.url : null
+*/
