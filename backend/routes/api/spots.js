@@ -218,7 +218,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
                     res.avgRating = "NEW"
                 }
 
-                res.lat = Number(res.lat.toFixed(7))
+                res.lat = Number(   Float(res.lat).toFixed(7)   )
                 res.lng = Number(res.lng.toFixed(7))
 
                 res.createdAt = formatDate(res.createdAt)
