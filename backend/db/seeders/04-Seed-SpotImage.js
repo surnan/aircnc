@@ -60,7 +60,7 @@ module.exports = {
       },
       {
         spotId: 5,
-        url: 'www.googleI.com',
+        url: 'www.googleJ.com',
         preview: true
       }
     ], { validate: true });
