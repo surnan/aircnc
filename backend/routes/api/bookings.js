@@ -155,31 +155,35 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
         const end = new Date(endDate);
 
         let currentBooking = await Booking.findByPk(bookingId)
-        const spotId = parseInt(currentBooking.spotId)
-
+        console.log('a')
         if (!currentBooking) {
+            console.log('b')
             return res.status(404).json({ "message": "Booking couldn't be found" })
         }
-
+        
         if (userId !== currentBooking.userId) {
+            console.log('ccc')
             return res.status(403).json({ message: "Forbidden" })
         }
-
+        const spotId = parseInt(currentBooking.spotId)
+        
         // Check if end date is before or on the start date
         if (end <= start) {
+            console.log('c')
             const err = new Error;
             err.status = 400
             err.message = "Bad Request"
             err.errors = { endDate: "endDate cannot come before startDate" }
             return next(err)
         };
-
+        
         // Check if end date is before or on the start date
         let today = new Date();
+        console.log('d')
         if (start <= today) {
             return res.status(403).json({ "message": "Past bookings can't be modified" })
         }
-
+        
         // Check if the start and end dates don't clash with existing bookings
         const conflictingBooking = await Booking.findOne({
             where: {
@@ -196,7 +200,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
                 ]
             }
         });
-
+        
         if (conflictingBooking) {
             return res.status(403).json({
                 "message": "Sorry, this spot is already booked for the specified dates",
@@ -206,7 +210,7 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
                 }
             });
         }
-
+        
         // Create new booking
         await currentBooking.update({
             bookingId,
@@ -214,9 +218,10 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
             startDate: start,
             endDate: end
         });
-
+        
         res.status(201).json(currentBooking);
     } catch (e) {
+        console.log("CATCH ME IF YOU CAN!!")
         next(e);
     }
 });
