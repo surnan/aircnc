@@ -57,6 +57,11 @@ module.exports = {
         spotId: 4,
         url: 'www.googleI.com',
         preview: true
+      },
+      {
+        spotId: 5,
+        url: 'www.googleI.com',
+        preview: true
       }
     ], { validate: true });
   },
