@@ -75,10 +75,10 @@ const validateSpot = [
     check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
     check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day is required'),
     check('name')
-    .exists({ checkFalsy: true }).withMessage('Name must be less than 50 characters')
-    .bail() // stop running validations if the previous one fails
-    .isString().withMessage('Name must be a string') //Can't handle empty/null strings
-    .isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
+        .exists({ checkFalsy: true }).withMessage('Name must be less than 50 characters')
+        .bail() // stop running validations if the previous one fails
+        .isString().withMessage('Name must be a string') //Can't handle empty/null strings
+        .isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     handleValidationErrors
 ];
 
@@ -659,10 +659,16 @@ router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res, 
             spotId,
             userId,
             startDate: start,
-            endDate: end
+            endDate: end,
         });
 
-        res.status(201).json(newBooking);
+        const newBookingJson = newBooking.toJSON();
+        newBookingJson.startDate = formatDateNoTime(newBookingJson.startDate)
+        newBookingJson.endDate = formatDateNoTime(newBookingJson.endDate)
+        newBookingJson.createdAt = formatDate(newBookingJson.createdAt)
+        newBookingJson.updatedAt = formatDate(newBookingJson.updatedAt)
+
+        res.status(201).json(newBookingJson);
     } catch (e) {
         next(e);
     }
