@@ -114,8 +114,8 @@ router.get('/current', requireAuth, async (req, res, next) => {
             const { Spot, ...stuff } = bookingJson
             stuff.startDate = formatDateNoTime(stuff.startDate)
             stuff.endDate = formatDateNoTime(stuff.endDate)
-            stuff.createdAt = formatDate(stuff.startDate)
-            stuff.updatedAt = formatDate(stuff.endDate)
+            stuff.createdAt = formatDate(stuff.createdAt)
+            stuff.updatedAt = formatDate(stuff.updatedAt)
 
             const foundPreviewImage = await SpotImage.findOne({
                 where: {
