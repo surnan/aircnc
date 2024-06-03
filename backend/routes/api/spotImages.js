@@ -1,6 +1,6 @@
 // backend/routes/api/spot-images.js
 const express = require('express');
-const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../db/models');
+const { Spot, SpotImage} = require('../../db/models');
 const { Model } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 
