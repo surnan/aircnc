@@ -208,8 +208,17 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
             startDate: start,
             endDate: end
         });
+
+
+        const currentBookingJson = currentBooking.toJSON();
+        currentBookingJson.startDate = formatDateNoTime(start);
+        currentBookingJson.endDate = formatDateNoTime(end);
+        currentBookingJson.createdAt = formatDate(currentBooking.createdAt);
+        currentBookingJson.updatedAt = formatDate(currentBooking.updatedAt);
+
         
-        res.status(201).json(currentBooking);
+        // res.status(201).json(currentBooking);
+        res.status(201).json(currentBookingJson);
     } catch (e) {
         next(e);
     }
