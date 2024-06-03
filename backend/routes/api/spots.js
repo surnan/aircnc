@@ -415,9 +415,9 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
         )
 
         let res = currentSpot.toJSON();
-        lat = convertNumber(res.lat)
-        lng = convertNumber(res.lng)
-        price = convertNumber(res.price)
+        res.lat = convertNumber(res.lat)
+        res.lng = convertNumber(res.lng)
+        res.price = convertNumber(res.price)
         res.createdAt = formatDate(res.createdAt)
         res.updatedAt = formatDate(res.updatedAt)
         response.json(res)
