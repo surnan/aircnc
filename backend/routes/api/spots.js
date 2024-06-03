@@ -387,9 +387,6 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
         let { lat, lng, price } = req.body;
         const { city, state, description, address, name, country } = req.body;
 
-        lat = convertNumber(res.lat)
-        lng = convertNumber(res.lng)
-        price = convertNumber(res.price)
 
         const currentSpot = await Spot.findByPk(spotId);
         if (!currentSpot) {
@@ -418,6 +415,9 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
         )
 
         let res = currentSpot.toJSON();
+        lat = convertNumber(res.lat)
+        lng = convertNumber(res.lng)
+        price = convertNumber(res.price)
         res.createdAt = formatDate(res.createdAt)
         res.updatedAt = formatDate(res.updatedAt)
         response.json(res)
