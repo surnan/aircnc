@@ -6,7 +6,7 @@ const router = express.Router();
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { requireAuth} = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { Op } = require('sequelize')
 const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../db/models');
 
@@ -51,10 +51,10 @@ const validateSpot = [
     check('lat').exists({ checkFalsy: true }).isFloat({ min: -90, max: 90 }).withMessage('Latitude is not valid'),
     check('lng').exists({ checkFalsy: true }).isFloat({ min: -180, max: 180 }).withMessage('Longitude is not valid'),
     check('name')
-    .exists({ checkFalsy: true }).withMessage('Name must be less than 50 characters')
-    .bail() // stop running validations if the previous one fails
-    .isString().withMessage('Name must be a string') //Can't handle empty/null strings
-    .isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
+        .exists({ checkFalsy: true }).withMessage('Name must be less than 50 characters')
+        .bail() // stop running validations if the previous one fails
+        .isString().withMessage('Name must be a string') //Can't handle empty/null strings
+        .isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
     check('description').exists({ checkFalsy: true }).notEmpty().withMessage('Description is required'),
     check('price').exists({ checkFalsy: true }).isFloat({ min: 0, max: 2000 }).withMessage('Price per day is required'),
     handleValidationErrors
@@ -73,13 +73,13 @@ const validateQueryParameters = [
     handleValidationErrors
 ];
 
-function convertNumber(strNum, precision= 7) {
-    if (typeof(strNum) === 'number') {
+function convertNumber(strNum, precision = 7) {
+    if (typeof (strNum) === 'number') {
         let temp = strNum.toFixed(precision);
         return parseFloat(temp);
-    } 
+    }
 
-    if (typeof(strNum) === 'string') {
+    if (typeof (strNum) === 'string') {
         let tempStuff = parseFloat(strNum);
         let temp = tempStuff.toFixed(precision);
         return parseFloat(temp);
@@ -145,7 +145,7 @@ router.get('/', validateQueryParameters, async (req, res, next) => {
             res.lat = convertNumber(res.lat)
             res.lng = convertNumber(res.lng)
             res.price = convertNumber(res.price)
-            
+
             res.createdAt = formatDate(res.createdAt)
             res.updatedAt = formatDate(res.updatedAt)
 
@@ -251,7 +251,7 @@ router.get('/:spotId', async (req, response, next) => {
         const length = Reviews.length;
 
         res.numReviews = length
-        
+
         res.avgStarRating = length ? (sum / length).toFixed(1) : 0;
         res.avgStarRating = length ? convertNumber(sum / length, 1) : 0;
 
@@ -304,7 +304,7 @@ router.post('/', requireAuth, validateSpot, async (req, res, next) => {
             responseBody.lat = convertNumber(responseBody.lat)
             responseBody.lng = convertNumber(responseBody.lng)
             responseBody.price = convertNumber(responseBody.price)
-            
+
             responseBody.createdAt = formatDate(newSpotJson.createdAt)
             responseBody.updatedAt = formatDate(newSpotJson.updatedAt)
             return res.status(201).json(responseBody)
@@ -425,13 +425,13 @@ router.put('/:spotId', requireAuth, validateSpot, async (req, response, next) =>
     }
 })
 
-//Create a Review for a Spot based on the Spot's id
-router.get('/:spotId/reviews', async (req, res, next) => {
+//Get a Review for a Spot based on the Spot's id
+router.get('/:spotId/reviews', async (req, response, next) => {
     try {
-        const { spotId } = req.params;
+        const spotId = parseInt(req.params.spotId);
         const spot = await Spot.findByPk(spotId);
         if (!spot) {
-            res.status(404).json({ message: "Spot couldn't be found" })
+            response.status(404).json({ message: "Spot couldn't be found" })
         }
         const reviews = await Review.findAll(
             {
@@ -448,8 +448,22 @@ router.get('/:spotId/reviews', async (req, res, next) => {
                         }
                     ],
             });
-    
-        res.json({ Reviews: reviews });
+
+        const reviewsMap = reviews.map(review => {
+            const reviewJson = review.toJSON();
+            const { User, ReviewImages, ...res } = reviewJson;
+
+
+            res.createdAt = formatDate(res.createdAt)
+            res.updatedAt = formatDate(res.updatedAt)
+
+
+            return { ...res, User, ReviewImages }
+        })
+
+
+
+        response.json({ Reviews: reviewsMap });
     } catch (e) {
         return next(e)
     }
