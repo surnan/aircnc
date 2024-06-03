@@ -10,13 +10,6 @@ const { User } = require('../../db/models');
 
 const router = express.Router();
 
-
-// email field is an empty string
-// email field is not an email
-// username field is an empty string
-// username field is only 3 characters long
-// username field is an email
-// password field is only 5 characters long
 const validateLogin = [
   check('credential').exists({ checkFalsy: true}).notEmpty().withMessage('Email or username is required'),
   check('password').exists({ checkFalsy: true }).withMessage('Password is required'),

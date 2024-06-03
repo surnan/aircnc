@@ -1,13 +1,12 @@
 // backend/routes/api/reviews.js
 
-const bcrypt = require('bcryptjs');
 const express = require('express');
 const router = express.Router();
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { requireAuth, restoreUser, setTokenCookie } = require('../../utils/auth');
-const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../db/models');
+const { requireAuth} = require('../../utils/auth');
+const { Spot, Review, SpotImage, ReviewImage, User } = require('../../db/models');
 
 
 const validateReview = [
@@ -196,7 +195,6 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     }
 });
 
-
 //Edit a Review
 router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => {
     try {
@@ -224,9 +222,7 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
             }
         );
         
-
         const {id, spotId, createdAt, updatedAt} = currentReview;
-
         res.status(200).json({
             id,
             userId,
@@ -245,7 +241,6 @@ router.put('/:reviewId', requireAuth, validateReview, async (req, res, next) => 
 router.delete('/:reviewId', requireAuth, async (req, res, next) => {
     try {
         const userId = parseInt(req.user.id);
-
         const reviewId = parseInt(req.params.reviewId);
         const currentReview = await Review.findByPk(reviewId);
 
