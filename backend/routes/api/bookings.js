@@ -29,7 +29,6 @@ function convertNumber(strNum, precision= 7) {
 
 function formatDate(dateString) {
     const date = new Date(dateString);
-
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
     const day = ('0' + date.getDate()).slice(-2);
@@ -42,7 +41,6 @@ function formatDate(dateString) {
 
 function formatDateNoTime(dateString) {
     const date = new Date(dateString);
-
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
     const day = ('0' + date.getDate()).slice(-2);
@@ -50,15 +48,12 @@ function formatDateNoTime(dateString) {
     return `${year}-${month}-${day}`;
 }
 
-
 // delete a existing booking by id
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     try {
-
         const bookingId = parseInt(req.params.bookingId);
         const userId = parseInt(req.user.id);
         const { user } = req;
-
         const currentBooking = await Booking.findByPk(bookingId);
 
         if (!currentBooking) {
@@ -73,10 +68,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             })
         };
 
-
         let today = new Date();
-
-
         if (currentBooking.startDate <= today) {
             console.log("A")
             const err = new Error
@@ -85,9 +77,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
             return next(err)
         }
 
-        console.log("B")
-
-        const deletedbooking = await currentBooking.destroy();
+        await currentBooking.destroy();
         res.json({ message: 'Successfully deleted' });
     } catch (error) {
         next(error);
@@ -149,7 +139,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
     }
 });
 
-
 //Edit a Booking
 router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) => {
     try {
@@ -161,21 +150,17 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
         const end = new Date(endDate);
 
         let currentBooking = await Booking.findByPk(bookingId)
-        console.log('a')
         if (!currentBooking) {
-            console.log('b')
             return res.status(404).json({ "message": "Booking couldn't be found" })
         }
         
         if (userId !== currentBooking.userId) {
-            console.log('ccc')
             return res.status(403).json({ message: "Forbidden" })
         }
         const spotId = parseInt(currentBooking.spotId)
         
         // Check if end date is before or on the start date
         if (end <= start) {
-            console.log('c')
             const err = new Error;
             err.status = 400
             err.message = "Bad Request"
@@ -185,7 +170,6 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
         
         // Check if end date is before or on the start date
         let today = new Date();
-        console.log('d')
         if (start <= today) {
             return res.status(403).json({ "message": "Past bookings can't be modified" })
         }

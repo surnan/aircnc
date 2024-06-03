@@ -1,12 +1,9 @@
 // backend/routes/api/review-images.js
-const bcrypt = require('bcryptjs');
 const express = require('express')
 const router = express.Router();
 
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
-const { requireAuth, setTokenCookie } = require('../../utils/auth');
-const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
+const { Review, ReviewImage} = require('../../db/models');
 
 
 
@@ -27,12 +24,6 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
             }
 
             const currentReview = await Review.findByPk(currentReviewImage.reviewId);
-
-            // return res.json({
-            //     userId,
-            //     currentReview: currentReview
-            // })
-
             if (userId !== currentReview.userId) {
                 return res.status(403).json({
                     message: "Forbidden"
@@ -44,19 +35,10 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
             return res.json({
                 "message": "Successfully deleted"
             })
-
-            // await currentReviewImage.destroy();
-
-            // return res.json({
-            //     "message": "Successfully deleted"
-            // })
         }
     } catch (e) {
         next(e)
     }
 });
-
-
-
 
 module.exports = router;
