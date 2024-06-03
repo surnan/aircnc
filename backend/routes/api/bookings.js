@@ -1,14 +1,12 @@
 // backend/routes/api/spot-images.js
 const express = require('express');
-const { Spot, Review, Booking, SpotImage, ReviewImage, User } = require('../../db/models');
+const { Spot, Booking, SpotImage} = require('../../db/models');
 const { Model } = require('sequelize');
 const router = express.Router();
 const { Op } = require('sequelize');
-const bcrypt = require('bcryptjs');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { append } = require('vary');
+const { requireAuth } = require('../../utils/auth');
 
 const validateBooking = [
     check('startDate').exists({ checkFalsy: true }).withMessage('Start date is required'),
@@ -54,7 +52,6 @@ function formatDateNoTime(dateString) {
 
 
 // delete a existing booking by id
-// delete an existing review
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     try {
 
@@ -97,8 +94,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     };
 });
 
-//NEEDS PREVIEW IMAGE ON BOOKINGS.SPOT
-// router.get('/current', requireAuth, async (req, res, next) => {
+
 router.get('/current', requireAuth, async (req, res, next) => {
     try {
         const { user } = req;
@@ -115,10 +111,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
             ],
             where: {
                 userId
-            },
-            // attributes: {
-            //     exclude: ['spotId', 'id']
-            // }
+            }
         })
 
         let bookingsMap = await Promise.all(allBookings.map(async booking => {
@@ -234,7 +227,6 @@ router.put('/:bookingId', requireAuth, validateBooking, async (req, res, next) =
         
         res.status(201).json(currentBooking);
     } catch (e) {
-        console.log("CATCH ME IF YOU CAN!!")
         next(e);
     }
 });

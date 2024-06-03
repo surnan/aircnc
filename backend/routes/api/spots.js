@@ -292,7 +292,7 @@ router.get('/:spotId', async (req, response, next) => {
 
         res.numReviews = length
         
-        // res.avgStarRating = length ? (sum / length).toFixed(1) : 0;
+        res.avgStarRating = length ? (sum / length).toFixed(1) : 0;
         res.avgStarRating = length ? convertNumber(sum / length, 1) : 0;
 
         res.avgStarRating = Number(res.avgStarRating)
@@ -302,6 +302,7 @@ router.get('/:spotId', async (req, response, next) => {
         res.createdAt = formatDate(res.createdAt)
         res.updatedAt = formatDate(res.updatedAt)
         response.status(200).json({ ...res, SpotImages, Owner })
+        response.status(200).json("hello world")
     } catch (e) {
         next(e)
     }
