@@ -3,12 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-// import Navigation from './components/Navigation/Navigation'
+import LoginFormPage from './components/LoginFormPage/LoginFormPage';
+import SignupFormPage from './components/SignupFormPage/SignupFormPage';
 import * as sessionActions from './store/session';
 
-import LoginFormPage from './components/LoginFormPage/LoginFormPage';
-
-
+// import Navigation from './components/Navigation/Navigation'
 
 function Layout() {
   const dispatch = useDispatch();
@@ -29,12 +28,21 @@ function Layout() {
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <h1>Welcome!</h1>
-  },
-  {
-    path: '/login',
-    element: <LoginFormPage />
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <h1>Welcome!</h1>
+      },
+      {
+        path: '/login',
+        element: <LoginFormPage />
+      },
+      {
+        path: "/signup",
+        element: <SignupFormPage />
+      }
+    ]
   }
 ]);
 
@@ -43,3 +51,17 @@ function App() {
 }
 
 export default App;
+
+
+
+
+// const router = createBrowserRouter([
+//   {
+//     path: '/',
+//     element: <h1>Welcome!</h1>
+//   },
+//   {
+//     path: '/login',
+//     element: <LoginFormPage />
+//   }
+// ]);
