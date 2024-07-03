@@ -9,7 +9,14 @@
     "start": "per-env",
     "start:development": "nodemon ./bin/www",
     "start:production": "node ./bin/www",
-    "build": "node psql-setup-script.js"
+    "build": "node psql-setup-script.js",
+    "migrate": "npx dotenv sequelize db:migrate",
+    "seed": "npx dotenv sequelize db:seed:all",
+    "seed-undo": "npx dotenv sequelize db:seed:undo:all",
+    "db-reset": "rm -rf db/dev.db && npm run migrate && npm run seed",
+    "_comment": "after table is dropped: run CREATE-DB/MIGRATE/SEED",
+    "drop-db": "npx dotenv sequelize db:drop",
+    "create-db": "npx dotenv sequelize db:create"
   },
   "keywords": [],
   "author": "",
