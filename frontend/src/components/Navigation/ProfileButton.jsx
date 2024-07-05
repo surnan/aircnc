@@ -1,6 +1,3 @@
-
-// frontend/src/components/Navigation/ProfileButton.jsx
-
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaUserCircle } from "react-icons/fa";
@@ -12,7 +9,7 @@ import SignupFormModal from '../SignupFormModal/SignupFormModal';
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
-  const ulRef = useRef()
+  const ulRef = useRef();
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
@@ -41,10 +38,10 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
+  const ulClassName = "profile-dropdown" + (showMenu ? " show" : " hidden");
 
   return (
-    <>
+    <nav>
       <button onClick={toggleMenu}>
         <FaUserCircle />
       </button>
@@ -73,7 +70,7 @@ function ProfileButton({ user }) {
           </>
         )}
       </ul>
-    </>
+    </nav>
   );
 }
 

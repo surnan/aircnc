@@ -7,6 +7,23 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
+    <nav>
+      <NavLink to="/">Home</NavLink>
+      {/* {isLoaded && (
+        <ProfileButton user={sessionUser} />
+      )} */}
+      
+      <ProfileButton/>
+
+
+    </nav>
+  );
+}
+
+export default Navigation;
+
+/*
+  return (
     <ul>
       <li>
         <NavLink to="/">Home</NavLink>
@@ -18,6 +35,4 @@ function Navigation({ isLoaded }) {
       )}
     </ul>
   );
-}
-
-export default Navigation;
+  */

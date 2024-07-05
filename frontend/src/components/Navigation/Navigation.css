@@ -1,0 +1,44 @@
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* Added for positioning the dropdown */
+}
+
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+
+    /* recent change to force it below nav bar */
+    top: 50px;      
+    width: 100px;
+  }
+  
+  .profile-dropdown.hidden {
+    display: none;
+  }
+  
+  .profile-dropdown.show {
+    display: block;
+  }
+  
+  .profile-dropdown li {
+    padding: 8px 12px;
+  }
+  
+  .profile-dropdown li button {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
