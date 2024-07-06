@@ -1,8 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* border: 1px red dashed; */
+}
+
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative; /* Added for positioning the dropdown */
+    padding: 10px;
+}
+
+#logo {
+  width: 100px;
+}
+
+#create-spot{
+  height: 100%;
 }
 
 .profile-dropdown {
@@ -17,7 +33,7 @@ nav {
     padding: 10px;
     margin: 0;
 
-    /* recent change to force it below nav bar */
+    /* force it below nav bar */
     top: 50px;      
     width: 100px;
   }
