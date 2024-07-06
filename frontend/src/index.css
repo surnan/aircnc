@@ -1,1 +1,29 @@
+/* frontend/src/index.css */
 /* TODO: Add sitewide styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* border: 1px red dashed; */
+    font-family: sans-serif;
+}
+
+.error {
+    margin: 0;
+    color: red;
+}
+  
+.clickable {
+    cursor: pointer;
+}
+  
+/* input,
+button,
+textarea {
+    border: 2px solid lightgrey;
+    box-shadow: 4px 4px 5px lightgrey;
+    border-radius: 5px;
+    outline: none;
+    resize: none;
+} */
