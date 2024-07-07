@@ -1,0 +1,53 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin: 10px;
+  background-color: lightpink;
+}
+
+.spotPreviewImage {
+  width: 100%;
+  height: auto;
+  padding: 2px;
+}
+
+.spotCard {
+  display: inline-block;
+  background-color: lightyellow;
+  border: 1px black solid;
+  box-shadow: 10px 5px 5px lightgray;
+  position: relative;
+}
+
+.spotCardBtm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 5px;
+}
+
+.starIcon {
+  width: 2em;
+  height: auto;
+}
+
+.tooltip {
+  position: absolute;
+  top: -5%; 
+  left: 25%; 
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1;
+}
+
+.clickable:hover + .tooltip {
+  visibility: visible;
+  opacity: 1;
+}

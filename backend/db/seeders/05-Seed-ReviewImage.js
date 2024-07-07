@@ -14,39 +14,39 @@ module.exports = {
     await ReviewImage.bulkCreate([
       {
         reviewId: 1,
-        url: 'frontend/assets/images/houseImages/11.jpg',
+        url: '/assets/images/houseImages/11.jpg',
       },
       {
         reviewId: 2,
-        url: 'frontend/assets/images/houseImages/12.jpg',
+        url: '/assets/images/houseImages/12.jpg',
       },
       {
         reviewId: 3,
-        url: 'frontend/assets/images/houseImages/13.jpeg',
+        url: '/assets/images/houseImages/13.jpeg',
       },
       {
         reviewId: 4,
-        url: 'frontend/assets/images/houseImages/14.jpeg',
+        url: '/assets/images/houseImages/14.jpeg',
       },
       {
         reviewId: 5,
-        url: 'frontend/assets/images/houseImages/15.jpeg',
+        url: '/assets/images/houseImages/15.jpeg',
       },
       {
         reviewId: 6,
-        url: 'frontend/assets/images/houseImages/16.jpeg',
+        url: '/assets/images/houseImages/16.jpeg',
       },
       {
         reviewId: 1,
-        url: 'frontend/assets/images/houseImages/17.jpeg',
+        url: '/assets/images/houseImages/17.jpeg',
       },
       {
         reviewId: 2,
-        url: 'frontend/assets/images/houseImages/18.jpeg',
+        url: '/assets/images/houseImages/18.jpeg',
       },
       {
         reviewId: 3,
-        url: 'frontend/assets/images/houseImages/19.jpeg',
+        url: '/assets/images/houseImages/19.jpeg',
       }
 
     ],{ validate: true });

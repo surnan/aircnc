@@ -9,14 +9,15 @@
     font-family: sans-serif;
 }
 
+body {
+    padding: 15px
+}
 .error {
     margin: 0;
     color: red;
 }
   
-.clickable {
-    cursor: pointer;
-}
+
   
 /* input,
 button,
