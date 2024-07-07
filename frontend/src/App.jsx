@@ -33,7 +33,6 @@ const router = createBrowserRouter([
         path: "/",
         element:
           <>
-            <h2>HERE I AM</h2>
             <ViewAllSpots />,
           </>
       },

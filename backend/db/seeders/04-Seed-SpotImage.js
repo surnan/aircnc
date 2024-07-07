@@ -40,27 +40,27 @@ module.exports = {
       },
       {
         spotId: 1,
-        url: 'frontend/assets/images/houseImages/6.jpg',
+        url: '/assets/images/houseImages/6.jpg',
         preview: true
       },
       {
         spotId: 2,
-        url: 'frontend/assets/images/houseImages/7.jpg',
+        url: '/assets/images/houseImages/7.jpg',
         preview: false
       },
       {
         spotId: 3,
-        url: 'frontend/assets/images/houseImages/8.jpg',
+        url: '/assets/images/houseImages/8.jpg',
         preview: false
       },
       {
         spotId: 4,
-        url: 'frontend/assets/images/houseImages/9.jpg',
+        url: '/assets/images/houseImages/9.jpg',
         preview: true
       },
       {
         spotId: 5,
-        url: 'frontend/assets/images/houseImages/10.jpeg',
+        url: '/assets/images/houseImages/10.jpeg',
         preview: true
       }
     ], { validate: true });

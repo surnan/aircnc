@@ -19,7 +19,7 @@ function ViewAllSpots() {
     return (
         <div>
             {spotsArr.map(spot => (
-                <div key={spot.id}>{spot.name}</div>
+                <img key={spot.id}  class = "clickable spotPreviewImage" src={spot.previewImage} alt="House" />
             ))}
         </div>
     );
