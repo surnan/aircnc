@@ -14,39 +14,39 @@ module.exports = {
     await ReviewImage.bulkCreate([
       {
         reviewId: 1,
-        url: 'www.google1.com'
+        url: 'frontend/assets/images/houseImages/11.jpg',
       },
       {
         reviewId: 2,
-        url: 'www.google2.com'
+        url: 'frontend/assets/images/houseImages/12.jpg',
       },
       {
         reviewId: 3,
-        url: 'www.google3.com'
+        url: 'frontend/assets/images/houseImages/13.jpeg',
       },
       {
         reviewId: 4,
-        url: 'www.google4.com'
+        url: 'frontend/assets/images/houseImages/14.jpeg',
       },
       {
         reviewId: 5,
-        url: 'www.gogle5.com'
+        url: 'frontend/assets/images/houseImages/15.jpeg',
       },
       {
         reviewId: 6,
-        url: 'www.google6.com'
+        url: 'frontend/assets/images/houseImages/16.jpeg',
       },
       {
         reviewId: 1,
-        url: 'www.google7.com'
+        url: 'frontend/assets/images/houseImages/17.jpeg',
       },
       {
         reviewId: 2,
-        url: 'www.google8.com'
+        url: 'frontend/assets/images/houseImages/18.jpeg',
       },
       {
         reviewId: 3,
-        url: 'www.google9.com'
+        url: 'frontend/assets/images/houseImages/19.jpeg',
       }
 
     ],{ validate: true });

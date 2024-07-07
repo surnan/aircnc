@@ -15,52 +15,52 @@ module.exports = {
     await SpotImage.bulkCreate([
       {
         spotId: 1,
-        url: 'www.googleA.com',
+        url: 'frontend/assets/images/houseImages/1.jpg',
         preview: false
       },
       {
         spotId: 2,
-        url: 'www.googleB.com',
+        url: 'frontend/assets/images/houseImages/2.jpg',
         preview: true
       },
       {
         spotId: 3,
-        url: 'www.googleC.com',
+        url: 'frontend/assets/images/houseImages/3.jpg',
         preview: true
       },
       {
         spotId: 4,
-        url: 'www.googleD.com',
+        url: 'frontend/assets/images/houseImages/4.jpg',
         preview: false
       },
       {
         spotId: 4,
-        url: 'www.googleE.com',
+        url: 'frontend/assets/images/houseImages/5.jpg',
         preview: false
       },
       {
         spotId: 1,
-        url: 'www.googleF.com',
+        url: 'frontend/assets/images/houseImages/6.jpg',
         preview: true
       },
       {
         spotId: 2,
-        url: 'www.googleG.com',
+        url: 'frontend/assets/images/houseImages/7.jpg',
         preview: false
       },
       {
         spotId: 3,
-        url: 'www.googleH.com',
+        url: 'frontend/assets/images/houseImages/8.jpg',
         preview: false
       },
       {
         spotId: 4,
-        url: 'www.googleI.com',
+        url: 'frontend/assets/images/houseImages/9.jpg',
         preview: true
       },
       {
         spotId: 5,
-        url: 'www.googleJ.com',
+        url: 'frontend/assets/images/houseImages/10.jpeg',
         preview: true
       }
     ], { validate: true });
