@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
 import ViewAllSpots from "./components/ViewAllSpots";
+import SpotForm from './components/SpotForm';
 
 
 function Layout() {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
           <>
             <ViewAllSpots />
           </>
+      },
+      {
+        path: "/spots/new",
+        element: <SpotForm />,
       },
       {
         path: "*",
