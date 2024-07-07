@@ -1,6 +1,5 @@
 //frontend/src/components/SpotCard/SpotCard.jsx
 import "./SpotForm.css"
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 
@@ -24,7 +23,6 @@ function SpotForm() {
     });
 
     const [errors, setErrors] = useState({})
-
 
     useEffect(() => {
         const newErrors = {};
