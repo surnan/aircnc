@@ -16,7 +16,6 @@ function Navigation({ isLoaded }) {
   const CreateSpotButton = () => {
     return (
       <button
-        // className="clickable createNewSpot"
         className="createNewSpot"
         id="create-spot"
         onClick={handleCreateSpotButton}
