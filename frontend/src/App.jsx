@@ -1,3 +1,4 @@
+//frontend/src/App.jsx
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
@@ -29,8 +30,16 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/',
-        element: <h1>Welcome!</h1>
+        path: "/",
+        element:
+          <>
+            <h2>HERE I AM</h2>
+            <ViewAllSpots />,
+          </>
+      },
+      {
+        path: "*",
+        element: <p>Page Not Found</p>
       }
     ]
   }
