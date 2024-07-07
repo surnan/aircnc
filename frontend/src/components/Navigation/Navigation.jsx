@@ -8,12 +8,18 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
   const nav = useNavigate();
 
+  const handleCreateSpotButton = () => {
+    console.log('button clicked')
+    nav("/spots/new")
+  }
+
   const CreateSpotButton = () => {
     return (
       <button
-        clasName="clickable"
-        onclick={() => nav("/spots/new")}
+        // className="clickable createNewSpot"
+        className="createNewSpot"
         id="create-spot"
+        onClick={handleCreateSpotButton}
       >
         Create New Spot
       </button>
@@ -32,25 +38,12 @@ function Navigation({ isLoaded }) {
 
       <div id="right-container">
         {sessionUser && <CreateSpotButton />}
+      </div>
+      <div id="right-container">
         {isLoaded && <ProfileButton user={sessionUser} />}
       </div>
-    </nav>
+    </nav >
   );
 }
 
 export default Navigation;
-
-/*
-  return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {isLoaded && (
-        <li>
-          <ProfileButton user={sessionUser} />
-        </li>
-      )}
-    </ul>
-  );
-  */
