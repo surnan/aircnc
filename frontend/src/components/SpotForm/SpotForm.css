@@ -1,0 +1,27 @@
+.spotForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+hr {
+    margin: 2em;
+}
+
+textarea {
+    height: 10em;
+}
+
+body {
+    margin-bottom: 100px;
+}

@@ -41,9 +41,7 @@ nav {
   
 
   .createNewSpot{
-    /* display: inline-block; */
-    /* /* background-color: white; */
-    /* color: darkblue; */
+    
     background-color: white;
     white-space: nowrap;
     cursor: pointer;
