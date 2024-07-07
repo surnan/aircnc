@@ -25,20 +25,18 @@ function SpotForm() {
 
     const [errors, setErrors] = useState({})
 
+
     useEffect(() => {
         const newErrors = {};
-
-        // const { country, address, city, state, lat, lng } = form
-        // const { description, title, price, previewImage } = form;
-        // const allKeys = ["country", "address", "city", "state", "title", "price", "previewImage"]
-
-        const { country, address, city, state, lat, lng, description, title, price, previewImage, previewImageURL, image2URL, image3URL, image4URL, image5URL } = form;
+        const { description } = form;
 
         const allKeys = ["country", "address", "city", "state", "title", "price", "previewImageURL"];
+        const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
+        const goodImgExt = [".jpg", ".jpeg", ".png"]
+
 
         for (let key of allKeys) {
-            if (form[key] === '') {
-                
+            if (!form[key]) {
                 newErrors[key] = `${key} is required`
             }
         }
@@ -47,33 +45,17 @@ function SpotForm() {
             newErrors.description = "Description needs a minimum of 30 characters"
         }
 
-
-        const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
-
-        //verify url is at least 5 characters long.  So input != ".png"
         for (let key of allImageLinks) {
-            if (form[key] !== '') {
-                let keyArr = form[key].split('.');
-                let ext = keyArr.at(-1).toLowerCase();
+            if (form[key]) {
+                const keyArr = form[key].split('.');
+                const ext = keyArr.at(-1).toLowerCase();
 
-                switch (ext) {
-                    case 'jpg':
-                    case 'png':
-                    case 'jpeg':
-                        break;
-                    default:
-                        newErrors[key] = `Image URL must end in .png, .jpg, or .jpeg`;
-                        break;
-                }
+                if (!goodImgExt.includes(ext))
+                    newErrors[key] = `Image URL must end in .png, .jpg, or .jpeg`;
             }
         }
-
-        // console.log("newErrors = ", newErrors)
         setErrors(newErrors)
     }, [form])
-
-
-
 
 
     const updateSetForm = (e) => {
@@ -83,7 +65,6 @@ function SpotForm() {
     }
 
     return (
-
         <form className="spotForm">
             <h3>Create a new Spot</h3>
             <br />
@@ -92,7 +73,8 @@ function SpotForm() {
             <br />
 
             <label>
-                Country {`${errors.country}`}
+                Country
+                {`${errors.country}`}
             </label>
             <input
                 type="text"
@@ -101,7 +83,10 @@ function SpotForm() {
                 placeholder="Country"
             />
 
-            <label>Street Address {`${errors.address}`}</label>
+            <label>
+                Street Address
+                {`${errors.address}`}
+            </label>
             <input
                 type="text"
                 name="address"
@@ -111,7 +96,10 @@ function SpotForm() {
 
             <div className="horizontal">
                 <div className="vertical">
-                    <label>City {`${errors.city}`}</label>
+                    <label>
+                        City
+                        {`${errors.city}`}
+                    </label>
                     <input
                         type="text"
                         name="city"
@@ -120,7 +108,10 @@ function SpotForm() {
                     />
                 </div>
                 <div className="vertical">
-                    <label>State {`${errors.state}`}</label>
+                    <label>
+                        State
+                        {`${errors.state}`}
+                    </label>
                     <input
                         type="text"
                         name="state"
@@ -158,7 +149,7 @@ function SpotForm() {
             <br />
 
             <textarea
-                name="description" 
+                name="description"
                 onChange={updateSetForm}
                 placeholder="Description"
             />
