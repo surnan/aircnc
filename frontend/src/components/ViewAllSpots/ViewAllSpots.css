@@ -1,8 +1,7 @@
-/* .spotPreviewImage {
-    max-width: 200%;
-    height: auto;
-} */
+/* frontend/src/components/ViewAllSpots/ViewAllSpots.css */
 
 .clickable {
     cursor: pointer;
+    width: 21%;
+    height: auto;
 }

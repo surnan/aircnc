@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         path: "/",
         element:
           <>
-            <ViewAllSpots />,
+            <ViewAllSpots />
           </>
       },
       {
