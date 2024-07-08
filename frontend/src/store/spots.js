@@ -14,71 +14,51 @@ export const loadSpots = (data) => {
 };
 
 export const insertSpot = (payload) => async (dispatch) => {
-    // console.log('insertSpot - A')
     const { address, city, state, country, lat, lng, name, description, price } = payload;
-    const { previewImageURL} = payload;
-    // const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
-
-    
-    // console.log('insertSpot - B')
-    const response = await csrfFetch("/api/spots", {
-        method: "POST",
-        body: JSON.stringify({
-            address,
-            city,
-            state,
-            country,
-            lat,
-            lng,
-            name,
-            description,
-            price
-        }),
-    });
-    console.log('insertSpot - C')
-    const resJSON = await response.json();
-    console.log(resJSON, "resJSON")
-    console.log('insertSpot - D')
+    const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
 
 
-    if (resJSON.id && previewImageURL) {
-        const previewImageLoad = await csrfFetch(`/api/spots/${resJSON.id}/images`,
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    url: previewImageURL,
-                    preview: "true"
-                })
-            })
+    try {
+        const response = await csrfFetch("/api/spots", {
+            method: "POST",
+            body: JSON.stringify({
+                address,
+                city,
+                state,
+                country,
+                lat,
+                lng,
+                name,
+                description,
+                price
+            }),
+        });
+
+        const resJSON = await response.json();
+
+        const allImageURLs = [
+            { url: previewImageURL, preview: "true" },
+            { url: image2URL, preview: "false" },
+            { url: image3URL, preview: "false" },
+            { url: image4URL, preview: "false" },
+            { url: image5URL, preview: "false" },
+        ]
+
+        for (const { url, preview } of allImageURLs) {
+            if (url) {
+                await csrfFetch(`/api/spots/${resJSON.id}/images`,
+                    {
+                        method: "POST",
+                        body: JSON.stringify({
+                            url,
+                            preview
+                        })
+                    })
+            }
+        }
+    } catch (err) {
+        console.log("Failed to insert spot: ", err)
     }
-
-    // const imageArray = [image2URL, image3URL, image4URL, image5URL];
-
-    // const uploadImage = async (url) => {
-    //     if (url) {
-    //         await csrfFetch(`/api/spots/${resJSON.id}/images`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify({
-    //                 url,
-    //                 preview: false
-    //             })
-    //         });
-    //     }
-    // };
-    
-    // const uploadImages = async (imageArray) => {
-    //     try {
-    //         const uploadPromises = imageArray.map(uploadImage);
-    //         await Promise.all(uploadPromises);
-    //     } catch (error) {
-    //         console.error('Error uploading images:', error);
-    //     }
-    // };
-    
-    // await uploadImages(imageArray);
 }
 
 // Thunks
@@ -105,3 +85,4 @@ const spotsReducer = (state = {}, action) => {
 };
 
 export default spotsReducer;
+
