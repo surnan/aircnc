@@ -84,31 +84,31 @@ function SpotForm() {
             // console.log('handleSubmit - a')
             const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
 
-            const body = {
-                address,
-                city,
-                state,
-                country,
-                lat: parseFloat(lat),
-                lng: parseFloat(lng),
-                name: form.title,
-                description,
-                price: parseInt(price),
-                previewImageURL
-            };
-            
-            // const body2 = {
-            //     address: "asdf1",
-            //     city: "asd1",
-            //     state: "asdf1",
-            //     country: "asdf1",
-            //     lat: 40.82595377239568,
-            //     lng: 40.82595377239568,
-            //     name: "asdf1",
-            //     description: "asdf1",
-            //     price: 100.00,
-            //     previewImageURL: "https://via.placeholder.com/301.jpg"
+            // const body = {
+            //     address,
+            //     city,
+            //     state,
+            //     country,
+            //     lat: parseFloat(lat),
+            //     lng: parseFloat(lng),
+            //     name: form.title,
+            //     description,
+            //     price: parseInt(price),
+            //     previewImageURL
             // };
+            
+            const body = {
+                address: "asdf1",
+                city: "asd1",
+                state: "asdf1",
+                country: "asdf1",
+                lat: 40.82595377239568,
+                lng: 40.82595377239568,
+                name: "asdf1",
+                description: "asdf1",
+                price: 100.00,
+                previewImageURL: "https://via.placeholder.com/300.jpg"
+            };
 
             // console.log('handleSubmit - b')
             console.log(body, "body")
@@ -130,8 +130,7 @@ function SpotForm() {
             <br />
 
             <label>
-                Country
-                {errors.country && `${errors.country}`}
+                Country {errors.country && `${errors.country}`}
             </label>
             <input
                 type="text"
@@ -141,8 +140,7 @@ function SpotForm() {
             />
 
             <label>
-                Street Address
-                {errors.address && `${errors.address}`}
+                Street Address {errors.address && `${errors.address}`}
             </label>
             <input
                 type="text"
@@ -154,8 +152,7 @@ function SpotForm() {
             <div className="horizontal">
                 <div className="vertical">
                     <label>
-                        City
-                        {errors.city && `${errors.city}`}
+                        City {errors.city && `${errors.city}`}
                     </label>
                     <input
                         type="text"
@@ -166,8 +163,7 @@ function SpotForm() {
                 </div>
                 <div className="vertical">
                     <label>
-                        State
-                        {errors.state && `${errors.state}`}
+                        State {errors.state && `${errors.state}`}
                     </label>
                     <input
                         type="text"

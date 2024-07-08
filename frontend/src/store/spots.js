@@ -16,8 +16,8 @@ export const loadSpots = (data) => {
 export const insertSpot = (payload) => async (dispatch) => {
     // console.log('insertSpot - A')
     const { address, city, state, country, lat, lng, name, description, price } = payload;
-    // const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
     const { previewImageURL} = payload;
+    // const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
 
     
     // console.log('insertSpot - B')
@@ -45,12 +45,9 @@ export const insertSpot = (payload) => async (dispatch) => {
         const previewImageLoad = await csrfFetch(`/api/spots/${resJSON.id}/images`,
             {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
                 body: JSON.stringify({
                     url: previewImageURL,
-                    preview: true
+                    preview: "true"
                 })
             })
     }
