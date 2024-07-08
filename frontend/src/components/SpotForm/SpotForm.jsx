@@ -1,9 +1,15 @@
 //frontend/src/components/SpotCard/SpotCard.jsx
 import "./SpotForm.css"
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
+import { insertSpot } from "../../store/spots";
 
 
 function SpotForm() {
+    const nav = useNavigate();
+
+    const dispatch = useDispatch();
 
     const [form, setForm] = useState({
         country: '',
@@ -30,7 +36,7 @@ function SpotForm() {
 
         const allKeys = ["country", "address", "city", "state", "title", "price", "previewImageURL"];
         const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
-        const goodImgExt = [".jpg", ".jpeg", ".png"]
+        const goodImgExt = ["jpg", "jpeg", "png"]
 
 
         for (let key of allKeys) {
@@ -53,6 +59,9 @@ function SpotForm() {
             }
         }
         setErrors(newErrors)
+
+        console.log(errors, "errors")
+
     }, [form])
 
 
@@ -60,6 +69,56 @@ function SpotForm() {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }))
         console.log(form, "form")
+    }
+
+
+
+    // image2URL: '',
+    // image3URL: '',
+    // image4URL: '',
+    // image5URL: ''
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // console.log('handleSubmit - a')
+            const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
+
+            const body = {
+                address,
+                city,
+                state,
+                country,
+                lat: parseFloat(lat),
+                lng: parseFloat(lng),
+                name: form.title,
+                description,
+                price: parseInt(price),
+                previewImageURL
+            };
+            
+            // const body2 = {
+            //     address: "asdf1",
+            //     city: "asd1",
+            //     state: "asdf1",
+            //     country: "asdf1",
+            //     lat: 40.82595377239568,
+            //     lng: 40.82595377239568,
+            //     name: "asdf1",
+            //     description: "asdf1",
+            //     price: 100.00,
+            //     previewImageURL: "https://via.placeholder.com/301.jpg"
+            // };
+
+            // console.log('handleSubmit - b')
+            console.log(body, "body")
+            dispatch(insertSpot(body));
+            console.log('handleSubmit - c')
+        } catch (e) {
+            console.log(e)
+        }
+
+        // nav(`/`);
     }
 
     return (
@@ -72,18 +131,18 @@ function SpotForm() {
 
             <label>
                 Country
-                {`${errors.country}`}
+                {errors.country && `${errors.country}`}
             </label>
             <input
                 type="text"
-                name="Country"
+                name="country"
                 onChange={updateSetForm}
                 placeholder="Country"
             />
 
             <label>
                 Street Address
-                {`${errors.address}`}
+                {errors.address && `${errors.address}`}
             </label>
             <input
                 type="text"
@@ -96,7 +155,7 @@ function SpotForm() {
                 <div className="vertical">
                     <label>
                         City
-                        {`${errors.city}`}
+                        {errors.city && `${errors.city}`}
                     </label>
                     <input
                         type="text"
@@ -108,7 +167,7 @@ function SpotForm() {
                 <div className="vertical">
                     <label>
                         State
-                        {`${errors.state}`}
+                        {errors.state && `${errors.state}`}
                     </label>
                     <input
                         type="text"
@@ -225,7 +284,8 @@ function SpotForm() {
 
             <button
                 type="submit"
-                disabled={Object.keys(errors).length !== 0}
+                // disabled={Object.keys(errors).length !== 0}
+                onClick={handleSubmit}
             >
                 Create Spot
             </button>
