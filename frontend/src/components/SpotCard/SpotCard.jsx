@@ -9,6 +9,7 @@ function SpotCard({ spot }) {
 
     const starPath = "assets/icons/star.png"
 
+
     return (
         <div className="container">
           <div className="spotCard">
