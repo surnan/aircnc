@@ -15,7 +15,9 @@ function ViewAllSpots() {
         dispatch(fetchSpots())
     }, [dispatch]);
 
-    console.log('spotsArr', spotsArr)
+    const handleClick = ()=> {
+        console.log("click happened")
+    }
 
     const validateSpot = (spot) => {
         const properties = [
