@@ -1,10 +1,15 @@
 //frontend/src/components/SpotCard/SpotCard.jsx
 import "./SpotForm.css"
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
+import { insertSpot } from "../../store/spots";
 
 
 function SpotForm() {
+    const nav = useNavigate();
+
+    const dispatch = useDispatch();
 
     const [form, setForm] = useState({
         country: '',
@@ -27,18 +32,15 @@ function SpotForm() {
 
     useEffect(() => {
         const newErrors = {};
-
-        // const { country, address, city, state, lat, lng } = form
-        // const { description, title, price, previewImage } = form;
-        // const allKeys = ["country", "address", "city", "state", "title", "price", "previewImage"]
-
-        const { country, address, city, state, lat, lng, description, title, price, previewImage, previewImageURL, image2URL, image3URL, image4URL, image5URL } = form;
+        const { description } = form;
 
         const allKeys = ["country", "address", "city", "state", "title", "price", "previewImageURL"];
+        const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
+        const goodImgExt = ["jpg", "jpeg", "png"]
+
 
         for (let key of allKeys) {
-            if (form[key] === '') {
-                
+            if (!form[key]) {
                 newErrors[key] = `${key} is required`
             }
         }
@@ -47,33 +49,20 @@ function SpotForm() {
             newErrors.description = "Description needs a minimum of 30 characters"
         }
 
-
-        const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
-
-        //verify url is at least 5 characters long.  So input != ".png"
         for (let key of allImageLinks) {
-            if (form[key] !== '') {
-                let keyArr = form[key].split('.');
-                let ext = keyArr.at(-1).toLowerCase();
+            if (form[key]) {
+                const keyArr = form[key].split('.');
+                const ext = keyArr.at(-1).toLowerCase();
 
-                switch (ext) {
-                    case 'jpg':
-                    case 'png':
-                    case 'jpeg':
-                        break;
-                    default:
-                        newErrors[key] = `Image URL must end in .png, .jpg, or .jpeg`;
-                        break;
-                }
+                if (!goodImgExt.includes(ext))
+                    newErrors[key] = `Image URL must end in .png, .jpg, or .jpeg`;
             }
         }
-
-        // console.log("newErrors = ", newErrors)
         setErrors(newErrors)
+
+        console.log(errors, "errors")
+
     }, [form])
-
-
-
 
 
     const updateSetForm = (e) => {
@@ -82,8 +71,57 @@ function SpotForm() {
         console.log(form, "form")
     }
 
-    return (
 
+
+    // image2URL: '',
+    // image3URL: '',
+    // image4URL: '',
+    // image5URL: ''
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // console.log('handleSubmit - a')
+            const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
+
+            const body = {
+                address,
+                city,
+                state,
+                country,
+                lat: parseFloat(lat),
+                lng: parseFloat(lng),
+                name: form.title,
+                description,
+                price: parseInt(price),
+                previewImageURL
+            };
+            
+            // const body2 = {
+            //     address: "asdf1",
+            //     city: "asd1",
+            //     state: "asdf1",
+            //     country: "asdf1",
+            //     lat: 40.82595377239568,
+            //     lng: 40.82595377239568,
+            //     name: "asdf1",
+            //     description: "asdf1",
+            //     price: 100.00,
+            //     previewImageURL: "https://via.placeholder.com/301.jpg"
+            // };
+
+            // console.log('handleSubmit - b')
+            console.log(body, "body")
+            dispatch(insertSpot(body));
+            console.log('handleSubmit - c')
+        } catch (e) {
+            console.log(e)
+        }
+
+        // nav(`/`);
+    }
+
+    return (
         <form className="spotForm">
             <h3>Create a new Spot</h3>
             <br />
@@ -92,16 +130,20 @@ function SpotForm() {
             <br />
 
             <label>
-                Country {`${errors.country}`}
+                Country
+                {errors.country && `${errors.country}`}
             </label>
             <input
                 type="text"
-                name="Country"
+                name="country"
                 onChange={updateSetForm}
                 placeholder="Country"
             />
 
-            <label>Street Address {`${errors.address}`}</label>
+            <label>
+                Street Address
+                {errors.address && `${errors.address}`}
+            </label>
             <input
                 type="text"
                 name="address"
@@ -111,7 +153,10 @@ function SpotForm() {
 
             <div className="horizontal">
                 <div className="vertical">
-                    <label>City {`${errors.city}`}</label>
+                    <label>
+                        City
+                        {errors.city && `${errors.city}`}
+                    </label>
                     <input
                         type="text"
                         name="city"
@@ -120,7 +165,10 @@ function SpotForm() {
                     />
                 </div>
                 <div className="vertical">
-                    <label>State {`${errors.state}`}</label>
+                    <label>
+                        State
+                        {errors.state && `${errors.state}`}
+                    </label>
                     <input
                         type="text"
                         name="state"
@@ -158,7 +206,7 @@ function SpotForm() {
             <br />
 
             <textarea
-                name="description" 
+                name="description"
                 onChange={updateSetForm}
                 placeholder="Description"
             />
@@ -236,7 +284,8 @@ function SpotForm() {
 
             <button
                 type="submit"
-                disabled={Object.keys(errors).length !== 0}
+                // disabled={Object.keys(errors).length !== 0}
+                onClick={handleSubmit}
             >
                 Create Spot
             </button>
