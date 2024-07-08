@@ -88,6 +88,10 @@ function SpotForm() {
             //     description,
             //     price: parseInt(price),
             //     previewImageURL
+            //      image2URL: "https://via.placeholder.com/300.jpg",
+            //      image3URL: "https://via.placeholder.com/300.jpg",
+            //      image4URL: "https://via.placeholder.com/300.jpg",
+            //      image5URL: "https://via.placeholder.com/300.jpg"
             // };
             
             const body = {
@@ -124,7 +128,8 @@ function SpotForm() {
             <br />
 
             <label>
-                Country {errors.country && `${errors.country}`}
+                {/* Country {errors.country && `${errors.country}`} */}
+                Country {errors.country && <span className="error">{errors.country}</span>}
             </label>
             <input
                 type="text"
@@ -134,7 +139,8 @@ function SpotForm() {
             />
 
             <label>
-                Street Address {errors.address && `${errors.address}`}
+                {/* Street Address {errors.address && `${errors.address}`} */}
+                Street Address {errors.address && <span className="error">{errors.address}</span>}
             </label>
             <input
                 type="text"
