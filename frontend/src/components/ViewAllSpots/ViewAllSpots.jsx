@@ -35,11 +35,7 @@ function ViewAllSpots() {
         <div className="grid-container ">
             {spotsArr.map(spot => (
                 <div className="spotCard">
-                    {/* <img key={spot.id} class="clickable spotPreviewImage" src={spot.previewImage} alt="House" />
-                    {spot.city && spot.state ? <p>1 - {spot.city}, {spot.state}</p> : 2 - "New Spot" } */}
-
                     <SpotCard spot={spot}/>
-
                 </div>
             ))}
         </div>
@@ -48,17 +44,3 @@ function ViewAllSpots() {
 }
 
 export default ViewAllSpots;
-
-
-/*
-    return (
-        <div>
-            {spotsArr.map(spot => (
-                <>
-                    <img key={spot.id} class="clickable spotPreviewImage" src={spot.previewImage} alt="House" />
-                    {spot.city && spot.state ? <p>1 - {spot.city}, {spot.state}</p> : 2 - "New Spot" }
-                </>
-            ))}
-        </div>
-    );
-*/
