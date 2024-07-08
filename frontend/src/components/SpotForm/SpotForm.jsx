@@ -71,17 +71,10 @@ function SpotForm() {
         console.log(form, "form")
     }
 
-
-
-    // image2URL: '',
-    // image3URL: '',
-    // image4URL: '',
-    // image5URL: ''
     
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // console.log('handleSubmit - a')
             const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
 
             // const body = {
@@ -107,18 +100,19 @@ function SpotForm() {
                 name: "asdf1",
                 description: "asdf1",
                 price: 100.00,
-                previewImageURL: "https://via.placeholder.com/300.jpg"
+                previewImageURL: "https://via.placeholder.com/300.jpg",
+                image2URL: "https://via.placeholder.com/300.jpg",
+                image3URL: "https://via.placeholder.com/300.jpg",
+                image4URL: "https://via.placeholder.com/300.jpg",
+                image5URL: "https://via.placeholder.com/300.jpg"
             };
 
-            // console.log('handleSubmit - b')
             console.log(body, "body")
             dispatch(insertSpot(body));
             console.log('handleSubmit - c')
         } catch (e) {
             console.log(e)
         }
-
-        // nav(`/`);
     }
 
     return (
