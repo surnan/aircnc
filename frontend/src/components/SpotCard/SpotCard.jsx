@@ -8,6 +8,7 @@ function SpotCard({ spot }) {
     const { id, city, state, avgRating, price, name, previewImage } = spot
 
     const starPath = "assets/icons/star.png"
+    const starPath2 = "https://via.placeholder.com/300.jpg"
 
 
     return (
