@@ -12,15 +12,15 @@ function SpotForm() {
     const dispatch = useDispatch();
 
     const [form, setForm] = useState({
-        Country: '',
-        Address: '',
-        City: '',
-        State: '',
-        Latitude: '',
-        Longitude: '',
+        country: '',
+        address: '',
+        city: '',
+        state: '',
+        lat: '',
+        lng: '',
         description: '',
-        Name: '',
-        Price: '',
+        title: '',
+        price: '',
         previewImageURL: '',
         image2URL: '',
         image3URL: '',
@@ -34,7 +34,7 @@ function SpotForm() {
         const newErrors = {};
         const { description } = form;
 
-        const allKeys = ["Country", "Address", "City", "State", "Name", "Price", "previewImageURL", "Latitude", "Longitude"];
+        const allKeys = ["country", "address", "city", "state", "title", "price", "previewImageURL"];
         const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
         const goodImgExt = ["jpg", "jpeg", "png"]
 
@@ -75,45 +75,59 @@ function SpotForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { Address, City, State, Country, Latitude, Longitude, description, Price, previewImageURL } = form;
-
-            // const body = {
-            //     Address,
-            //     City,
-            //     State,
-            //     Country,
-            //     Latitude: parseFloat(Latitude),
-            //     Longitude: parseFloat(Longitude),
-            //     name: form.Name,
-            //     description,
-            //     Price: parseInt(Price),
-            //     previewImageURL
-            //      image2URL: "https://via.placeholder.com/300.jpg",
-            //      image3URL: "https://via.placeholder.com/300.jpg",
-            //      image4URL: "https://via.placeholder.com/300.jpg",
-            //      image5URL: "https://via.placeholder.com/300.jpg"
-            // };
+            const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
+            const {image2URL, image3URL, image4URL, image5URL} = form;
 
             const body = {
-                Address: "asdf1",
-                City: "asd1",
-                State: "asdf1",
-                Country: "asdf1",
-                Latitude: 40.82595377239568,
-                Longitude: 40.82595377239568,
-                name: "asdf1",
-                description: "asdf1",
-                Price: 100.00,
-                previewImageURL: "https://via.placeholder.com/300.jpg",
-                image2URL: "https://via.placeholder.com/300.jpg",
-                image3URL: "https://via.placeholder.com/300.jpg",
-                image4URL: "https://via.placeholder.com/300.jpg",
-                image5URL: "https://via.placeholder.com/300.jpg"
+                address,
+                city,
+                state,
+                country,
+                lat: parseFloat(lat),
+                lng: parseFloat(lng),
+                name: form.title,
+                description,
+                price: parseInt(price),
+                previewImageURL,
+                image2URL,
+                image3URL,
+                image4URL,
+                image5URL
             };
 
             console.log(body, "body")
             dispatch(insertSpot(body));
-            console.log('handleSubmit - c')
+            nav("/")
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+
+    const handleSubmitForce = async (e) => {
+        e.preventDefault();
+        try {
+
+            const body = {
+                address: "asdf1",
+                city: "asd1",
+                state: "asdf1",
+                country: "asdf1",
+                lat: 40.82595377239568,
+                lng: 40.82595377239568,
+                name: "asdf1",
+                description: "asdf1",
+                price: 100.00,
+                previewImageURL: "https://via.placeholder.com/400.jpg",
+                image2URL: "https://via.placeholder.com/400.jpg",
+                image3URL: "https://via.placeholder.com/400.jpg",
+                image4URL: "https://via.placeholder.com/400.jpg",
+                image5URL: "https://via.placeholder.com/400.jpg",
+            };
+
+            console.log(body, "body")
+            dispatch(insertSpot(body));
+            nav("/")
         } catch (e) {
             console.log(e)
         }
@@ -124,25 +138,25 @@ function SpotForm() {
             <h3>Create a new Spot</h3>
             <br />
             <h4>Where's your place located?</h4>
-            <p>Guests will only get your exact Address once the booked a reservation.</p>
+            <p>Guests will only get your exact address once the booked a reservation.</p>
             <br />
 
             <label>
-                Country {errors.Country && <span className="error">{errors.Country}</span>}
+                Country {errors.country && `${errors.country}`}
             </label>
             <input
                 type="text"
-                name="Country"
+                name="country"
                 onChange={updateSetForm}
                 placeholder="Country"
             />
 
             <label>
-                Street Address {errors.Address && <span className="error">{errors.Address}</span>}
+                Street Address {errors.address && `${errors.address}`}
             </label>
             <input
                 type="text"
-                name="Address"
+                name="address"
                 onChange={updateSetForm}
                 placeholder="Address"
             />
@@ -150,22 +164,22 @@ function SpotForm() {
             <div className="horizontal">
                 <div className="vertical">
                     <label>
-                        City {errors.City && <span className="error">{errors.City}</span>}
+                        City {errors.city && `${errors.city}`}
                     </label>
                     <input
                         type="text"
-                        name="City"
+                        name="city"
                         onChange={updateSetForm}
                         placeholder="City"
                     />
                 </div>
                 <div className="vertical">
                     <label>
-                        State {errors.State && <span className="error">{errors.State}</span>}
+                        State {errors.state && `${errors.state}`}
                     </label>
                     <input
                         type="text"
-                        name="State"
+                        name="state"
                         onChange={updateSetForm}
                         placeholder="State"
                     />
@@ -174,23 +188,19 @@ function SpotForm() {
 
             <div className="horizontal">
                 <div className="vertical">
-                    <label>
-                        Latitudeitude {errors.Latitude && <span className="error">{errors.Latitude}</span>}
-                    </label>
+                    <label>Latitude </label>
                     <input
                         type="text"
-                        name="Latitude"
+                        name="lat"
                         onChange={updateSetForm}
-                        placeholder="Latitudeitude"
+                        placeholder="Latitude"
                     />
                 </div>
                 <div className="vertical">
-                    <label>
-                        Longitude {errors.Longitude && <span className="error">{errors.Longitude}</span>}
-                    </label>
+                    <label>Longitude</label>
                     <input
                         type="text"
-                        name="Longitude"
+                        name="lng"
                         onChange={updateSetForm}
                         placeholder="Longitude"
                     />
@@ -208,7 +218,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Description"
             />
-            {errors.description && <span className="error">{errors.description}</span>}
+            {errors.description && <p>{errors.description}</p>}
 
             <hr />
 
@@ -216,11 +226,11 @@ function SpotForm() {
             <p>Catch guests' attention with a spot title that highlights what makes your place special</p>
             <input
                 type="text"
-                name="Name"
+                name="title"
                 onChange={updateSetForm}
                 placeholder="Name of your spot"
             />
-            {errors.Name && <span className="error">{errors.Name}</span>}
+            {errors.title && <p>{errors.title}</p>}
 
             <hr />
 
@@ -228,11 +238,11 @@ function SpotForm() {
             <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
             <input
                 type="text"
-                name="Price"
+                name="price"
                 onChange={updateSetForm}
                 placeholder="Price per night (USD)"
             />
-            {errors.Price && <span className="error">{errors.Price}</span>}
+            {errors.price && <p>{errors.price}</p>}
 
             <hr />
 
@@ -244,7 +254,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Preview Image URL"
             />
-            {errors.previewImageURL && <span className="error">{errors.previewImageURL}</span>}
+            {errors.previewImageURL && <p>{errors.previewImageURL}</p>}
 
             <input
                 type="text"
@@ -252,7 +262,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image2URL && <span className="error">{errors.image2URL}</span>}
+            {errors.image2URL && <p>{errors.image2URL}</p>}
 
             <input
                 type="text"
@@ -260,7 +270,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image3URL && <span className="error">{errors.image3URL}</span>}
+            {errors.image3URL && <p>{errors.image3URL}</p>}
 
             <input
                 type="text"
@@ -268,7 +278,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image4URL && <span className="error">{errors.image4URL}</span>}
+            {errors.image4URL && <p>{errors.image4URL}</p>}
 
             <input
                 type="text"
@@ -276,18 +286,25 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image5URL && <span className="error">{errors.image5URL}</span>}
+            {errors.image5URL && <p>{errors.image5URL}</p>}
 
             <hr />
 
-            <button 
-                className = "submitButton"
+            <button
                 type="submit"
-                // disabled={Object.keys(errors).length !== 0}
+                disabled={Object.keys(errors).length !== 0}
                 onClick={handleSubmit}
-                
             >
                 Create Spot
+            </button>
+
+            <br />
+            <button
+                type="submit"
+                // disabled={Object.keys(errors).length !== 0}
+                onClick={handleSubmitForce}
+            >
+                FORCE CREATE
             </button>
         </form>
     )
