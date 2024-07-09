@@ -1,6 +1,9 @@
+//frontend/src/components/Navigation/ProfileButton.jsx
+
+import './ProfileButton.css'
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaBars } from "react-icons/fa";
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
@@ -42,11 +45,14 @@ function ProfileButton({ user }) {
 
   return (
     <nav>
-      <button onClick={toggleMenu}>
-        <FaUserCircle />
-      </button>
+
+      <div id='PROFILE-RIGHT-CONTAINER'>
+        <FaBars onClick={toggleMenu} className="fa-icon" />
+        <FaUserCircle className="fa-icon" />
+      </div>
+
       <ul className={ulClassName} ref={ulRef}>
-      {user ? (
+        {user ? (
           <>
             <li>{user.username}</li>
             <li>{user.firstName} {user.lastName}</li>
@@ -70,6 +76,9 @@ function ProfileButton({ user }) {
           </>
         )}
       </ul>
+
+
+
     </nav>
   );
 }

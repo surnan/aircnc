@@ -1,13 +1,5 @@
 /* frontend/src/components/ViewAllSpots/ViewAllSpots.css */
 
-.clickable {
-    cursor: pointer;
-    height: auto;
-}
+@import url('../../index.css');
 
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 50px; /* Adjust the gap between grid items */
-    grid-auto-flow: row; /* Ensures items fill horizontally first */
-}
+
