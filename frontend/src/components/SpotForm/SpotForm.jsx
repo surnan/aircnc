@@ -12,15 +12,15 @@ function SpotForm() {
     const dispatch = useDispatch();
 
     const [form, setForm] = useState({
-        country: '',
-        address: '',
-        city: '',
-        state: '',
-        lat: '',
-        lng: '',
+        Country: '',
+        Address: '',
+        City: '',
+        State: '',
+        Latitude: '',
+        Longitude: '',
         description: '',
-        title: '',
-        price: '',
+        Name: '',
+        Price: '',
         previewImageURL: '',
         image2URL: '',
         image3URL: '',
@@ -34,7 +34,7 @@ function SpotForm() {
         const newErrors = {};
         const { description } = form;
 
-        const allKeys = ["country", "address", "city", "state", "title", "price", "previewImageURL"];
+        const allKeys = ["Country", "Address", "City", "State", "Name", "Price", "previewImageURL", "Latitude", "Longitude"];
         const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
         const goodImgExt = ["jpg", "jpeg", "png"]
 
@@ -71,39 +71,39 @@ function SpotForm() {
         console.log(form, "form")
     }
 
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
+            const { Address, City, State, Country, Latitude, Longitude, description, Price, previewImageURL } = form;
 
             // const body = {
-            //     address,
-            //     city,
-            //     state,
-            //     country,
-            //     lat: parseFloat(lat),
-            //     lng: parseFloat(lng),
-            //     name: form.title,
+            //     Address,
+            //     City,
+            //     State,
+            //     Country,
+            //     Latitude: parseFloat(Latitude),
+            //     Longitude: parseFloat(Longitude),
+            //     name: form.Name,
             //     description,
-            //     price: parseInt(price),
+            //     Price: parseInt(Price),
             //     previewImageURL
             //      image2URL: "https://via.placeholder.com/300.jpg",
             //      image3URL: "https://via.placeholder.com/300.jpg",
             //      image4URL: "https://via.placeholder.com/300.jpg",
             //      image5URL: "https://via.placeholder.com/300.jpg"
             // };
-            
+
             const body = {
-                address: "asdf1",
-                city: "asd1",
-                state: "asdf1",
-                country: "asdf1",
-                lat: 40.82595377239568,
-                lng: 40.82595377239568,
+                Address: "asdf1",
+                City: "asd1",
+                State: "asdf1",
+                Country: "asdf1",
+                Latitude: 40.82595377239568,
+                Longitude: 40.82595377239568,
                 name: "asdf1",
                 description: "asdf1",
-                price: 100.00,
+                Price: 100.00,
                 previewImageURL: "https://via.placeholder.com/300.jpg",
                 image2URL: "https://via.placeholder.com/300.jpg",
                 image3URL: "https://via.placeholder.com/300.jpg",
@@ -124,27 +124,25 @@ function SpotForm() {
             <h3>Create a new Spot</h3>
             <br />
             <h4>Where's your place located?</h4>
-            <p>Guests will only get your exact address once the booked a reservation.</p>
+            <p>Guests will only get your exact Address once the booked a reservation.</p>
             <br />
 
             <label>
-                {/* Country {errors.country && `${errors.country}`} */}
-                Country {errors.country && <span className="error">{errors.country}</span>}
+                Country {errors.Country && <span className="error">{errors.Country}</span>}
             </label>
             <input
                 type="text"
-                name="country"
+                name="Country"
                 onChange={updateSetForm}
                 placeholder="Country"
             />
 
             <label>
-                {/* Street Address {errors.address && `${errors.address}`} */}
-                Street Address {errors.address && <span className="error">{errors.address}</span>}
+                Street Address {errors.Address && <span className="error">{errors.Address}</span>}
             </label>
             <input
                 type="text"
-                name="address"
+                name="Address"
                 onChange={updateSetForm}
                 placeholder="Address"
             />
@@ -152,22 +150,22 @@ function SpotForm() {
             <div className="horizontal">
                 <div className="vertical">
                     <label>
-                        City {errors.city && `${errors.city}`}
+                        City {errors.City && <span className="error">{errors.City}</span>}
                     </label>
                     <input
                         type="text"
-                        name="city"
+                        name="City"
                         onChange={updateSetForm}
                         placeholder="City"
                     />
                 </div>
                 <div className="vertical">
                     <label>
-                        State {errors.state && `${errors.state}`}
+                        State {errors.State && <span className="error">{errors.State}</span>}
                     </label>
                     <input
                         type="text"
-                        name="state"
+                        name="State"
                         onChange={updateSetForm}
                         placeholder="State"
                     />
@@ -176,19 +174,23 @@ function SpotForm() {
 
             <div className="horizontal">
                 <div className="vertical">
-                    <label>Latitude </label>
+                    <label>
+                        Latitudeitude {errors.Latitude && <span className="error">{errors.Latitude}</span>}
+                    </label>
                     <input
                         type="text"
-                        name="lat"
+                        name="Latitude"
                         onChange={updateSetForm}
-                        placeholder="Latitude"
+                        placeholder="Latitudeitude"
                     />
                 </div>
                 <div className="vertical">
-                    <label>Longitude</label>
+                    <label>
+                        Longitude {errors.Longitude && <span className="error">{errors.Longitude}</span>}
+                    </label>
                     <input
                         type="text"
-                        name="lng"
+                        name="Longitude"
                         onChange={updateSetForm}
                         placeholder="Longitude"
                     />
@@ -206,7 +208,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Description"
             />
-            {errors.description && <p>{errors.description}</p>}
+            {errors.description && <span className="error">{errors.description}</span>}
 
             <hr />
 
@@ -214,11 +216,11 @@ function SpotForm() {
             <p>Catch guests' attention with a spot title that highlights what makes your place special</p>
             <input
                 type="text"
-                name="title"
+                name="Name"
                 onChange={updateSetForm}
                 placeholder="Name of your spot"
             />
-            {errors.title && <p>{errors.title}</p>}
+            {errors.Name && <span className="error">{errors.Name}</span>}
 
             <hr />
 
@@ -226,11 +228,11 @@ function SpotForm() {
             <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
             <input
                 type="text"
-                name="price"
+                name="Price"
                 onChange={updateSetForm}
                 placeholder="Price per night (USD)"
             />
-            {errors.price && <p>{errors.price}</p>}
+            {errors.Price && <span className="error">{errors.Price}</span>}
 
             <hr />
 
@@ -242,7 +244,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Preview Image URL"
             />
-            {errors.previewImageURL && <p>{errors.previewImageURL}</p>}
+            {errors.previewImageURL && <span className="error">{errors.previewImageURL}</span>}
 
             <input
                 type="text"
@@ -250,7 +252,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image2URL && <p>{errors.image2URL}</p>}
+            {errors.image2URL && <span className="error">{errors.image2URL}</span>}
 
             <input
                 type="text"
@@ -258,7 +260,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image3URL && <p>{errors.image3URL}</p>}
+            {errors.image3URL && <span className="error">{errors.image3URL}</span>}
 
             <input
                 type="text"
@@ -266,7 +268,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image4URL && <p>{errors.image4URL}</p>}
+            {errors.image4URL && <span className="error">{errors.image4URL}</span>}
 
             <input
                 type="text"
@@ -274,14 +276,16 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image5URL && <p>{errors.image5URL}</p>}
+            {errors.image5URL && <span className="error">{errors.image5URL}</span>}
 
             <hr />
 
-            <button
+            <button 
+                className = "submitButton"
                 type="submit"
                 // disabled={Object.keys(errors).length !== 0}
                 onClick={handleSubmit}
+                
             >
                 Create Spot
             </button>
