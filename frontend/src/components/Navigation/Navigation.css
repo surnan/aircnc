@@ -46,6 +46,7 @@ nav {
     white-space: nowrap;
     cursor: pointer;
     border: none;
+    color: hsla(215, 100%, 50%, 0.704);
   }
 
   .profile-dropdown.hidden {

@@ -34,7 +34,7 @@ function SpotForm() {
         const newErrors = {};
         const { description } = form;
 
-        const allKeys = ["country", "address", "city", "state", "title", "price", "previewImageURL"];
+        const allKeys = ["country", "address", "city", "state", "title", "price", "previewImageURL", "lat", "lng"];
         const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
         const goodImgExt = ["jpg", "jpeg", "png"]
 
@@ -76,7 +76,7 @@ function SpotForm() {
         e.preventDefault();
         try {
             const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
-            const {image2URL, image3URL, image4URL, image5URL} = form;
+            const { image2URL, image3URL, image4URL, image5URL } = form;
 
             const body = {
                 address,
@@ -142,7 +142,7 @@ function SpotForm() {
             <br />
 
             <label>
-                Country {errors.country && `${errors.country}`}
+                Country {errors.country && <span style={{ color: 'red' }}>{errors.country}</span>}
             </label>
             <input
                 type="text"
@@ -152,7 +152,7 @@ function SpotForm() {
             />
 
             <label>
-                Street Address {errors.address && `${errors.address}`}
+                Street Address {errors.address && <span style={{ color: 'red' }}>{errors.address}</span>}
             </label>
             <input
                 type="text"
@@ -164,7 +164,7 @@ function SpotForm() {
             <div className="horizontal">
                 <div className="vertical">
                     <label>
-                        City {errors.city && `${errors.city}`}
+                        City {errors.city && <span style={{ color: 'red' }}>{errors.city}</span>}
                     </label>
                     <input
                         type="text"
@@ -175,7 +175,7 @@ function SpotForm() {
                 </div>
                 <div className="vertical">
                     <label>
-                        State {errors.state && `${errors.state}`}
+                        State {errors.state && <span style={{ color: 'red' }}>{errors.state}</span>}
                     </label>
                     <input
                         type="text"
@@ -188,7 +188,9 @@ function SpotForm() {
 
             <div className="horizontal">
                 <div className="vertical">
-                    <label>Latitude </label>
+                    <label>
+                        Latitude {errors.lat && <span style={{ color: 'red' }}>{errors.lat}</span>}
+                    </label>
                     <input
                         type="text"
                         name="lat"
@@ -197,7 +199,9 @@ function SpotForm() {
                     />
                 </div>
                 <div className="vertical">
-                    <label>Longitude</label>
+                    <label>
+                        Longitude {errors.lng && <span style={{ color: 'red' }}>{errors.lng}</span>}
+                    </label>
                     <input
                         type="text"
                         name="lng"
@@ -218,7 +222,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Description"
             />
-            {errors.description && <p>{errors.description}</p>}
+            {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>}
 
             <hr />
 
@@ -230,7 +234,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Name of your spot"
             />
-            {errors.title && <p>{errors.title}</p>}
+            {errors.title && <span style={{ color: 'red' }}>{errors.title}</span>}
 
             <hr />
 
@@ -242,7 +246,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Price per night (USD)"
             />
-            {errors.price && <p>{errors.price}</p>}
+            {errors.price && <span style={{ color: 'red' }}>{errors.price}</span>}
 
             <hr />
 
@@ -254,7 +258,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Preview Image URL"
             />
-            {errors.previewImageURL && <p>{errors.previewImageURL}</p>}
+            {errors.previewImageURL && <span style={{ color: 'red' }}>{errors.previewImageURL}</span>}            
 
             <input
                 type="text"
@@ -262,7 +266,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image2URL && <p>{errors.image2URL}</p>}
+            {errors.image2URL && <span style={{ color: 'red' }}>{errors.image2URL}</span>}
 
             <input
                 type="text"
@@ -270,7 +274,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image3URL && <p>{errors.image3URL}</p>}
+            {errors.image3URL && <span style={{ color: 'red' }}>{errors.image3URL}</span>}
 
             <input
                 type="text"
@@ -278,7 +282,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image4URL && <p>{errors.image4URL}</p>}
+            {errors.image4URL && <span style={{ color: 'red' }}>{errors.image4URL}</span>}
 
             <input
                 type="text"
@@ -286,7 +290,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Image URL"
             />
-            {errors.image5URL && <p>{errors.image5URL}</p>}
+            {errors.image5URL && <span style={{ color: 'red' }}>{errors.image5URL}</span>}
 
             <hr />
 
