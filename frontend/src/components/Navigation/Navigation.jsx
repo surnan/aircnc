@@ -9,7 +9,6 @@ function Navigation({ isLoaded }) {
   const nav = useNavigate();
 
   const handleCreateSpotButton = () => {
-    console.log('button clicked')
     nav("/spots/new")
   }
 
@@ -20,7 +19,7 @@ function Navigation({ isLoaded }) {
         id="create-spot"
         onClick={handleCreateSpotButton}
       >
-        Create New Spot
+        Create a New Spot
       </button>
     )
   }
@@ -28,19 +27,19 @@ function Navigation({ isLoaded }) {
   return (
     <nav id="navigation">
       <img
-        src="/logo5.png"
-        className="clickable"
+        src = "/logo.png"
+        // src="/logo5.png"
+        // className="clickable"
         id="logo"
         alt="AirCnC Logo"
         onClick={() => nav("/")}
       />
 
-      <div id="right-container">
+      <div id="navRightContainer">
         {sessionUser && <CreateSpotButton />}
-      </div>
-      <div id="right-container">
         {isLoaded && <ProfileButton user={sessionUser} />}
       </div>
+
     </nav >
   );
 }

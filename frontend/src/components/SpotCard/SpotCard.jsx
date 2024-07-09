@@ -14,7 +14,8 @@ function SpotCard({ spot }) {
     return (
         <div className="container">
           <div className="spotCard">
-            <img key={id} className="clickable spotPreviewImage" src={previewImage} alt="House" />
+            {/* <img key={id} className="clickable spotPreviewImage" src={previewImage} alt="House" /> */}
+            <img key={id} className="spotPreviewImage" src={previewImage} alt="House" />
             <span className="tooltip">{name}</span>
       
             <div className="spotCardBtm">

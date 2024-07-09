@@ -35,8 +35,8 @@ function ViewAllSpots() {
       
     return (
         <div className="grid-container ">
-            {spotsArr.map(spot => (
-                <div className="spotCard">
+            {spotsArr.map((spot, idx) => (
+                <div key={`spotCard-${idx}`} className="spotCard clickable">
                     <SpotCard spot={spot}/>
                 </div>
             ))}
