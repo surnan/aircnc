@@ -1,6 +1,5 @@
-/* body {
-    margin: 0 10%;
-} */
+/* /frontend/src/Navigation/SpotForm.css */
+@import url('../../index.css');
 
 .spotForm {
     display: flex;

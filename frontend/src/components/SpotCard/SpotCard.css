@@ -1,3 +1,6 @@
+/* /frontend/src/Navigation/SpotCard.css */
+@import url('../../index.css');
+
 .container {
   display: grid;
   background-color: lightpink;
@@ -12,8 +15,6 @@
 .spotCard {
   display: inline-block;
   background-color: lightyellow;
-  /* border: 1px black solid;
-  box-shadow: 10px 5px 5px lightgray; */
   position: relative;
 }
 
@@ -44,7 +45,7 @@
   z-index: 1;
 }
 
-.clickable:hover + .tooltip {
+.spotCard:hover  .tooltip {
   visibility: visible;
   opacity: 1;
 }
