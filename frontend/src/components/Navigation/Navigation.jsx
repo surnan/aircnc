@@ -1,12 +1,13 @@
-import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 
+
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
   const nav = useNavigate();
+
 
   const handleCreateSpotButton = () => {
     nav("/spots/new")
@@ -24,15 +25,21 @@ function Navigation({ isLoaded }) {
     )
   }
 
+
+  const handleLogo = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    nav("/")
+  }
+
   return (
     <nav id="navigation">
       <img
-        src = "/logo.png"
-        // src="/logo5.png"
-        // className="clickable"
+        src="/logo.png"
         id="logo"
         alt="AirCnC Logo"
-        onClick={() => nav("/")}
+        className='clickable'
+        onClick={handleLogo}
       />
 
       <div id="navRightContainer">

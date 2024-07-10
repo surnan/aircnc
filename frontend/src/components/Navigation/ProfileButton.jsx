@@ -46,8 +46,12 @@ function ProfileButton({ user }) {
   return (
     <nav>
 
-      <div id='PROFILE-RIGHT-CONTAINER'>
-        <FaBars onClick={toggleMenu} className="fa-icon" />
+      <div
+        id='PROFILE-RIGHT-CONTAINER'
+        className='clickable'
+        onClick={toggleMenu}
+      >
+        <FaBars className="fa-icon" />
         <FaUserCircle className="fa-icon" />
       </div>
 
