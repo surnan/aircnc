@@ -2,87 +2,72 @@
 
 import { csrfFetch } from "./csrf";
 
-// Action Types
-const LOAD_SPOTS = "spots/loadSpots";
+const LOAD_SPOTS_ALL = "spots/loadSpotAll"
+const LOAD_SPOTS_ONE = "spots/loadSpotOne"
 
 // Actions
-export const loadSpots = (data) => {
+const loadSpotsAll = (data) => {
     return {
-        type: LOAD_SPOTS,
-        data,
+        type: LOAD_SPOTS_ALL,
+        payload: data
     };
 };
 
-export const insertSpot = (payload) => async (dispatch) => {
-    const { address, city, state, country, lat, lng, name, description, price } = payload;
-    const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
+const loadSpotsOne = (data) => {
+    return {
+        type: LOAD_SPOTS_ONE,
+        payload: data
+    };
+};
 
+//Thunks
+export const getSpotsAllThunk = () => async (dispatch) => {
+    const response = await csrfFetch('/api/spots')
+    const data = await response.json();
+    dispatch(loadSpotsAll(data))
+    return data
+}
 
-    try {
-        const response = await csrfFetch("/api/spots", {
-            method: "POST",
-            body: JSON.stringify({
-                address,
-                city,
-                state,
-                country,
-                lat,
-                lng,
-                name,
-                description,
-                price
-            }),
-        });
-
-        const resJSON = await response.json();
-
-        const allImageURLs = [
-            { url: previewImageURL, preview: "true" },
-            { url: image2URL, preview: "false" },
-            { url: image3URL, preview: "false" },
-            { url: image4URL, preview: "false" },
-            { url: image5URL, preview: "false" },
-        ]
-
-        for (const { url, preview } of allImageURLs) {
-            if (url) {
-                await csrfFetch(`/api/spots/${resJSON.id}/images`,
-                    {
-                        method: "POST",
-                        body: JSON.stringify({
-                            url,
-                            preview
-                        })
-                    })
-            }
-        }
-    } catch (err) {
-        console.log("Failed to insert spot: ", err)
+export const getSpotsOneThunk = (spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}`)
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(loadSpotsOne(data))
+        return data
     }
 }
 
-// Thunks
-export const fetchSpots = () => async (dispatch) => {
-    const response = await fetch("/api/spots");
-    const data = await response.json();
 
-    const spotsObject = {};
-    for (let key in data.Spots) {
-        spotsObject[key] = data.Spots[key];
-    }
-    dispatch(loadSpots(spotsObject));
-};
+// State object
+const initialState = {
+    allSpots: [],
+    byId: {}
+}
 
-
-// Reducer
-const spotsReducer = (state = {}, action) => {
+//Reducers
+const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case LOAD_SPOTS:
-            return { ...state, ...action.data };
+        case LOAD_SPOTS_ALL: {
+
+            let newState = {...state}
+            newState.allSpots = action.payload.Spots;
+
+            //"S" Spots because of the JSON.  
+            //"s" lower-case inside 'spots' reducer is not factor in next line.
+
+            for (let spot of action.payload.Spots){
+                newState.byId[spot.id] = spot
+            }
+            return newState;
+        }
+        case LOAD_SPOTS_ONE:
+
         default:
-            return state;
+            {
+                return state
+            }
+
     }
-};
+}
 
 export default spotsReducer;
-

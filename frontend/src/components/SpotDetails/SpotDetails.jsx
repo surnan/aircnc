@@ -1,5 +1,5 @@
 //frontend/src/components/SpotDetails/SpotDetails.jsx
-import "./SpotCard.css";
+import "./SpotDetails.css";
 import { useNavigate } from "react-router-dom";
 
 
