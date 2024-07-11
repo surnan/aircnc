@@ -3,6 +3,22 @@ import "./SpotForm.css"
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from "react-router-dom";
+
+
+function SpotForm() {
+    const nav = useNavigate();
+    const dispatch = useDispatch();
+}
+
+export default SpotForm;
+
+
+/*
+//frontend/src/components/SpotCard/SpotCard.jsx
+import "./SpotForm.css"
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
 import { insertSpot } from "../../store/spots";
 
 
@@ -315,3 +331,4 @@ function SpotForm() {
 }
 
 export default SpotForm;
+*/
