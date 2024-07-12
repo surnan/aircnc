@@ -22,10 +22,6 @@ const loadReviewsUser = () => {
 };
 
 //Thunks
-
-
-
-
 export const getReviewsSpotThunk = (spotId) => async (dispatch) => {
     // const response = await csrfFetch('/api/spots/:spotId/reviews')
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`)
@@ -52,10 +48,14 @@ const initialState = {
 const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_REVIEWS_SPOT: {
-            let newState = {...state}
 
+            let newState = {...state}
             newState.allReviews = action.payload.Reviews;
 
+
+            for (let review of action.payload.Reviews){
+                newState.byId[review.id] = review
+            }
 
             return newState;
         }

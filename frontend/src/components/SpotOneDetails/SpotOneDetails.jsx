@@ -35,6 +35,15 @@ function SpotOneDetails() {
     return (
         <div>
             <p>SpotDetails Page with id={spotId}</p>
+            {
+                reviewsArr.map((review, idx) => (
+                    <div
+                    key={`${review.id}-${idx}-review`} 
+                    >
+                        <h2>{review.review}</h2>
+                    </div>
+                ))
+            }
         </div>
     );
 
