@@ -15,6 +15,12 @@ function Splash() {
   const [isLoaded, setIsLoaded] = useState(false);
 
 
+  const handleSpotClick = (e, spot) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('click')
+    nav(`/spots/${spot.id}`)
+  }
 
   useEffect(() => {
     dispatch(getSpotsAllThunk())
@@ -25,7 +31,11 @@ function Splash() {
     <div className="grid-container">
       {
         spotsArr.map((spot, idx) => (
-          <div key={`${spot.id}-${idx}-spot`}>
+          <div 
+          key={`${spot.id}-${idx}-spot`} 
+          className="clickable"
+          onClick={ e => handleSpotClick(e, spot)}
+          >
             <SpotCard spot={spot} />
           </div>
         ))
