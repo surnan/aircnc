@@ -60,7 +60,10 @@ const spotsReducer = (state = initialState, action) => {
             }
             return newState;
         }
-        case LOAD_SPOTS_ONE:
+        case LOAD_SPOTS_ONE: {
+            let newState = {...state}
+            return newState
+        }
 
         default:
             {
