@@ -1,10 +1,12 @@
 //frontend/src/components/SpotCard/SpotCard.jsx
 import "./Splash.css";
 
+import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getSpotsAllThunk } from "../../store/spots";
+import SpotCard from "../SpotCard/SpotCard";
 
 function Splash() {
   const dispatch = useDispatch();
@@ -20,12 +22,17 @@ function Splash() {
 
 
   return (
-    <div>
-      {spotsArr.map((spot, idx)=> (
-        <p>{spot.name}</p>
-      ))}
+    <div className="grid-container">
+      {
+        spotsArr.map((spot, idx) => (
+          <div key={`${spot.id}-${idx}-spot`}>
+            <SpotCard spot={spot} />
+          </div>
+        ))
+      }
     </div>
   );
 }
-
 export default Splash;
+
+
