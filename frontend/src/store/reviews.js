@@ -14,7 +14,7 @@ const loadReviewsSpot = (data) => {
     };
 };
 
-const loadReviewsUser = (data) => {
+const loadReviewsUser = () => {
     return {
         type: LOAD_REVIEWS_USER,
         payload: data
@@ -22,18 +22,22 @@ const loadReviewsUser = (data) => {
 };
 
 //Thunks
+
+
+
+
 export const getReviewsSpotThunk = (spotId) => async (dispatch) => {
     // const response = await csrfFetch('/api/spots/:spotId/reviews')
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`)
     const data = await response.json();
-    dispatch(loadSpotsAll(data))
+    dispatch(loadReviewsSpot(data))
     return data
 }
 
 export const getReviewsUserThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/reviews/current')
     const data = await response.json();
-    dispatch(loadSpotsAll(data))
+    dispatch(loadReviewsUser())
     return data
 }
 
@@ -49,18 +53,17 @@ const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_REVIEWS_SPOT: {
             let newState = {...state}
+
+            newState.allReviews = action.payload.Reviews;
+
+
             return newState;
         }
         case LOAD_REVIEWS_USER: {
             let newState = {...state}
             return newState
         }
-
-        default:
-            {
-                return state
-            }
-
+        default: {return state}
     }
 }
 
