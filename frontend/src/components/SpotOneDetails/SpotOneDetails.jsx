@@ -4,18 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { getSpotsAllThunk } from "../../store/spots";
+import { getSpotsOneThunk } from "../../store/spots";
 
 
-function SpotOneDetails({spot}) {
+function SpotOneDetails() {
 
-    let id = useParams.id
-    console.log("id = ", id)
+    const {spotId} = useParams()
 
-    const dispatch = useDispatch();
+    console.log(`spotId = ${spotId}`)
+
+
+    
     return (
         <div>
-            <p>SpotDetails Page with id={id}</p>
+            <p>SpotDetails Page with id={spotId}</p>
         </div>
     );
 
