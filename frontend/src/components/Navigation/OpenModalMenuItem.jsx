@@ -1,5 +1,6 @@
 // frontend/src/components/Navigation/OpenModalMenuItem.jsx
 
+import './OpenModalMenuItem.css'
 import { useModal } from '../../context/Modal';
 
 function OpenModalMenuItem({

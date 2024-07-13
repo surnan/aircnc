@@ -27,6 +27,48 @@ function LoginFormModal() {
   };
 
   return (
+    <div className='loginModal'>
+      <h1>Log In</h1>
+      <form
+        onSubmit={handleSubmit}
+        className='verticalFlexContainer'
+      >
+
+        <input
+          type="text"
+          value={credential}
+          placeholder='Username or Email'
+          onChange={(e) => setCredential(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          value={password}
+          placeholder='Password'
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+
+        {errors.credential && (<p>{errors.credential}</p>)}
+        <button type="submit">Log In</button>
+
+        <button> Demo User </button>
+
+      </form>
+    </div>
+  );
+}
+
+export default LoginFormModal;
+
+
+
+
+/*
+
+  return (
     <>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
@@ -55,6 +97,4 @@ function LoginFormModal() {
       </form>
     </>
   );
-}
-
-export default LoginFormModal;
+  */

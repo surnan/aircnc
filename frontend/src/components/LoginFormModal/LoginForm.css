@@ -1,7 +1,21 @@
-/* /frontend/src/Navigation/LoginForm.css */
+/* /frontend/src/Navigation/SpotCard.css */
 @import url('../../index.css');
+
+
+/*  width was set by H1 character count*/
 
 h1 {
     display: flex;
     justify-content: center;
+  }
+
+
+  .verticalFlexContainer {
+    background-color: aqua;
+  } 
+
+.loginModal {
+    width: 350px;
+    background-color: orange;
+    border-radius: 35px;
   }
