@@ -23,9 +23,11 @@ const loadSpotsOne = (data) => {
 //Thunks
 export const getSpotsAllThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots')
-    const data = await response.json();
-    dispatch(loadSpotsAll(data))
-    return data
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(loadSpotsAll(data))
+        return data
+    }
 }
 
 export const getSpotsOneThunk = (spotId) => async (dispatch) => {
@@ -41,35 +43,29 @@ export const getSpotsOneThunk = (spotId) => async (dispatch) => {
 // State object
 const initialState = {
     allSpots: [],
-    byId: {}
+    byId: {},
+    single: {} 
 }
 
 //Reducers
 const spotsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_SPOTS_ALL: {
-
-            let newState = {...state}
+            let newState = { ...state }
             newState.allSpots = action.payload.Spots;
-
             //"S" Spots because of the JSON.  
             //"s" lower-case inside 'spots' reducer is not factor in next line.
-
-            for (let spot of action.payload.Spots){
+            for (let spot of action.payload.Spots) {
                 newState.byId[spot.id] = spot
             }
             return newState;
         }
         case LOAD_SPOTS_ONE: {
-            let newState = {...state}
+            let newState = { ...state }
+            newState.single = action.payload
             return newState
         }
-
-        default:
-            {
-                return state
-            }
-
+        default: {return state}
     }
 }
 
