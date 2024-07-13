@@ -13,6 +13,20 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
+
+
+  const demoLogin = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    return dispatch(sessionActions.login({ credential: 'demo@user.io', password: 'password' })).then(closeModal)
+      .catch(
+        async (res) => {
+          const data = await res.json();
+          if (data?.errors) setErrors(data.errors);
+        }
+      );
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
@@ -27,7 +41,7 @@ function LoginFormModal() {
   };
 
   return (
-    <div className='loginModal'>
+    <>
       <h1>Log In</h1>
       <form
         onSubmit={handleSubmit}
@@ -36,65 +50,28 @@ function LoginFormModal() {
 
         <input
           type="text"
+          placeholder=' Username or Email'
           value={credential}
-          placeholder='Username or Email'
           onChange={(e) => setCredential(e.target.value)}
           required
         />
 
         <input
           type="password"
-          value={password}
           placeholder='Password'
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-
-
-        {errors.credential && (<p>{errors.credential}</p>)}
-        <button type="submit">Log In</button>
-
-        <button> Demo User </button>
-
-      </form>
-    </div>
-  );
-}
-
-export default LoginFormModal;
-
-
-
-
-/*
-
-  return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
-          <input
-            type="text"
-            value={credential}
-            onChange={(e) => setCredential(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
         <button type="submit">Log In</button>
+
+        <button onClick={(e) => demoLogin(e)}>log in as demo user</button>
       </form>
     </>
   );
-  */
+}
+
+export default LoginFormModal;

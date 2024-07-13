@@ -12,10 +12,22 @@ h1 {
 
   .verticalFlexContainer {
     background-color: aqua;
+    padding: 25px 100px;
   } 
 
 .loginModal {
     width: 350px;
-    background-color: orange;
+    /* background-color: orange; */
     border-radius: 35px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+
+  .demoButton{
+    width: auto; 
+    /* margin-top: 1rem; */
+    margin: 1rem;
   }
