@@ -99,7 +99,7 @@ function SpotOneDetails() {
 
                     <div className="xFlex">
                         <div className="xFlex"><span className="priceFont">{`$${price}`}</span>{"\u00A0"}night </div>
-                        <div className="xFlex">&#9733; {avgStarRating} {"\u00A0"}{"\u00A0"} # reviews </div>
+                        <div className="xFlex">&#9733; {avgStarRating} &#183; # reviews </div>
                     </div>
 
                     <button className="reserveBtn"> Reserve </button>
@@ -107,15 +107,11 @@ function SpotOneDetails() {
             </div>
 
 
-            <br />
             <hr />
-            <br />
 
-            <div className="horizontalFlexContainer">
-                <img key={spotId} className="starIcon" src={starPath} alt="star" />
-                {avgStarRating}
-                <p>reviews</p>
-            </div>
+
+            <h2 className="xFlex">&#9733; {avgStarRating} &#183; # reviews </h2>
+
             {
                 reviewsArr.map((review, idx) => (
                     <div key={`${review.id}-${idx}-review`} >
@@ -128,27 +124,3 @@ function SpotOneDetails() {
 }
 
 export default SpotOneDetails;
-
-
-/*
-            <div>
-                <h2>Spot Details:</h2>
-                {spotsObj && spotsObj.Owner ? (
-                    <>
-                        <p>address - {spotsObj.address}</p>
-                        <p>city - {spotsObj.city}</p>
-                        <p>Owner.firstName = {spotsObj.Owner.firstName}</p>
-                    </>
-                ) : (
-                    <p>Loading spot details...</p>
-                )}
-            </div>
-            */
-
-
-
-
-
-/*
-
-*/
