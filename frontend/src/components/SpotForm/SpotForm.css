@@ -1,6 +1,4 @@
 /* /frontend/src/Navigation/SpotForm.css */
-@import url('../../index.css');
-
 .spotForm {
     display: flex;
     flex-direction: column;
