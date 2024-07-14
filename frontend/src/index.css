@@ -1,14 +1,15 @@
 /* frontend/src/index.css */
-/* Sitewide Styles */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: sans-serif;
-    border: 1px red dashed;
+    /* border: 2px red solid; */
+    /* background-color: blueviolet; */
 }
 
+/* 
 body {
     padding: 15px
 }
@@ -28,30 +29,13 @@ body {
     display: grid;
     grid-auto-flow: column;
     margin: auto;
-    /* background-color: pink; */
 }
 
 .gridRow {
     display: grid;
     grid-auto-flow: row;
     margin: auto;
-    /* background-color: pink; */
 }
-
-.grid-container {
-    display: grid;
-    grid-gap: 50px;
-    grid-auto-flow: row;
-    width: 75%;
-    margin: auto;
-}
-
-/* .grid-container img {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-} */
-
 
 .horizontalFlexContainer {
     display: flex;
@@ -63,6 +47,19 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* gap: 1rem; */
-}
+} */
 
+
+/* .grid-container {
+    display: grid;
+    grid-gap: 50px;
+    grid-auto-flow: row;
+    width: 75%;
+    margin: auto;
+} */
+
+/* .grid-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+} */

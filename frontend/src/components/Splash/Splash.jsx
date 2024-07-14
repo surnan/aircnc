@@ -29,12 +29,12 @@ function Splash() {
 
 
   return (
-    <div className="grid-container">
+    <div className="splashSpotGrid">
       {
         spotsArr.map((spot, idx) => (
           <div 
           key={`${spot.id}-${idx}-spot`} 
-          className="clickable"
+          className="clickable spotSquare"
           onClick={ e => handleSpotClick(e, spot)}
           >
             <SpotCard spot={spot} />

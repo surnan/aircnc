@@ -1,3 +1,3 @@
-import ViewAllSpots from "./ViewAllSpots";
+// import ViewAllSpots from "./ViewAllSpots";
 
-export default ViewAllSpots;
+// export default ViewAllSpots;

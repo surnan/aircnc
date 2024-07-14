@@ -11,12 +11,32 @@ function SpotCard({ spot }) {
 
 
   return (
+      <div className="spotCard">
+        <img className="spotPreviewImage" src={previewImage} alt="House" />
+        <span className="tooltip">{name}</span>
+        <div className="spotCardBtm">
+          <div className="spotCardBtm left">
+            <p>{city}, {state}</p>
+          </div>
+          <div className="spotCardBtm right">
+            <img key={id} className="starIcon" src={starPath} alt="star" />
+            {avgRating}
+          </div>
+        </div>
+      </div>
+  )
+}
+
+export default SpotCard;
+
+
+
+/*
+  return (
     <div className="container">
       <div className="spotCard">
 
-        {/* <img key={`${name}-${id}`} className="spotPreviewImage clickable" src={previewImage} alt="House" /> */}
-        {/* <img className="spotPreviewImage clickable" src={previewImage} alt="House" /> */}
-        <img className="spotPreviewImage" src={previewImage} alt="House" />
+         <img className="spotPreviewImage" src={previewImage} alt="House" />
         <span className="tooltip">{name}</span>
         <div className="spotCardBtm">
           <div className="spotCardBtm left">
@@ -30,6 +50,4 @@ function SpotCard({ spot }) {
       </div>
     </div>
   )
-}
-
-export default SpotCard;
+  */
