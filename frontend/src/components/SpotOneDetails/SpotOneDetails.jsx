@@ -96,19 +96,14 @@ function SpotOneDetails() {
                     </p>
                 </div>
                 <div className="gridRow reserveBtnDiv">
-                    <h4>
-                        {`$${price} night`} {"\u00A0"}
-                        <img key={spotId} className="starIcon" src={starPath} alt="star" />
-                        {"\u00A0"}{"\u00A0"} {avgStarRating}
-                        reviews
-                    </h4>
 
-                    <button className="reserveBtn">
-                        Reserve
-                    </button>
+                    <div className="xFlex">
+                        <div className="xFlex"><span className="priceFont">{`$${price}`}</span>{"\u00A0"}night </div>
+                        <div className="xFlex">&#9733; {avgStarRating} {"\u00A0"}{"\u00A0"} # reviews </div>
+                    </div>
 
+                    <button className="reserveBtn"> Reserve </button>
                 </div>
-
             </div>
 
 
