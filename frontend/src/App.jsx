@@ -31,8 +31,9 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {path: "/", element: <Splash />},
-      {path: '/spots/:spotId', element: <SpotOneDetails />},
       {path: "/spots/new",element: <SpotForm />},
+      {path: '/spots/:spotId', element: <SpotOneDetails />},
+      {path: "/spots/:spotId/edit",element: <SpotForm />},
       {path: "*",element: <p>Page Not Found</p>}
     ]
   }
