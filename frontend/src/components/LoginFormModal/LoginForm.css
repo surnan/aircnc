@@ -4,12 +4,6 @@
 
 /*  width was set by H1 character count*/
 
-h1 {
-    display: flex;
-    justify-content: center;
-  }
-
-
   .verticalFlexContainer {
     background-color: aqua;
     padding: 25px 100px;

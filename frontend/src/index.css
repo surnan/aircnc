@@ -5,8 +5,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* border: 1px red dashed; */
     font-family: sans-serif;
+    border: 1px red dashed;
 }
 
 body {
@@ -44,5 +44,5 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    /* gap: 1rem; */
 }
