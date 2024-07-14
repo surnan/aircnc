@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from "react-router-dom";
-import { getSpotsOneThunk } from "../../store/spots";
+import { getSpotsOneThunk, insertSpot } from "../../store/spots";
 import "./SpotForm.css"
 
 
@@ -58,6 +58,37 @@ function SpotForm() {
             setImage4(sideImageURLs[3]?.url || "");
         }
     }, [spot]);
+
+
+
+    const handleSubmitForce = async (e) => {
+        e.preventDefault();
+        try {
+
+            const body = {
+                address: "15 Times Square Circle",
+                city: "New York",
+                state: "NY",
+                country: "USA",
+                lat: 40.75810470018865,
+                lng: -73.98543531365068,
+                name: "Times Square",
+                description: "asdf1",
+                price: 100.00,
+                previewImageURL: "https://via.placeholder.com/600.jpg",
+                image2URL: "https://images.unsplash.com/photo-1503179008861-d1e2b41f8bec?q=80&w=1769&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                image3URL: "https://media.istockphoto.com/id/1182680589/photo/low-angle-view-of-many-advertising-signs-in-times-square-manhattan-new-york-city.jpg?s=2048x2048&w=is&k=20&c=-JHHhOXZBlE8z_1ZFNqp0rhNLNEyO0S1M_syuJnriMQ=",
+                image4URL: "https://media.istockphoto.com/id/511030879/photo/times-square-new-york-city.jpg?s=2048x2048&w=is&k=20&c=6Y_xuCpoYQgAcwINQXhSzbfObd6zGPZ2pOfTsNi7MjQ=",
+                image5URL: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Dice.png",
+            };
+
+            console.log(body, "body")
+            dispatch(insertSpot(body));
+            nav("/")
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
 
     return (
@@ -232,13 +263,14 @@ function SpotForm() {
             <br />
             <button
                 type="submit"
-            // disabled={Object.keys(errors).length !== 0}
-            // onClick={handleSubmitForce}
+            disabled={Object.keys(errors).length !== 0}
+            onClick={handleSubmitForce}
             >
                 FORCE CREATE
             </button>
         </form>
     )
+
 
 
 
