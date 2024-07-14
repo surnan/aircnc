@@ -23,6 +23,14 @@ body {
     height: auto;
 }
 
+.grid-col {
+    display: grid;
+    grid-auto-flow: column;
+    margin: auto;
+    /* background-color: pink; */
+}
+
+
 .grid-container {
     padding: 30px 0;
     display: grid;
@@ -31,8 +39,8 @@ body {
     grid-auto-flow: row;
     width: 75%;
     margin: auto;
-    /* background-color: pink; */
 }
+
 
 .horizontalFlexContainer {
     display: flex;
