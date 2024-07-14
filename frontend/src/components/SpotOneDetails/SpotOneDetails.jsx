@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getReviewsSpotThunk } from "../../store/reviews";
 import { getSpotsOneThunk } from "../../store/spots";
 // import { restoreUser } from "../../store/session";
+const starPath = "assets/icons/star.png"
 
 function SpotOneDetails() {
     const dispatch = useDispatch();
@@ -26,7 +27,7 @@ function SpotOneDetails() {
     }, [dispatch, spotId]);
 
     const { name, city, state, country, address } = spotsObj || {};
-    const { avStarRating, price, Owner, SpotImages } = spotsObj || {};
+    const { avgStarRating, price, Owner, SpotImages } = spotsObj || {};
 
     let previewURL;
     let nonPreviewURL = []
@@ -53,15 +54,6 @@ function SpotOneDetails() {
                 nonPreviewURL.push(previewURL)
             }
         }
-
-        
-
-
-
-
-
-
-
     }
 
 
@@ -87,29 +79,63 @@ function SpotOneDetails() {
             </div>
 
 
-            <h2>
-                Hosted by {"\u00A0"}
-                {Owner && Owner.firstName} {Owner && Owner.lastName}
-            </h2>
 
 
+            <div className="gridCol middlePanel">
+                <div className="gridRow">
+                    <h2>
+                        Hosted by {"\u00A0"}
+                        {Owner && Owner.firstName} {Owner && Owner.lastName}
+                    </h2>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum reprehenderit explicabo esse eius distinctio quisquam fuga ratione, exercitationem alias deleniti veniam enim sunt id provident ab nesciunt vero nemo debitis.
+                        Quo, molestias possimus voluptas consequuntur accusamus id necessitatibus! Corporis rem perferendis, amet quisquam culpa voluptates commodi alias expedita aliquam reiciendis vel voluptatem ducimus labore sequi, cum, quae accusantium voluptate officiis.
+                        Quos quo odio voluptates dolores saepe sunt, fugit at dolor pariatur commodi debitis ut facilis officiis similique ratione, rem tenetur, nostrum obcaecati placeat dolorum suscipit. Quibusdam aperiam culpa perferendis nobis!
+                        Optio amet quis quod ipsam maiores officiis reiciendis vero. Ullam expedita sint minima laborum laudantium ut unde? Officia sunt repellat quisquam ut, delectus mollitia explicabo minima perferendis aut aliquid ipsa.
+                        Maiores sunt labore commodi delectus, atque corporis ipsum suscipit consequatur numquam iure accusantium. Vel quaerat impedit mollitia, rem ut iste deserunt voluptate sunt magni, magnam expedita error repellendus placeat excepturi?
+                        Recusandae perferendis dignissimos animi provident neque porro, amet velit asperiores quo saepe nemo. Reprehenderit quo voluptatum nostrum eveniet ad quasi eos quis sit cum aspernatur, minus eligendi error rem ab.
+                    </p>
+                </div>
+                <div className="gridRow reserveBtnDiv">
+                    <h4>
+                        {`$${price} night`} {"\u00A0"}
+                        <img key={spotId} className="starIcon" src={starPath} alt="star" />
+                        {"\u00A0"}{"\u00A0"} {avgStarRating}
+                        reviews
+                    </h4>
+
+                    <button className="reserveBtn">
+                        Reserve
+                    </button>
+
+                </div>
+
+            </div>
 
 
-            <p>SpotDetails Page with id={spotId}</p>
             <br />
+            <hr />
+            <br />
+
+            <div className="horizontalFlexContainer">
+                <img key={spotId} className="starIcon" src={starPath} alt="star" />
+                {avgStarRating}
+                <p>reviews</p>
+            </div>
             {
                 reviewsArr.map((review, idx) => (
-                    <div
-                        key={`${review.id}-${idx}-review`}
-                    >
+                    <div key={`${review.id}-${idx}-review`} >
                         <h4>review: {review.review}</h4>
                     </div>
                 ))
             }
-            <br />
-            <br />
+        </div>
+    );
+}
+
+export default SpotOneDetails;
 
 
+/*
             <div>
                 <h2>Spot Details:</h2>
                 {spotsObj && spotsObj.Owner ? (
@@ -122,18 +148,7 @@ function SpotOneDetails() {
                     <p>Loading spot details...</p>
                 )}
             </div>
-
-            <br />
-
-
-        </div>
-    );
-}
-
-export default SpotOneDetails;
-
-
-
+            */
 
 
 

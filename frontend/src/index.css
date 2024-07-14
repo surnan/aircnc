@@ -13,6 +13,7 @@ body {
     padding: 15px
 }
 
+
 .error {
     margin: 0;
     color: red;
@@ -23,23 +24,33 @@ body {
     height: auto;
 }
 
-.grid-col {
+.gridCol {
     display: grid;
     grid-auto-flow: column;
     margin: auto;
     /* background-color: pink; */
 }
 
+.gridRow {
+    display: grid;
+    grid-auto-flow: row;
+    margin: auto;
+    /* background-color: pink; */
+}
 
 .grid-container {
-    padding: 30px 0;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 50px;
     grid-auto-flow: row;
     width: 75%;
     margin: auto;
 }
+
+/* .grid-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+} */
 
 
 .horizontalFlexContainer {
@@ -54,3 +65,4 @@ body {
     align-items: center;
     /* gap: 1rem; */
 }
+
