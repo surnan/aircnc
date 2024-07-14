@@ -1,5 +1,4 @@
 /* /frontend/src/Navigation/SpotCard.css */
-@import url('../../index.css');
 
 .spotPreviewImage {
   width: 100%;
@@ -8,7 +7,6 @@
 }
 
 .spotCard {
-  display: inline-block;
   background-color: lightyellow;
   position: relative;
 }
@@ -40,7 +38,7 @@
   z-index: 1;
 }
 
-.spotCard:hover  .tooltip {
+.spotCard:hover .tooltip {
   visibility: visible;
   opacity: 1;
 }
