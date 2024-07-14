@@ -5,10 +5,10 @@
     grid-template-columns: 1fr 1fr 1fr 1fr;
     background-color: aquamarine;
     align-items: center;
-    gap: 150px;
+    gap: 15px;
     grid-auto-flow: row;
     margin: auto;
-    padding: 100px;
+    /* padding: 100px; */
 }
 
 .splashSpotGrid img {

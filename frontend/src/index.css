@@ -9,6 +9,11 @@
     /* background-color: blueviolet; */
 }
 
+body {
+    margin-bottom: 100px;
+}
+
+
 /* 
 body {
     padding: 15px
