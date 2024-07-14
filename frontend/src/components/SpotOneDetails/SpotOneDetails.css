@@ -1,18 +1,12 @@
 /*  //frontend/src/components/SpotDetails.css */
 @import url('../../index.css');
 
-/* .imageGridContainer{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-} */
-
-
 .container {
     display: grid;
-    /* grid-template-columns: repeat(4, 1fr); */
     margin: 15px;;
     gap: 15px;
     grid-auto-rows: minmax(150px, auto);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .box {
@@ -22,12 +16,10 @@
     pad: 0.5rem;
 }
 
-
 .box img {
     height: 100%;
     width: 100%;
     object-fit: fill;
-
 }
 
 .box:first-child{
@@ -43,19 +35,43 @@
 .reserveBtnDiv{
     border: 2px solid black;
     border-radius: 15px;
-    padding: 10px;
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    justify-content: space-evenly;
 }
 
 .reserveBtn{
     background-color: hsla(0, 94%, 55%, 0.885);
     color: white;
     height: 3rem;
-    border-radius: 10px;
+    border-radius: 5px;
     border: 2px solid black;
     box-shadow: 10px 5px 5px black;
 }
 
-.starIcon {
-    width: 2em;
-    height: auto;
-  }
+.gridCol{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.priceFont{
+    font-size: x-large;
+}
+
+.reserveBtn {
+    width: 100%;
+}
+
+.xFlex {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+body {
+    width: 75%;
+    margin: auto;
+}
