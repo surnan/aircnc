@@ -42,6 +42,26 @@ function SpotOneDetails() {
                 nonPreviewURL.push(img.url)
             }
         }
+
+        console.log('a')
+
+
+        for (let i = 0; i < 5; i++) {
+            console.log('b ... nonPreviewURL', nonPreviewURL)
+            if (!SpotImages[i]) {
+                console.log('c')
+                nonPreviewURL.push(previewURL)
+            }
+        }
+
+        
+
+
+
+
+
+
+
     }
 
 
@@ -54,28 +74,22 @@ function SpotOneDetails() {
                 {country}
             </h3>
 
-            <div>
-                <img src={previewURL} alt={`Spot 111`} />
+            <div className="container">
+                <div className="box">
+                    <img src={previewURL} alt={`Spot 111`} />
+                </div>
+
+                {nonPreviewURL.map((url, idx) => (
+                    <div dey={`${url}-${idx}`} className="box">
+                        <img src={nonPreviewURL[idx]} alt={`Spot 111`} />
+                    </div>
+                ))}
             </div>
 
-
-            <div>
-                {spotsObj && nonPreviewURL ? (
-                    nonPreviewURL.map((url, idx) => (
-                        <div key={`${url}-${idx}`}>
-                            <br />
-                            <br />
-                            <img src={url} alt={`Spot ${idx}`} />
-                        </div>
-                    ))
-                ) : (
-                    <p>Loading urls...</p>
-                )}
-            </div>
 
             <h2>
-                Hosted by
-                {}
+                Hosted by {"\u00A0"}
+                {Owner && Owner.firstName} {Owner && Owner.lastName}
             </h2>
 
 

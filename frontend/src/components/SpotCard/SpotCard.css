@@ -1,10 +1,10 @@
 /* /frontend/src/Navigation/SpotCard.css */
 @import url('../../index.css');
 
-.container {
+/* .container {
   display: grid;
   background-color: lightpink;
-}
+} */
 
 .spotPreviewImage {
   width: 100%;
