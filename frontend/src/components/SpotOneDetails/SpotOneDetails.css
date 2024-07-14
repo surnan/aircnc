@@ -1,4 +1,9 @@
-/* frontend/src/components/SpotOneDetails/SpotOneDetails.css */
+/*  //frontend/src/components/SpotDetails.css */
 @import url('../../index.css');
+
+.imageGridContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
 
 
