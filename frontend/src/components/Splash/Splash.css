@@ -3,7 +3,7 @@
 .splashSpotGrid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     align-items: center;
     gap: 15px;
     grid-auto-flow: row;
@@ -27,5 +27,5 @@
 .spotSquare {
     width: 100%;
     aspect-ratio: 1 / 1;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
 }
