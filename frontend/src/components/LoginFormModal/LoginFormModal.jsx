@@ -57,6 +57,7 @@ function LoginFormModal() {
     <>
       <h1 className="center">Log In</h1>
       <form onSubmit={handleSubmit} className='verticalFlexContainer'>
+      {showError &&  <p style={{ color: 'red', padding: '1rem' }}>The provided credentials were invalid</p>}
         <input
           type="text"
           placeholder=' Username or Email'
@@ -66,7 +67,6 @@ function LoginFormModal() {
           required
         />
 
-       {showError &&  <p style={{ color: 'red' }}>The provided credentials were invalid</p>}
 
         <input
           type="password"
