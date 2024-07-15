@@ -1,12 +1,15 @@
 /* /frontend/src/Navigation/SpotCard.css */
-@import url('../../index.css');
-
 
 /*  width was set by H1 character count*/
 
   .verticalFlexContainer {
-    background-color: aqua;
-    padding: 25px 100px;
+    display: flex;
+    flex-direction: column;
+    /* background-color: lightgreen; */
+    /* padding: 35px; */
+    padding: 10px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
   } 
 
 .loginModal {
@@ -22,6 +25,41 @@
 
   .demoButton{
     width: auto; 
-    /* margin-top: 1rem; */
     margin: 1rem;
+  }
+
+  .center {
+    text-align: center;
+  }
+
+
+  .formInput {
+    width: 100%;
+    margin: 10px 0; 
+    padding: 10px; 
+    border-radius: 4px;
+  }
+  
+  
+  .loginButton {
+    width: 100%;
+    margin: 15px 0;
+    border-radius: 4px;
+    height: 3.5rem;
+    box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
+    background: transparent;
+  }
+
+  .demoButton {
+    width: 100%;
+    margin: 5px 0;
+    border-radius: 4px;
+    height: 3.5rem;
+    /* background-color: lightcoral; */
+    border: none;
+    font-size: large;
+    text-decoration: underline;
+    font-weight: bold;
+    color: hsla(240, 65%, 51%, 0.656);
+    background: transparent
   }
