@@ -41,6 +41,107 @@ export const getSpotsOneThunk = (spotId) => async (dispatch) => {
 
 
 export const insertSpot = (payload) => async (dispatch) => {
+    const { address, city, state, country, lat, lng, name, description, price } = payload;
+    const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
+
+    const response = await csrfFetch("/api/spots", {
+        method: "POST",
+        body: JSON.stringify({
+            address,
+            city,
+            state,
+            country,
+            lat,
+            lng,
+            name,
+            description,
+            price
+        }),
+    });
+   
+    const resJSON = await response.json();
+   
+    if (resJSON.id && previewImageURL) {
+        const previewImageLoad = await csrfFetch(`/api/spots/${resJSON.id}/images`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    url: previewImageURL,
+                    preview: "true"
+                })
+            })
+    }
+
+    const imageArray = [image2URL, image3URL, image4URL, image5URL];
+
+    const uploadImage = async (url) => {
+        if (url) {
+            await csrfFetch(`/api/spots/${resJSON.id}/images`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    url,
+                    preview: "false"
+                })
+            });
+        }
+    };
+    
+    const uploadImages = async (imageArray) => {
+        try {
+            const uploadPromises = imageArray.map(uploadImage);
+            await Promise.all(uploadPromises);
+        } catch (error) {
+            console.error('Error uploading images:', error);
+        }
+    };
+    
+    await uploadImages(imageArray);
+}
+
+// State object
+const initialState = {
+    allSpots: [],
+    byId: {},
+    single: {} 
+}
+
+//Reducers
+const spotsReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case LOAD_SPOTS_ALL: {
+            let newState = { ...state }
+            newState.allSpots = action.payload.Spots;
+            //"S" Spots because of the JSON.  
+            //"s" lower-case inside 'spots' reducer is not factor in next line.
+            for (let spot of action.payload.Spots) {
+                newState.byId[spot.id] = spot
+            }
+            return newState;
+        }
+        case LOAD_SPOTS_ONE: {
+            let newState = { ...state }
+            newState.single = action.payload
+            return newState
+        }
+        default: {return state}
+    }
+}
+
+export default spotsReducer;
+
+
+
+
+
+
+/*
+export const insertSpot = (payload) => async (dispatch) => {
     // console.log('insertSpot - A')
     const { address, city, state, country, lat, lng, name, description, price } = payload;
     const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
@@ -84,60 +185,31 @@ export const insertSpot = (payload) => async (dispatch) => {
 
     const imageArray = [image2URL, image3URL, image4URL, image5URL];
 
-    // const uploadImage = async (url) => {
-    //     if (url) {
-    //         await csrfFetch(`/api/spots/${resJSON.id}/images`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify({
-    //                 url,
-    //                 preview: false
-    //             })
-    //         });
-    //     }
-    // };
-    
-    // const uploadImages = async (imageArray) => {
-    //     try {
-    //         const uploadPromises = imageArray.map(uploadImage);
-    //         await Promise.all(uploadPromises);
-    //     } catch (error) {
-    //         console.error('Error uploading images:', error);
-    //     }
-    // };
-    
-    // await uploadImages(imageArray);
-}
-
-// State object
-const initialState = {
-    allSpots: [],
-    byId: {},
-    single: {} 
-}
-
-//Reducers
-const spotsReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case LOAD_SPOTS_ALL: {
-            let newState = { ...state }
-            newState.allSpots = action.payload.Spots;
-            //"S" Spots because of the JSON.  
-            //"s" lower-case inside 'spots' reducer is not factor in next line.
-            for (let spot of action.payload.Spots) {
-                newState.byId[spot.id] = spot
-            }
-            return newState;
+    const uploadImage = async (url) => {
+        if (url) {
+            await csrfFetch(`/api/spots/${resJSON.id}/images`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    url,
+                    preview: false
+                })
+            });
         }
-        case LOAD_SPOTS_ONE: {
-            let newState = { ...state }
-            newState.single = action.payload
-            return newState
+    };
+    
+    const uploadImages = async (imageArray) => {
+        try {
+            const uploadPromises = imageArray.map(uploadImage);
+            await Promise.all(uploadPromises);
+        } catch (error) {
+            console.error('Error uploading images:', error);
         }
-        default: {return state}
-    }
+    };
+    
+    await uploadImages(imageArray);
 }
 
-export default spotsReducer;
+*/
