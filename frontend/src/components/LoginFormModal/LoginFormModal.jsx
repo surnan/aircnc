@@ -1,6 +1,6 @@
 // frontend/src/components/LoginFormModal/LoginFormModal.jsx
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as sessionActions from '../../store/session';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
@@ -8,10 +8,18 @@ import './LoginForm.css';
 
 function LoginFormModal() {
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
+  const [editing, setEditing] = useState(false)
+
+  // useEffect(()=>{
+  //   const newErrors = {}
+
+  //   setErrors(newErrors)
+  // })
+
 
 
 
@@ -40,21 +48,22 @@ function LoginFormModal() {
       });
   };
 
+  
+
   return (
     <>
-      <h1>Log In</h1>
-      <form
-        onSubmit={handleSubmit}
-        className='verticalFlexContainer'
-      >
-
+      <h1 className="center">Log In</h1>
+      <form onSubmit={handleSubmit} className='verticalFlexContainer'>
         <input
           type="text"
           placeholder=' Username or Email'
           value={credential}
           onChange={(e) => setCredential(e.target.value)}
+          className='formInput'
           required
         />
+
+        <p style={{ color: 'red' }}>The provided credentials were invalid</p>
 
         <input
           type="password"
@@ -62,13 +71,21 @@ function LoginFormModal() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="formInput"
         />
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
-        <button type="submit">Log In</button>
-
-        <button onClick={(e) => demoLogin(e)}>log in as demo user</button>
+        {errors.credential && (<p>{errors.credential}</p>)}
+        <button
+          className="loginButton"
+          type="submit"
+        >
+          Log In
+        </button>
+        <button
+          className="demoButton"
+          onClick={(e) => demoLogin(e)}
+        >
+          Demo User
+        </button>
       </form>
     </>
   );
