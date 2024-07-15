@@ -8,18 +8,12 @@ import './LoginForm.css';
 
 function LoginFormModal() {
   const dispatch = useDispatch();
-  const { closeModal } = useModal();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [editing, setEditing] = useState(false)
+  const { closeModal } = useModal();
 
-  // useEffect(()=>{
-  //   const newErrors = {}
-
-  //   setErrors(newErrors)
-  // })
-
+  const [showError, setShowError] = useState(false);
 
 
 
@@ -35,6 +29,11 @@ function LoginFormModal() {
       );
   }
 
+  useEffect(()=>{
+    setShowError(false)
+  }, [credential, password])
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setErrors({});
@@ -42,12 +41,16 @@ function LoginFormModal() {
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
+        
+        if (data?.message === 'Invalid credentials'){
+          setShowError(true)
+        }
+
         if (data && data.errors) {
           setErrors(data.errors);
         }
       });
   };
-
   
 
   return (
@@ -63,7 +66,7 @@ function LoginFormModal() {
           required
         />
 
-        <p style={{ color: 'red' }}>The provided credentials were invalid</p>
+       {showError &&  <p style={{ color: 'red' }}>The provided credentials were invalid</p>}
 
         <input
           type="password"
