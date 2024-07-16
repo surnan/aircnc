@@ -115,7 +115,7 @@ function SpotOneDetails() {
                 &#9733; {avgStarRating || 'New'}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
-            {reviewsArr.length === 0 && <button className="postReviewBtn">Post Your Review </button>}
+            {reviewsArr.length === 0 && <button className="greyButton">Post Your Review </button>}
             {reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
 
             {
