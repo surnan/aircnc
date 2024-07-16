@@ -38,6 +38,16 @@ export const getSpotsAllThunk = () => async (dispatch) => {
     }
 }
 
+export const getSpotsOwnedThunk = () => async (dispatch) => {
+    const response = await csrfFetch("/api/spots/current");
+    if (response.ok) {
+        const data = await response.json();
+        console.log('getSpotsOwnedThunk -> data = ', data)
+        dispatch(loadSpotsOwned(data));
+    }
+};
+
+
 export const getSpotsOneThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`)
     if (response.ok) {
@@ -47,18 +57,7 @@ export const getSpotsOneThunk = (spotId) => async (dispatch) => {
     }
 }
 
-export const getSpotsOwnedThunk = () => async (dispatch) => {
-    const response = await csrfFetch("/api/spots/current");
-    if (response.ok) {
-        const data = await response.json();
-        const processed = {};
-        for (let key in data.Spots) {
-            key = Number(key);
-            processed[key + 1] = data.Spots[key];
-        }
-        dispatch(mySpots(processed));
-    }
-};
+
 
 const insertSpotImages = async ({ spotId, previewImageURL, sideImageURLs }) => {
     // post preview image
@@ -99,9 +98,6 @@ export const insertSpot = async ({ body, previewImageURL, sideImageURLs }) => {
     await insertSpotImages({ spotId: data.id, previewImageURL, sideImageURLs });
     return data.id;
 }
-
-
-
 
 export const insertSpot2 = (payload) => async (dispatch) => {
     // console.log('insertSpot - A')
@@ -199,6 +195,16 @@ const spotsReducer = (state = initialState, action) => {
             let newState = { ...state }
             newState.single = action.payload
             return newState
+        }
+        case LOAD_SPOTS_OWNED: {
+            let newState = { ...state }
+            newState.allSpots = action.payload.Spots;
+            //"S" Spots because of the JSON.  
+            //"s" lower-case inside 'spots' reducer is not factor in next line.
+            for (let spot of action.payload.Spots) {
+                newState.byId[spot.id] = spot
+            }
+            return newState;
         }
         default: { return state }
     }

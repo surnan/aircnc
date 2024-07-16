@@ -46,7 +46,7 @@ function ProfileButton({ user }) {
 
   const handleManageSpots = ()=>{
     console.log('click happened')
-    nav(`/`);
+    nav(`/spots/current`);
   }
 
   const ulClassName = "profile-dropdown" + (showMenu ? " show" : " hidden");

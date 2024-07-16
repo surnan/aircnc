@@ -5,7 +5,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getSpotsAllThunk } from "../../store/spots";
+import { getSpotsAllThunk, getSpotsOwnedThunk } from "../../store/spots";
 import SpotCard from "../SpotCard/SpotCard";
 
 function SpotsOwned() {
@@ -24,30 +24,34 @@ function SpotsOwned() {
     }
 
     useEffect(() => {
-        dispatch(getSpotsAllThunk())
+        dispatch(getSpotsOwnedThunk())
     }, [dispatch]);
 
 
     return (
-        <div className="splashSpotGrid">
-            <hr />
-            <hr />
-            <hr />
-            <hr />
+        <>
+            <h1>Manage Your Spots</h1>
+            <button className="greyButton">Create a New Spot </button>
+            <div className="splashSpotGrid">
+                <hr />
+                <hr />
+                <hr />
+                <hr />
 
 
-            {
-                spotsArr.map((spot, idx) => (
-                    <div
-                        key={`${spot.id}-${idx}-spot`}
-                        className="clickable spotSquare"
-                        onClick={e => handleSpotClick(e, spot)}
-                    >
-                        <SpotCard spot={spot} />
-                    </div>
-                ))
-            }
-        </div>
+                {
+                    spotsArr.map((spot, idx) => (
+                        <div
+                            key={`${spot.id}-${idx}-spot`}
+                            className="clickable spotSquare"
+                            onClick={e => handleSpotClick(e, spot)}
+                        >
+                            <SpotCard spot={spot} />
+                        </div>
+                    ))
+                }
+            </div>
+        </>
     );
 }
 export default SpotsOwned;
