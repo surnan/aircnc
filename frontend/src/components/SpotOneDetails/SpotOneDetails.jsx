@@ -6,8 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getReviewsSpotThunk } from "../../store/reviews";
 import { getSpotsOneThunk } from "../../store/spots";
-// import { restoreUser } from "../../store/session";
-const starPath = "assets/icons/star.png"
 
 function SpotOneDetails() {
     const dispatch = useDispatch();
@@ -17,9 +15,6 @@ function SpotOneDetails() {
     const spotsObj = useSelector(state => state.spots.single)
 
 
-    // const nav = useNavigate();
-    // const [isLoaded, setIsLoaded] = useState(false);
-    // const [spotsLoaded, setSpotsLoaded] = useState(false);
 
     useEffect(() => {
         dispatch(getReviewsSpotThunk(spotId))
@@ -55,6 +50,8 @@ function SpotOneDetails() {
             }
         }
     }
+
+    console.log('reviewsArr.length = ', reviewsArr.length)
 
 
     return (
@@ -99,7 +96,12 @@ function SpotOneDetails() {
 
                     <div className="xFlex">
                         <div className="xFlex"><span className="priceFont">{`$${price}`}</span>{"\u00A0"}night </div>
-                        <div className="xFlex">&#9733; {avgStarRating} &#183; # reviews </div>
+                        <div
+                            className="xFlex"
+                        >
+                            &#9733; {avgStarRating || 'New'}
+                            {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
+                        </div>
                     </div>
 
                     <button className="reserveBtn"> Reserve </button>
@@ -110,7 +112,13 @@ function SpotOneDetails() {
             <hr />
 
 
-            <h2 className="xFlex">&#9733; {avgStarRating} &#183; # reviews </h2>
+            {/* <h2 className="xFlex">&#9733; {avgStarRating} &#183; # reviews </h2> */}
+            <h2>
+                &#9733; {avgStarRating || 'New'}
+                {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
+            </h2>
+            {reviewsArr.length === 0 && <button className="postReviewBtn">Post Your Review </button>}
+            {reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
 
             {
                 reviewsArr.map((review, idx) => (
