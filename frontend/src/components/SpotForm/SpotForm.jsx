@@ -30,7 +30,7 @@ function SpotForm() {
 
     const [errors, setErrors] = useState({})
     const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
-    const hasError = () =>(Object.keys(errors).length !== 0)
+    const hasError = () => (Object.keys(errors).length !== 0)
 
     useEffect(() => {
         const newErrors = {};
@@ -47,7 +47,7 @@ function SpotForm() {
             }
         }
 
-        if (description.length < 30) {
+        if (description.length < 3) {
             newErrors.description = "Description needs a minimum of 30 characters"
         }
 
@@ -62,7 +62,7 @@ function SpotForm() {
         }
 
         console.log('clickedSubmitBtn = ', clickedSubmitBtn)
-        if (clickedSubmitBtn){
+        if (clickedSubmitBtn) {
             setErrors(newErrors)
         }
 
@@ -80,71 +80,85 @@ function SpotForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        e.stopPropagation();
         setClickedSubmitBtn(true);
-        if (hasError)return
+        // if (hasError) return
 
+        const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
+        const { image2URL, image3URL, image4URL, image5URL } = form;
 
-
-        try {
-            const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
-            const { image2URL, image3URL, image4URL, image5URL } = form;
-
-            const body = {
-                address,
-                city,
-                state,
-                country,
-                lat: parseFloat(lat),
-                lng: parseFloat(lng),
-                name: form.title,
-                description,
-                price: parseInt(price),
-                previewImageURL,
-                image2URL,
-                image3URL,
-                image4URL,
-                image5URL
-            };
-
-            console.log(body, "body")
-            dispatch(insertSpot(body));
-            nav("/")
-        } catch (e) {
-            console.log(e)
+        const sideImageURLs = [image2URL, image3URL, image4URL, image5URL];
+        const body = {
+            address,
+            city,
+            state,
+            country,
+            lat: parseFloat(lat),
+            lng: parseFloat(lng),
+            name: form.title,
+            description,
+            price: parseInt(price)
         }
+
+        console.log('form', form)
+
+        const submit = async () => {
+            console.log('111')
+            const newSpotId = await insertSpot({
+                body,
+                previewImageURL,
+                sideImageURLs
+            });
+            console.log('222')
+            console.log('newSpotId = ', newSpotId)
+            nav(`/spots/${newSpotId}`);
+            console.log('333')
+        }
+        submit();
     }
 
 
     const handleSubmitForce = async (e) => {
         e.preventDefault();
-        e.stopPropogation();
-        try {
 
-            const body = {
-                address: "asdf1",
-                city: "asd1",
-                state: "asdf1",
-                country: "asdf1",
-                lat: 40.82595377239568,
-                lng: 40.82595377239568,
-                name: "asdf1",
-                description: "asdf1",
-                price: 100.00,
-                previewImageURL: "https://via.placeholder.com/400.jpg",
-                image2URL: "https://via.placeholder.com/400.jpg",
-                image3URL: "https://via.placeholder.com/400.jpg",
-                image4URL: "https://via.placeholder.com/400.jpg",
-                image5URL: "https://via.placeholder.com/400.jpg",
-            };
+        const previewImageURL = 'https://via.placeholder.com/400.jpg'
 
-            console.log(body, "body")
-            dispatch(insertSpot(body));
-            nav("/")
-        } catch (e) {
-            console.log(e)
+        const sideImageURLs = [
+            'https://via.placeholder.com/600.jpg',
+            'https://via.placeholder.com/600.jpg',
+            'https://via.placeholder.com/600.jpg',
+            'https://via.placeholder.com/600.jpg'
+        ];
+        
+        
+        
+        const body = {
+            address: 'asdf',
+            city:'asdf',
+            state: 'asdf',
+            country: 'asdf',
+            lat: parseFloat('44.44'),
+            lng: parseFloat('33.33'),
+            name:"Abba",
+            description: "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsa",
+            price: parseInt('123')
         }
+
+        const submit = async () => {
+            console.log('111')
+            const newSpotId = await insertSpot({
+                body,
+                previewImageURL,
+                sideImageURLs
+            });
+            nav(`/spots/${newSpotId}`);
+        }
+        submit();
     }
+
+
+
+
+  
 
     return (
         <form className="spotForm">
@@ -271,7 +285,7 @@ function SpotForm() {
                 onChange={updateSetForm}
                 placeholder="Preview Image URL"
             />
-            {errors.previewImageURL && <span style={{ color: 'red' }}>{errors.previewImageURL}</span>}            
+            {errors.previewImageURL && <span style={{ color: 'red' }}>{errors.previewImageURL}</span>}
 
             <input
                 type="text"
@@ -329,6 +343,74 @@ function SpotForm() {
 
 export default SpotForm;
 
+/*
+    const handleSubmit2 = async (e) => {
+        e.preventDefault();
+        setClickedSubmitBtn(true);
+        if (hasError) return
+
+
+
+        try {
+            const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
+            const { image2URL, image3URL, image4URL, image5URL } = form;
+
+            const body = {
+                address,
+                city,
+                state,
+                country,
+                lat: parseFloat(lat),
+                lng: parseFloat(lng),
+                name: form.title,
+                description,
+                price: parseInt(price),
+                previewImageURL,
+                image2URL,
+                image3URL,
+                image4URL,
+                image5URL
+            };
+
+            console.log(body, "body")
+            dispatch(insertSpot(body));
+            nav("/")
+        } catch (e) {
+            console.log(e)
+        }
+    }
+*/
+
+
+
+// const handleSubmitForce2 = async (e) => {
+//     e.preventDefault();
+//     try {
+
+//         const body = {
+//             address: "asdf1",
+//             city: "asd1",
+//             state: "asdf1",
+//             country: "asdf1",
+//             lat: 40.82595377239568,
+//             lng: 40.82595377239568,
+//             name: "asdf1",
+//             description: "asdf1",
+//             price: 100.00,
+//             previewImageURL: "https://via.placeholder.com/400.jpg",
+//             image2URL: "https://via.placeholder.com/400.jpg",
+//             image3URL: "https://via.placeholder.com/400.jpg",
+//             image4URL: "https://via.placeholder.com/400.jpg",
+//             image5URL: "https://via.placeholder.com/400.jpg",
+//         };
+
+//         console.log(body, "body")
+//         dispatch(insertSpot(body));
+//         nav("/")
+//     } catch (e) {
+//         console.log(e)
+//     }
+// }
 
 /*
 function SpotForm() {
