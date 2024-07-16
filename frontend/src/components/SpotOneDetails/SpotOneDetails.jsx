@@ -111,8 +111,6 @@ function SpotOneDetails() {
 
             <hr />
 
-
-            {/* <h2 className="xFlex">&#9733; {avgStarRating} &#183; # reviews </h2> */}
             <h2>
                 &#9733; {avgStarRating || 'New'}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
