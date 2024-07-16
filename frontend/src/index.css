@@ -13,6 +13,14 @@ body {
     margin-bottom: 100px;
 }
 
+.greyButton{
+    background-color: rgba(77, 72, 72, 0.842);
+    color: white;
+    padding: 4px 6px;
+    border-radius: 2px;
+    box-shadow: 3px 2px 2px black;
+    margin: 3px 0 8px 0;
+}
 
 /* 
 body {
