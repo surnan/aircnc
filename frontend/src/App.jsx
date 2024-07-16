@@ -8,6 +8,10 @@ import Navigation from './components/Navigation';
 import Splash  from './components/Splash';
 import SpotOneDetails from './components/SpotOneDetails'
 import SpotForm from './components/SpotForm';
+import SpotsOwned from './components/SpotsOwned';
+
+
+SpotsOwned
 
 function Layout() {
   const dispatch = useDispatch();
@@ -35,6 +39,10 @@ const router = createBrowserRouter([
       {path: "/spots/new",element: <SpotForm />},
       {path: '/spots/:spotId', element: <SpotOneDetails />},
       {path: "/spots/:spotId/edit",element: <SpotForm />},
+      {path: "/spots/current",element: <SpotsOwned />,},
+
+
+
       {path: "*",element: <p>Page Not Found</p>}
     ]
   }

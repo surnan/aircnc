@@ -8,11 +8,13 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
+import { useNavigate, useParams } from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
+  const nav = useNavigate();
 
   const toggleMenu = (e) => {
     e.stopPropagation();
@@ -44,6 +46,7 @@ function ProfileButton({ user }) {
 
   const handleManageSpots = ()=>{
     console.log('click happened')
+    nav(`/`);
   }
 
   const ulClassName = "profile-dropdown" + (showMenu ? " show" : " hidden");
@@ -104,37 +107,3 @@ function ProfileButton({ user }) {
 }
 
 export default ProfileButton;
-
-
-/*
-      <ul className={ulClassName} ref={ulRef}>
-        {user ? (
-          <>
-            <li >Hello, {user.username}</li>
-            <li >{user.email}</li>
-            <li className='boxIt clickable'>Manage Spots</li>
-            <li className='liFlex'>
-              <button
-                className='logoutBtn clickable'
-                onClick={logout}
-              >
-                Log Out
-              </button>
-            </li>
-          </>
-        ) : (
-          <>
-            <OpenModalMenuItem
-              itemText="Log In"
-              onItemClick={closeMenu}
-              modalComponent={<LoginFormModal />}
-            />
-            <OpenModalMenuItem
-              itemText="Sign Up"
-              onItemClick={closeMenu}
-              modalComponent={<SignupFormModal />}
-            />
-          </>
-        )}
-      </ul>
-*/
