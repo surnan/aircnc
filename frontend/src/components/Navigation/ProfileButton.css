@@ -1,9 +1,6 @@
 /* /frontend/src/Navigation/ProfileButton.css */
 
-@import url('../../index.css');
 
-
-  
 .profile-dropdown.hidden {display: none;}
 .profile-dropdown.show {display: block;}
 .profile-dropdown li {padding: 8px 12px;}
@@ -22,16 +19,19 @@
     display: none;
     position: absolute;
     right: 0;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
+    border: 2px solid black;
+    border-radius: 5px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     list-style: none;
-    padding: 10px;
+    padding: 2px;
     margin: 0;
     
     top: 50px; /* force it below nav bar */
     background-color: white;
-    width: 120px;
+    /* width: 120px; */
+    width: 11rem;
 }
 
 
@@ -49,3 +49,30 @@
     border: 1px black solid;
     border-radius: 15px;
 }
+
+.boxIt {
+    border-top: solid black 2px;
+    border-bottom: solid black 2px;
+}
+
+.liFlex {
+    display: flex;
+    justify-content: center;
+}
+
+.logoutBtn {
+    background-color: gray !important;
+    color: white !important;
+    border: solid black 1px !important;
+    border-radius: 1rem !important;
+    height: 2.5rem !important;
+    text-align: center !important;
+    width: auto !important;
+    padding: 1rem !important;
+    margin: auto !important;
+    line-height: 50% !important;
+  }
+
+  .leftPad{
+    padding-left: 1.5rem !important;
+  }

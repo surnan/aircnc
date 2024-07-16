@@ -15,7 +15,7 @@ function ProfileButton({ user }) {
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     setShowMenu(!showMenu);
   };
 
@@ -41,6 +41,11 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
+
+  const handleManageSpots = ()=>{
+    console.log('click happened')
+  }
+
   const ulClassName = "profile-dropdown" + (showMenu ? " show" : " hidden");
 
   return (
@@ -55,14 +60,26 @@ function ProfileButton({ user }) {
         <FaUserCircle className="fa-icon" />
       </div>
 
+
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
-            <li>{user.email}</li>
-            <li>
-              <button onClick={logout}>Log Out</button>
+            <li className='leftPad'>Hello, {user.username}</li>
+            <li className='leftPad'>{user.email}</li>
+            <li
+              className='boxIt clickable leftPad'
+              onClick={handleManageSpots}
+            >
+              Manage Spots
+            </li>
+            <li
+              className='liFlex'>
+              <button
+                className='logoutBtn clickable'
+                onClick={logout}
+              >
+                Log Out
+              </button>
             </li>
           </>
         ) : (
@@ -82,9 +99,42 @@ function ProfileButton({ user }) {
       </ul>
 
 
-
-    </nav>
+    </nav >
   );
 }
 
 export default ProfileButton;
+
+
+/*
+      <ul className={ulClassName} ref={ulRef}>
+        {user ? (
+          <>
+            <li >Hello, {user.username}</li>
+            <li >{user.email}</li>
+            <li className='boxIt clickable'>Manage Spots</li>
+            <li className='liFlex'>
+              <button
+                className='logoutBtn clickable'
+                onClick={logout}
+              >
+                Log Out
+              </button>
+            </li>
+          </>
+        ) : (
+          <>
+            <OpenModalMenuItem
+              itemText="Log In"
+              onItemClick={closeMenu}
+              modalComponent={<LoginFormModal />}
+            />
+            <OpenModalMenuItem
+              itemText="Sign Up"
+              onItemClick={closeMenu}
+              modalComponent={<SignupFormModal />}
+            />
+          </>
+        )}
+      </ul>
+*/
