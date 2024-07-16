@@ -29,6 +29,8 @@ function SpotForm() {
     });
 
     const [errors, setErrors] = useState({})
+    const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
+    const hasError = () =>(Object.keys(errors).length !== 0)
 
     useEffect(() => {
         const newErrors = {};
@@ -58,11 +60,15 @@ function SpotForm() {
                     newErrors[key] = `Image URL must end in .png, .jpg, or .jpeg`;
             }
         }
-        setErrors(newErrors)
+
+        console.log('clickedSubmitBtn = ', clickedSubmitBtn)
+        if (clickedSubmitBtn){
+            setErrors(newErrors)
+        }
 
         console.log(errors, "errors")
 
-    }, [form])
+    }, [form, clickedSubmitBtn])
 
 
     const updateSetForm = (e) => {
@@ -74,6 +80,12 @@ function SpotForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        e.stopPropagation();
+        setClickedSubmitBtn(true);
+        if (hasError)return
+
+
+
         try {
             const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
             const { image2URL, image3URL, image4URL, image5URL } = form;
@@ -106,6 +118,7 @@ function SpotForm() {
 
     const handleSubmitForce = async (e) => {
         e.preventDefault();
+        e.stopPropogation();
         try {
 
             const body = {
@@ -296,7 +309,8 @@ function SpotForm() {
 
             <button
                 type="submit"
-                disabled={Object.keys(errors).length !== 0}
+                // disabled={Object.keys(errors).length !== 0}
+                disabled={hasError()}
                 onClick={handleSubmit}
             >
                 Create Spot
@@ -305,7 +319,6 @@ function SpotForm() {
             <br />
             <button
                 type="submit"
-                // disabled={Object.keys(errors).length !== 0}
                 onClick={handleSubmitForce}
             >
                 FORCE CREATE
