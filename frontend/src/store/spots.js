@@ -39,15 +39,59 @@ export const getSpotsOneThunk = (spotId) => async (dispatch) => {
     }
 }
 
+const insertSpotImages = async ({ spotId, previewImageURL, sideImageURLs }) => {
+    // post preview image
+    await csrfFetch(`/api/spots/${spotId}/images`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: previewImageURL, preview: 'true' }),
+    });
+  
+    // post side images
+    for (let url of sideImageURLs) {
+    //   if (!url) continue;
+      if (!url){
+        url = previewImageURL;
+      }
+      await csrfFetch(`/api/spots/${spotId}/images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url, preview: 'false' }),
+      });
+    }
+  };
 
-export const insertSpot = (payload) => async (dispatch) => {
+export const insertSpot = async ({ body, previewImageURL, sideImageURLs }) => {
+
+    const response = await csrfFetch("/api/spots", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      const data = await response.json();
+      await insertSpotImages({ spotId: data.id, previewImageURL, sideImageURLs });
+      return data.id;
+}
+
+
+
+
+
+
+export const insertSpot2 = (payload) => async (dispatch) => {
     // console.log('insertSpot - A')
     const { address, city, state, country, lat, lng, name, description, price } = payload;
-    const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
-    // const { previewImageURL} = payload;
+    // const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
+    const { previewImageURL} = payload;
 
     
-    // console.log('insertSpot - B')
+    console.log('insertSpot - B')
     const response = await csrfFetch("/api/spots", {
         method: "POST",
         body: JSON.stringify({
@@ -82,7 +126,12 @@ export const insertSpot = (payload) => async (dispatch) => {
             })
     }
 
-    const imageArray = [image2URL, image3URL, image4URL, image5URL];
+    const data = await response.json()
+
+    console.log('data = ', data)
+
+
+    // const imageArray = [image2URL, image3URL, image4URL, image5URL];
 
     // const uploadImage = async (url) => {
     //     if (url) {
