@@ -19,13 +19,13 @@
 
 /* ///////////////////// */
 
-.clickable{
-    cursor: pointer;
-    height: auto;
-}
 
 .spotSquare {
     width: 100%;
     aspect-ratio: 1 / 1;
     /* background-color: blueviolet; */
+}
+
+.isHidden {
+    display: none;
 }
