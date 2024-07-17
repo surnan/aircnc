@@ -22,6 +22,10 @@ body {
     margin: 3px 0 8px 0;
 }
 
+.clickable{
+    cursor: pointer;
+}
+
 /* 
 body {
     padding: 15px
