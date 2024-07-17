@@ -1,7 +1,7 @@
 //frontend/src/components/SpotCard/SpotCard.jsx
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import { getSpotsOneThunk, insertSpot } from "../../store/spots";
 import "./SpotFormUpdater.css"
 
@@ -10,11 +10,9 @@ import "./SpotFormUpdater.css"
 function SpotFormUpdater() {
     const nav = useNavigate();
     const dispatch = useDispatch();
-    const {spotId} = useParams();
+    const { spotId } = useParams();
     const spotsObj = useSelector(state => state.spots.single)
-    
 
-    
     const [form, setForm] = useState({
         country: '',
         address: '',
@@ -32,20 +30,30 @@ function SpotFormUpdater() {
         image5URL: ''
     });
 
-
     useEffect(() => {
         if (!isNaN(parseInt(spotId))) {
             dispatch(getSpotsOneThunk(spotId))
-          }
+        }
     }, [dispatch, spotId]);
-
-    const [errors, setErrors] = useState({})
-    const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
-    const hasError = () => (Object.keys(errors).length !== 0)
-
 
     useEffect(() => {
         if (spotsObj) {
+            const [image1, image2, image3, image4, image5] = spotsObj?.SpotImages || [];
+
+            console.log('SpotImages = ', spotsObj?.SpotImages || [])
+            console.log('typeof(spotsObj.SpotImages)', typeof (spotsObj.SpotImages))
+
+            if (spotsObj.SpotImages) {
+                console.log('SpotImages[1] = ', spotsObj?.SpotImages[1] || [])
+                console.log('image1 = ', image1)
+
+                console.log('SpotImages[2] = ', spotsObj?.SpotImages[2] || [])
+                console.log('image2 = ', image2)
+
+                console.log('SpotImages[3] = ', spotsObj?.SpotImages[3] || [])
+                console.log('image3 = ', image3)
+            }
+
             setForm({
                 country: spotsObj.country || '',
                 address: spotsObj.address || '',
@@ -56,14 +64,23 @@ function SpotFormUpdater() {
                 description: spotsObj.description || '',
                 title: spotsObj.name || '',
                 price: spotsObj.price || '',
-                previewImageURL: spotsObj.previewImageURL || '',
-                image2URL: spotsObj.image2URL || '',
-                image3URL: spotsObj.image3URL || '',
-                image4URL: spotsObj.image4URL || '',
-                image5URL: spotsObj.image5URL || ''
+                previewImageURL: image1?.url || '',
+                image2URL: image2?.url || '',
+                image3URL: image3?.url || '',
+                image4URL: image4?.url || '',
+                image5URL: image5?.url || ''
             });
         }
     }, [spotsObj]);
+
+
+
+    const [errors, setErrors] = useState({})
+    const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
+    const hasError = () => (Object.keys(errors).length !== 0)
+
+
+
 
     useEffect(() => {
         const newErrors = {};
@@ -94,23 +111,21 @@ function SpotFormUpdater() {
             }
         }
 
-        console.log('clickedSubmitBtn = ', clickedSubmitBtn)
+        // console.log('clickedSubmitBtn = ', clickedSubmitBtn)
         if (clickedSubmitBtn) {
             setErrors(newErrors)
         }
 
-        console.log(errors, "errors")
+        // console.log(errors, "errors")
 
     }, [form, clickedSubmitBtn])
 
-    console.log('&&&&&&&&&&&')
-    console.log('spotsObj = ', spotsObj)
-    console.log('***********')
+
 
     const updateSetForm = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }))
-        console.log(form, "form")
+        // console.log(form, "form")
     }
 
 
@@ -138,16 +153,16 @@ function SpotFormUpdater() {
         console.log('form', form)
 
         const submit = async () => {
-            console.log('111')
+            // console.log('111')
             const newSpotId = await insertSpot({
                 body,
                 previewImageURL,
                 sideImageURLs
             });
-            console.log('222')
-            console.log('newSpotId = ', newSpotId)
+            // console.log('222')
+            // console.log('newSpotId = ', newSpotId)
             nav(`/spots/${newSpotId}`);
-            console.log('333')
+            // console.log('333')
         }
         submit();
     }
@@ -164,23 +179,23 @@ function SpotFormUpdater() {
             'https://via.placeholder.com/600.jpg',
             'https://via.placeholder.com/600.jpg'
         ];
-        
-        
-        
+
+
+
         const body = {
             address: 'asdf',
-            city:'asdf',
+            city: 'asdf',
             state: 'asdf',
             country: 'asdf',
             lat: parseFloat('44.44'),
             lng: parseFloat('33.33'),
-            name:"Abba",
+            name: "Abba",
             description: "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsa",
             price: parseInt('123')
         }
 
         const submit = async () => {
-            console.log('111')
+            // console.log('111')
             const newSpotId = await insertSpot({
                 body,
                 previewImageURL,
@@ -190,6 +205,10 @@ function SpotFormUpdater() {
         }
         submit();
     }
+
+
+
+
 
     return (
         <form className="spotForm">
@@ -207,7 +226,6 @@ function SpotFormUpdater() {
                 name="country"
                 onChange={updateSetForm}
                 placeholder="Country"
-                // value={spotsObj.country}
                 value={form.country}
             />
 
@@ -219,7 +237,6 @@ function SpotFormUpdater() {
                 name="address"
                 onChange={updateSetForm}
                 placeholder="Address"
-                // value={spotsObj.address}
                 value={form.address}
             />
 
@@ -233,7 +250,6 @@ function SpotFormUpdater() {
                         name="city"
                         onChange={updateSetForm}
                         placeholder="City"
-                        // value={spotsObj.city}
                         value={form.city}
                     />
                 </div>
@@ -246,7 +262,6 @@ function SpotFormUpdater() {
                         name="state"
                         onChange={updateSetForm}
                         placeholder="State"
-                        // value={spotsObj.state}
                         value={form.state}
                     />
                 </div>
@@ -262,7 +277,6 @@ function SpotFormUpdater() {
                         name="lat"
                         onChange={updateSetForm}
                         placeholder="Latitude"
-                        // value={spotsObj.lat}
                         value={form.lat}
                     />
                 </div>
@@ -275,7 +289,6 @@ function SpotFormUpdater() {
                         name="lng"
                         onChange={updateSetForm}
                         placeholder="Longitude"
-                        // value={spotsObj.lng}
                         value={form.lng}
                     />
                 </div>
@@ -291,7 +304,6 @@ function SpotFormUpdater() {
                 name="description"
                 onChange={updateSetForm}
                 placeholder="Description"
-                // value={spotsObj.description}
                 value={form.description}
             />
             {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>}
@@ -305,7 +317,6 @@ function SpotFormUpdater() {
                 name="title"
                 onChange={updateSetForm}
                 placeholder="Name of your spot"
-                // value={spotsObj.description}
                 value={form.description}
             />
             {errors.title && <span style={{ color: 'red' }}>{errors.name}</span>}
@@ -319,7 +330,6 @@ function SpotFormUpdater() {
                 name="price"
                 onChange={updateSetForm}
                 placeholder="Price per night (USD)"
-                // value={spotsObj.price}
                 value={form.price}
             />
             {errors.price && <span style={{ color: 'red' }}>{errors.price}</span>}
@@ -333,7 +343,7 @@ function SpotFormUpdater() {
                 name="previewImageURL"
                 onChange={updateSetForm}
                 placeholder="Preview Image URL"
-                // value={spotsObj?.SpotImages[0]?.url ?? ''}
+                value={form.previewImageURL}
             />
             {errors.previewImageURL && <span style={{ color: 'red' }}>{errors.previewImageURL}</span>}
 
@@ -342,7 +352,7 @@ function SpotFormUpdater() {
                 name="image2URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
-                // value={spotsObj?.SpotImages[1]?.url ?? ''}
+                value={form.image2URL}
             />
             {errors.image2URL && <span style={{ color: 'red' }}>{errors.image2URL}</span>}
 
@@ -351,7 +361,7 @@ function SpotFormUpdater() {
                 name="image3URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
-                // value={spotsObj?.SpotImages[2]?.url ?? ''}
+                value={form.image3URL}
             />
             {errors.image3URL && <span style={{ color: 'red' }}>{errors.image3URL}</span>}
 
@@ -360,7 +370,7 @@ function SpotFormUpdater() {
                 name="image4URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
-                // value={spotsObj?.SpotImages[3]?.url  ?? ''}
+                value={form.image4URL}
             />
             {errors.image4URL && <span style={{ color: 'red' }}>{errors.image4URL}</span>}
 
@@ -369,7 +379,7 @@ function SpotFormUpdater() {
                 name="image5URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
-                // value={spotsObj?.SpotImages[4]?.url  ?? ''}
+                value={form.image5URL}
             />
             {errors.image5URL && <span style={{ color: 'red' }}>{errors.image5URL}</span>}
 
