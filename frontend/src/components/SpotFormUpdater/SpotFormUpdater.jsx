@@ -10,9 +10,10 @@ import "./SpotFormUpdater.css"
 function SpotFormUpdater() {
     const nav = useNavigate();
     const dispatch = useDispatch();
+    const {spotId} = useParams();
+    const spotsObj = useSelector(state => state.spots.single)
 
-    const spotId = useParams();
-
+    
     const [form, setForm] = useState({
         country: '',
         address: '',
@@ -29,6 +30,11 @@ function SpotFormUpdater() {
         image4URL: '',
         image5URL: ''
     });
+
+
+    useEffect(() => {
+        dispatch(getSpotsOneThunk(spotId))
+    }, [dispatch, spotId]);
 
     const [errors, setErrors] = useState({})
     const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
@@ -72,6 +78,9 @@ function SpotFormUpdater() {
 
     }, [form, clickedSubmitBtn])
 
+    console.log('&&&&&&&&&&&')
+    console.log('spotsObj = ', spotsObj)
+    console.log('***********')
 
     const updateSetForm = (e) => {
         const { name, value } = e.target;
@@ -157,14 +166,9 @@ function SpotFormUpdater() {
         submit();
     }
 
-
-
-
-  
-
     return (
         <form className="spotForm">
-            <h3>Update youe Spot</h3>
+            <h3>Update your Spot ....  spotId = {spotId}</h3>
             <br />
             <h4>Where's your place located?</h4>
             <p>Guests will only get your exact address once the booked a reservation.</p>
@@ -178,6 +182,7 @@ function SpotFormUpdater() {
                 name="country"
                 onChange={updateSetForm}
                 placeholder="Country"
+                value={spotsObj.country}
             />
 
             <label>
@@ -188,6 +193,7 @@ function SpotFormUpdater() {
                 name="address"
                 onChange={updateSetForm}
                 placeholder="Address"
+                value={spotsObj.address}
             />
 
             <div className="horizontal">
@@ -200,6 +206,7 @@ function SpotFormUpdater() {
                         name="city"
                         onChange={updateSetForm}
                         placeholder="City"
+                        value={spotsObj.city}
                     />
                 </div>
                 <div className="vertical">
@@ -211,6 +218,7 @@ function SpotFormUpdater() {
                         name="state"
                         onChange={updateSetForm}
                         placeholder="State"
+                        value={spotsObj.state}
                     />
                 </div>
             </div>
@@ -225,6 +233,7 @@ function SpotFormUpdater() {
                         name="lat"
                         onChange={updateSetForm}
                         placeholder="Latitude"
+                        value={spotsObj.lat}
                     />
                 </div>
                 <div className="vertical">
@@ -236,6 +245,7 @@ function SpotFormUpdater() {
                         name="lng"
                         onChange={updateSetForm}
                         placeholder="Longitude"
+                        value={spotsObj.lng}
                     />
                 </div>
             </div>
@@ -250,6 +260,7 @@ function SpotFormUpdater() {
                 name="description"
                 onChange={updateSetForm}
                 placeholder="Description"
+                value={spotsObj.description}
             />
             {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>}
 
@@ -262,8 +273,9 @@ function SpotFormUpdater() {
                 name="title"
                 onChange={updateSetForm}
                 placeholder="Name of your spot"
+                value={spotsObj.description}
             />
-            {errors.title && <span style={{ color: 'red' }}>{errors.title}</span>}
+            {errors.title && <span style={{ color: 'red' }}>{errors.name}</span>}
 
             <hr />
 
@@ -274,6 +286,7 @@ function SpotFormUpdater() {
                 name="price"
                 onChange={updateSetForm}
                 placeholder="Price per night (USD)"
+                value={spotsObj.price}
             />
             {errors.price && <span style={{ color: 'red' }}>{errors.price}</span>}
 
@@ -286,6 +299,7 @@ function SpotFormUpdater() {
                 name="previewImageURL"
                 onChange={updateSetForm}
                 placeholder="Preview Image URL"
+                value={spotsObj.SpotImages[0].url}
             />
             {errors.previewImageURL && <span style={{ color: 'red' }}>{errors.previewImageURL}</span>}
 
@@ -294,6 +308,7 @@ function SpotFormUpdater() {
                 name="image2URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
+                value={spotsObj?.SpotImages[1]?.url ?? ''}
             />
             {errors.image2URL && <span style={{ color: 'red' }}>{errors.image2URL}</span>}
 
@@ -302,6 +317,7 @@ function SpotFormUpdater() {
                 name="image3URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
+                value={spotsObj?.SpotImages[2]?.url ?? ''}
             />
             {errors.image3URL && <span style={{ color: 'red' }}>{errors.image3URL}</span>}
 
@@ -310,6 +326,7 @@ function SpotFormUpdater() {
                 name="image4URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
+                value={spotsObj?.SpotImages[3]?.url  ?? ''}
             />
             {errors.image4URL && <span style={{ color: 'red' }}>{errors.image4URL}</span>}
 
@@ -318,6 +335,7 @@ function SpotFormUpdater() {
                 name="image5URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
+                value={spotsObj?.SpotImages[4]?.url  ?? ''}
             />
             {errors.image5URL && <span style={{ color: 'red' }}>{errors.image5URL}</span>}
 
@@ -328,6 +346,7 @@ function SpotFormUpdater() {
                 // disabled={Object.keys(errors).length !== 0}
                 disabled={hasError()}
                 onClick={handleSubmit}
+                value={spotsObj.address}
             >
                 Create Spot
             </button>
