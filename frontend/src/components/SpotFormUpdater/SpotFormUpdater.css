@@ -1,0 +1,43 @@
+/* /frontend/src/Navigation/SpotFormUpdater.css */
+.spotForm {
+    display: flex;
+    flex-direction: column;
+    margin: 0 20%;
+    padding: 30px 0 60px 0;
+}
+
+
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.submitButton {
+    width: 8rem;
+    height: 2rem;
+    background-color: rgba(255, 98, 0, 0.878);
+    color: white;
+    box-shadow: 2px 5px 5px black;
+    margin: auto;
+}
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+}
+
+hr {
+    margin: 1rem 0;
+    border: 1px solid black; /* Sets the border color and width */
+    width: 100%;
+}
+
+textarea {
+    height: 10rem;
+}
+
+body {
+    margin-bottom: 100px;
+}
