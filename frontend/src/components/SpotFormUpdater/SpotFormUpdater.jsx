@@ -12,6 +12,7 @@ function SpotFormUpdater() {
     const dispatch = useDispatch();
     const {spotId} = useParams();
     const spotsObj = useSelector(state => state.spots.single)
+    
 
     
     const [form, setForm] = useState({
@@ -33,12 +34,36 @@ function SpotFormUpdater() {
 
 
     useEffect(() => {
-        dispatch(getSpotsOneThunk(spotId))
+        if (!isNaN(parseInt(spotId))) {
+            dispatch(getSpotsOneThunk(spotId))
+          }
     }, [dispatch, spotId]);
 
     const [errors, setErrors] = useState({})
     const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
     const hasError = () => (Object.keys(errors).length !== 0)
+
+
+    useEffect(() => {
+        if (spotsObj) {
+            setForm({
+                country: spotsObj.country || '',
+                address: spotsObj.address || '',
+                city: spotsObj.city || '',
+                state: spotsObj.state || '',
+                lat: spotsObj.lat || '',
+                lng: spotsObj.lng || '',
+                description: spotsObj.description || '',
+                title: spotsObj.name || '',
+                price: spotsObj.price || '',
+                previewImageURL: spotsObj.previewImageURL || '',
+                image2URL: spotsObj.image2URL || '',
+                image3URL: spotsObj.image3URL || '',
+                image4URL: spotsObj.image4URL || '',
+                image5URL: spotsObj.image5URL || ''
+            });
+        }
+    }, [spotsObj]);
 
     useEffect(() => {
         const newErrors = {};
@@ -182,7 +207,8 @@ function SpotFormUpdater() {
                 name="country"
                 onChange={updateSetForm}
                 placeholder="Country"
-                value={spotsObj.country}
+                // value={spotsObj.country}
+                value={form.country}
             />
 
             <label>
@@ -193,7 +219,8 @@ function SpotFormUpdater() {
                 name="address"
                 onChange={updateSetForm}
                 placeholder="Address"
-                value={spotsObj.address}
+                // value={spotsObj.address}
+                value={form.address}
             />
 
             <div className="horizontal">
@@ -206,7 +233,8 @@ function SpotFormUpdater() {
                         name="city"
                         onChange={updateSetForm}
                         placeholder="City"
-                        value={spotsObj.city}
+                        // value={spotsObj.city}
+                        value={form.city}
                     />
                 </div>
                 <div className="vertical">
@@ -218,7 +246,8 @@ function SpotFormUpdater() {
                         name="state"
                         onChange={updateSetForm}
                         placeholder="State"
-                        value={spotsObj.state}
+                        // value={spotsObj.state}
+                        value={form.state}
                     />
                 </div>
             </div>
@@ -233,7 +262,8 @@ function SpotFormUpdater() {
                         name="lat"
                         onChange={updateSetForm}
                         placeholder="Latitude"
-                        value={spotsObj.lat}
+                        // value={spotsObj.lat}
+                        value={form.lat}
                     />
                 </div>
                 <div className="vertical">
@@ -245,7 +275,8 @@ function SpotFormUpdater() {
                         name="lng"
                         onChange={updateSetForm}
                         placeholder="Longitude"
-                        value={spotsObj.lng}
+                        // value={spotsObj.lng}
+                        value={form.lng}
                     />
                 </div>
             </div>
@@ -260,7 +291,8 @@ function SpotFormUpdater() {
                 name="description"
                 onChange={updateSetForm}
                 placeholder="Description"
-                value={spotsObj.description}
+                // value={spotsObj.description}
+                value={form.description}
             />
             {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>}
 
@@ -273,7 +305,8 @@ function SpotFormUpdater() {
                 name="title"
                 onChange={updateSetForm}
                 placeholder="Name of your spot"
-                value={spotsObj.description}
+                // value={spotsObj.description}
+                value={form.description}
             />
             {errors.title && <span style={{ color: 'red' }}>{errors.name}</span>}
 
@@ -286,7 +319,8 @@ function SpotFormUpdater() {
                 name="price"
                 onChange={updateSetForm}
                 placeholder="Price per night (USD)"
-                value={spotsObj.price}
+                // value={spotsObj.price}
+                value={form.price}
             />
             {errors.price && <span style={{ color: 'red' }}>{errors.price}</span>}
 
@@ -299,7 +333,7 @@ function SpotFormUpdater() {
                 name="previewImageURL"
                 onChange={updateSetForm}
                 placeholder="Preview Image URL"
-                value={spotsObj.SpotImages[0].url}
+                // value={spotsObj?.SpotImages[0]?.url ?? ''}
             />
             {errors.previewImageURL && <span style={{ color: 'red' }}>{errors.previewImageURL}</span>}
 
@@ -308,7 +342,7 @@ function SpotFormUpdater() {
                 name="image2URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
-                value={spotsObj?.SpotImages[1]?.url ?? ''}
+                // value={spotsObj?.SpotImages[1]?.url ?? ''}
             />
             {errors.image2URL && <span style={{ color: 'red' }}>{errors.image2URL}</span>}
 
@@ -317,7 +351,7 @@ function SpotFormUpdater() {
                 name="image3URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
-                value={spotsObj?.SpotImages[2]?.url ?? ''}
+                // value={spotsObj?.SpotImages[2]?.url ?? ''}
             />
             {errors.image3URL && <span style={{ color: 'red' }}>{errors.image3URL}</span>}
 
@@ -326,7 +360,7 @@ function SpotFormUpdater() {
                 name="image4URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
-                value={spotsObj?.SpotImages[3]?.url  ?? ''}
+                // value={spotsObj?.SpotImages[3]?.url  ?? ''}
             />
             {errors.image4URL && <span style={{ color: 'red' }}>{errors.image4URL}</span>}
 
@@ -335,7 +369,7 @@ function SpotFormUpdater() {
                 name="image5URL"
                 onChange={updateSetForm}
                 placeholder="Image URL"
-                value={spotsObj?.SpotImages[4]?.url  ?? ''}
+                // value={spotsObj?.SpotImages[4]?.url  ?? ''}
             />
             {errors.image5URL && <span style={{ color: 'red' }}>{errors.image5URL}</span>}
 
@@ -346,7 +380,6 @@ function SpotFormUpdater() {
                 // disabled={Object.keys(errors).length !== 0}
                 disabled={hasError()}
                 onClick={handleSubmit}
-                value={spotsObj.address}
             >
                 Create Spot
             </button>
