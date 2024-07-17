@@ -9,6 +9,7 @@ import Splash  from './components/Splash';
 import SpotOneDetails from './components/SpotOneDetails'
 import SpotForm from './components/SpotForm';
 import SpotsOwned from './components/SpotsOwned';
+import SpotFormUpdater from './components/SpotFormUpdater'
 
 
 SpotsOwned
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
       {path: "/", element: <Splash />},
       {path: "/spots/new",element: <SpotForm />},
       {path: '/spots/:spotId', element: <SpotOneDetails />},
-      {path: "/spots/:spotId/edit",element: <SpotForm />},
+      {path: "/spots/:spotId/edit",element: <SpotFormUpdater />},
       {path: "/spots/current",element: <SpotsOwned />,},
 
 
