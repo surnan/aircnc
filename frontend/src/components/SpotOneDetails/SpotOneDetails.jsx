@@ -60,7 +60,7 @@ function SpotOneDetails() {
                 </div>
 
                 {nonPreviewURL.map((url, idx) => (
-                    <div dey={`${url}-${idx}`} className="box">
+                    <div key={`${url}-${idx}`} className="box">
                         <img src={nonPreviewURL[idx]} alt={`Spot 111`} />
                     </div>
                 ))}
