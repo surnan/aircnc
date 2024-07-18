@@ -40,20 +40,6 @@ function SpotFormUpdater() {
         if (spotsObj) {
             const [image1, image2, image3, image4, image5] = spotsObj?.SpotImages || [];
 
-            console.log('SpotImages = ', spotsObj?.SpotImages || [])
-            console.log('typeof(spotsObj.SpotImages)', typeof (spotsObj.SpotImages))
-
-            if (spotsObj.SpotImages) {
-                console.log('SpotImages[1] = ', spotsObj?.SpotImages[1] || [])
-                console.log('image1 = ', image1)
-
-                console.log('SpotImages[2] = ', spotsObj?.SpotImages[2] || [])
-                console.log('image2 = ', image2)
-
-                console.log('SpotImages[3] = ', spotsObj?.SpotImages[3] || [])
-                console.log('image3 = ', image3)
-            }
-
             setForm({
                 country: spotsObj.country || '',
                 address: spotsObj.address || '',
@@ -111,12 +97,9 @@ function SpotFormUpdater() {
             }
         }
 
-        // console.log('clickedSubmitBtn = ', clickedSubmitBtn)
         if (clickedSubmitBtn) {
             setErrors(newErrors)
         }
-
-        // console.log(errors, "errors")
 
     }, [form, clickedSubmitBtn])
 
@@ -125,14 +108,12 @@ function SpotFormUpdater() {
     const updateSetForm = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }))
-        // console.log(form, "form")
     }
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setClickedSubmitBtn(true);
-        // if (hasError) return
 
         const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
         const { image2URL, image3URL, image4URL, image5URL } = form;

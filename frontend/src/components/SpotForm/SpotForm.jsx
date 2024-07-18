@@ -61,20 +61,15 @@ function SpotForm() {
             }
         }
 
-        console.log('clickedSubmitBtn = ', clickedSubmitBtn)
         if (clickedSubmitBtn) {
             setErrors(newErrors)
         }
-
-        console.log(errors, "errors")
-
     }, [form, clickedSubmitBtn])
 
 
     const updateSetForm = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }))
-        console.log(form, "form")
     }
 
 
@@ -108,7 +103,6 @@ function SpotForm() {
                     }
                 ));
                 
-                console.log('newSpotId ===> ', newSpotId);
                 nav(`/spots/${newSpotId}`);
             } catch (error) {
                 console.error('Error adding spot:', error);
@@ -154,8 +148,6 @@ function SpotForm() {
                         sideImageURLs
                     }
                 ));
-                
-                console.log('newSpotId ===> ', newSpotId);
                 nav(`/spots/${newSpotId}`);
             } catch (error) {
                 console.error('Error adding spot:', error);

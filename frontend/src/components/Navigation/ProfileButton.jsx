@@ -45,7 +45,6 @@ function ProfileButton({ user }) {
 
 
   const handleManageSpots = ()=>{
-    console.log('click happened')
     nav(`/spots/current`);
   }
 

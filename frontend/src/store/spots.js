@@ -56,7 +56,6 @@ export const getSpotsOwnedThunk = () => async (dispatch) => {
     const response = await csrfFetch("/api/spots/current");
     if (response.ok) {
         const data = await response.json();
-        console.log('getSpotsOwnedThunk -> data = ', data)
         dispatch(loadSpotsOwned(data));
     }
 };
@@ -142,10 +141,8 @@ export const addSpotOneThunk = (spot) => async (dispatch) => {
     const data = await response.json();
     await insertSpotImages({ spotId: data.id, previewImageURL, sideImageURLs });
 
-    console.log('1 - data.id = ', data.id)
     if (response.ok) {
         dispatch(addSpotOne(data))
-        console.log('2 - data.id = ', data.id)
         return data.id
     }
 }
@@ -201,7 +198,6 @@ const spotsReducer = (state = initialState, action) => {
             newState.allSpots = [...newState.allSpots, action.payload]
             newState.byId[action.payload.id] = action.payload;
             newState.single = action.payload;
-            console.log(`>>>>>>>>>>>>>>>>>> newState => ${newState}`)
             return newState;
         }
         default: { return state }
@@ -209,79 +205,3 @@ const spotsReducer = (state = initialState, action) => {
 }
 
 export default spotsReducer;
-
-
-/*
-export const insertSpot2 = (payload) => async (dispatch) => {
-    // console.log('insertSpot - A')
-    const { address, city, state, country, lat, lng, name, description, price } = payload;
-    // const { previewImageURL, image2URL, image3URL, image4URL, image5URL } = payload;
-    const { previewImageURL } = payload;
-
-
-    console.log('insertSpot - B')
-
-    const response = await csrfFetch("/api/spots", {
-        method: "POST",
-        body: JSON.stringify({
-            address,
-            city,
-            state,
-            country,
-            lat,
-            lng,
-            name,
-            description,
-            price
-        }),
-    });
-
-    const resJSON = await response.json();
-
-    if (resJSON.id && previewImageURL) {
-        const previewImageLoad = await csrfFetch(`/api/spots/${resJSON.id}/images`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    url: previewImageURL,
-                    preview: "true"
-                })
-            })
-    }
-
-    const data = await response.json()
-
-    console.log('data = ', data)
-
-
-    const uploadImage = async (url) => {
-        if (url) {
-            await csrfFetch(`/api/spots/${resJSON.id}/images`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    url,
-                    preview: "false"
-                })
-            });
-        }
-    };
-
-    const uploadImages = async (imageArray) => {
-        try {
-            const uploadPromises = imageArray.map(uploadImage);
-            await Promise.all(uploadPromises);
-        } catch (error) {
-            console.error('Error uploading images:', error);
-        }
-    };
-
-    await uploadImages(imageArray);
-}
-
-*/
