@@ -5,7 +5,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getSpotsOwnedThunk } from "../../store/spots";
+import { deleteSpotOneThunk, getSpotsOwnedThunk } from "../../store/spots";
 import SpotCard from "../SpotCard/SpotCard";
 
 function SpotsOwned() {
@@ -39,9 +39,17 @@ function SpotsOwned() {
     }
 
     const handleDeleteBtn = (e, spot) => {
+        // e.preventDefault();
+        // e.stopPropagation();
+        // console.log('DELETE')
+
         e.preventDefault();
         e.stopPropagation();
-        console.log('DELETE')
+        console.log(`DELETE... {spot.Id} = ${spot.id} `)
+        // deleteSpotOneThunk(spot.id)
+        dispatch(deleteSpotOneThunk(spot.id))
+        console.log('AA')
+
     }
     
 
