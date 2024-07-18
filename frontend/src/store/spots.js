@@ -37,6 +37,11 @@ const deleteSpotOne = (data) => ({
     payload: data
 })
 
+const addSpotOne = (data) => ({
+    type: ADD_SPOT_ONE,
+    payload: data
+})
+
 //Thunks
 export const getSpotsAllThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/spots')
@@ -123,6 +128,90 @@ export const insertSpot = async ({ body, previewImageURL, sideImageURLs }) => {
     return data.id;
 }
 
+
+export const addSpotOneThunk = (spot) => async (dispatch) => {
+    const { body, previewImageURL, sideImageURLs } = spot;
+    const response = await csrfFetch("/api/spots", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+    await insertSpotImages({ spotId: data.id, previewImageURL, sideImageURLs });
+
+    console.log('1 - data.id = ', data.id)
+    if (response.ok) {
+        dispatch(addSpotOne(data))
+        console.log('2 - data.id = ', data.id)
+        return data.id
+    }
+}
+
+
+
+
+// State object
+const initialState = {
+    allSpots: [],
+    byId: {},
+    single: {}
+}
+
+//Reducers
+const spotsReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case LOAD_SPOTS_ALL: {
+            let newState = { ...state }
+            newState.allSpots = action.payload.Spots;
+            //"S" Spots because of the JSON.  
+            //"s" lower-case inside 'spots' reducer is not factor in next line.
+            for (let spot of action.payload.Spots) {
+                newState.byId[spot.id] = spot
+            }
+            return newState;
+        }
+        case LOAD_SPOTS_ONE: {
+            let newState = { ...state }
+            newState.single = action.payload
+            return newState
+        }
+        case LOAD_SPOTS_OWNED: {
+            let newState = { ...state }
+            newState.allSpots = action.payload.Spots;
+            for (let spot of action.payload.Spots) {
+                newState.byId[spot.id] = spot
+            }
+            return newState;
+        }
+        case DELETE_SPOT_ONE: {
+            let newState = { ...state }
+            newState.allSpots = newState.allSpots.filter(spot => spot.id !== action.payload);
+            delete newState.byId[action.payload];
+
+            if (newState.single.id === action.payload) {
+                newState.single = {};
+            }
+            return newState
+        }
+        case ADD_SPOT_ONE: {
+            let newState = { ...state }
+            newState.allSpots = [...newState.allSpots, action.payload]
+            newState.byId[action.payload.id] = action.payload;
+            newState.single = action.payload;
+            console.log(`>>>>>>>>>>>>>>>>>> newState => ${newState}`)
+            return newState;
+        }
+        default: { return state }
+    }
+}
+
+export default spotsReducer;
+
+
+/*
 export const insertSpot2 = (payload) => async (dispatch) => {
     // console.log('insertSpot - A')
     const { address, city, state, country, lat, lng, name, description, price } = payload;
@@ -195,53 +284,4 @@ export const insertSpot2 = (payload) => async (dispatch) => {
     await uploadImages(imageArray);
 }
 
-// State object
-const initialState = {
-    allSpots: [],
-    byId: {},
-    single: {}
-}
-
-//Reducers
-const spotsReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case LOAD_SPOTS_ALL: {
-            let newState = { ...state }
-            newState.allSpots = action.payload.Spots;
-            //"S" Spots because of the JSON.  
-            //"s" lower-case inside 'spots' reducer is not factor in next line.
-            for (let spot of action.payload.Spots) {
-                newState.byId[spot.id] = spot
-            }
-            return newState;
-        }
-        case LOAD_SPOTS_ONE: {
-            let newState = { ...state }
-            newState.single = action.payload
-            return newState
-        }
-        case LOAD_SPOTS_OWNED: {
-            let newState = { ...state }
-            newState.allSpots = action.payload.Spots;
-            //"S" Spots because of the JSON.  
-            //"s" lower-case inside 'spots' reducer is not factor in next line.
-            for (let spot of action.payload.Spots) {
-                newState.byId[spot.id] = spot
-            }
-            return newState;
-        }
-        case DELETE_SPOT_ONE: {
-            let newState = { ...state }
-            newState.allSpots = newState.allSpots.filter(spot => spot.id !== action.payload);
-            delete newState.byId[action.payload];
-
-            if (newState.single.id === action.payload) {
-                newState.single = {};
-            }
-            return newState
-        }
-        default: { return state }
-    }
-}
-
-export default spotsReducer;
+*/
