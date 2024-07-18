@@ -28,30 +28,21 @@ function SpotOneDetails() {
     let nonPreviewURL = []
 
     if (spotsObj?.SpotImages) {
-        console.log('SpotImages = ', SpotImages)
 
         for (let img of SpotImages) {
             if (img.preview) {
                 previewURL = img.url;
-                console.log("##### previewURL = ", previewURL)
             } else {
                 nonPreviewURL.push(img.url)
             }
         }
 
-        console.log('a')
-
-
         for (let i = 0; i < 5; i++) {
-            console.log('b ... nonPreviewURL', nonPreviewURL)
             if (!SpotImages[i]) {
-                console.log('c')
                 nonPreviewURL.push(previewURL)
             }
         }
     }
-
-    console.log('reviewsArr.length = ', reviewsArr.length)
 
 
     return (
@@ -69,7 +60,7 @@ function SpotOneDetails() {
                 </div>
 
                 {nonPreviewURL.map((url, idx) => (
-                    <div dey={`${url}-${idx}`} className="box">
+                    <div key={`${url}-${idx}`} className="box">
                         <img src={nonPreviewURL[idx]} alt={`Spot 111`} />
                     </div>
                 ))}

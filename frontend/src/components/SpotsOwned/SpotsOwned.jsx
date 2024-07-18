@@ -39,17 +39,9 @@ function SpotsOwned() {
     }
 
     const handleDeleteBtn = (e, spot) => {
-        // e.preventDefault();
-        // e.stopPropagation();
-        // console.log('DELETE')
-
         e.preventDefault();
         e.stopPropagation();
-        console.log(`DELETE... {spot.Id} = ${spot.id} `)
-        // deleteSpotOneThunk(spot.id)
         dispatch(deleteSpotOneThunk(spot.id))
-        console.log('AA')
-
     }
     
 

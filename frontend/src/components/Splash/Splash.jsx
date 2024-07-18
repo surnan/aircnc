@@ -18,8 +18,6 @@ function Splash() {
   const handleSpotClick = (e, spot) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log(`click ||| spot.id = ${spot.id}`)
-
     nav(`/spots/${spot.id}`)
   }
 
