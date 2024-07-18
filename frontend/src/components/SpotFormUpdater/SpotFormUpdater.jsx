@@ -165,14 +165,14 @@ function SpotFormUpdater() {
 
         const body = {
             address: 'gasdf',
-            city: 'gasdf',
-            state: 'gasdf',
-            country: 'gasdf',
+            city: 'GGGGGGGG',
+            state: 'HHHHHHHH',
+            country: 'IIIIIIII',
             lat: parseFloat('44.44'),
             lng: parseFloat('33.33'),
-            name: "gAbba",
-            description: "gasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsa",
-            price: parseInt('1123')
+            name: "JJJJJ",
+            description: "LLLLLLLLLLLLL",
+            price: parseInt('999')
         }
 
 
@@ -180,7 +180,7 @@ function SpotFormUpdater() {
             try {
 
                 console.log('spotId = ', spotId)
-                const newSpotId = await dispatch(addSpotOneThunk(
+                const newSpotId = await dispatch(updateSpotThunk(
                     {
                         body,
                         previewImageURL,
