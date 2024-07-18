@@ -6,6 +6,10 @@ const LOAD_SPOTS_ALL = "spots/loadSpotAll"
 const LOAD_SPOTS_ONE = "spots/loadSpotOne"
 const LOAD_SPOTS_OWNED = "spots/loadSpotsOwned"
 
+const DELETE_SPOT_ONE = "spots/deleteSpotOne"
+const UPDATE_SPOT_ONE = "spots/updateSpotOne"
+const ADD_SPOT_ONE = 'spots/addSpotOne';
+
 // Actions
 const loadSpotsAll = (data) => {
     return {
@@ -27,6 +31,11 @@ const loadSpotsOwned = (data) => {
         payload: data,
     };
 };
+
+const deleteSpotOne = (data) => ({
+    type: DELETE_SPOT_ONE,
+    payload: data
+})
 
 //Thunks
 export const getSpotsAllThunk = () => async (dispatch) => {
@@ -57,6 +66,21 @@ export const getSpotsOneThunk = (spotId) => async (dispatch) => {
     }
 }
 
+
+export const deleteSpotOneThunk = (spotId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(deleteSpotOne(spotId))
+        return data
+    }
+}
 
 
 const insertSpotImages = async ({ spotId, previewImageURL, sideImageURLs }) => {
@@ -205,6 +229,16 @@ const spotsReducer = (state = initialState, action) => {
                 newState.byId[spot.id] = spot
             }
             return newState;
+        }
+        case DELETE_SPOT_ONE: {
+            let newState = { ...state }
+            newState.allSpots = newState.allSpots.filter(spot => spot.id !== action.payload);
+            delete newState.byId[action.payload];
+
+            if (newState.single.id === action.payload) {
+                newState.single = {};
+            }
+            return newState
         }
         default: { return state }
     }
