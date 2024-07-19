@@ -14,39 +14,39 @@ module.exports = {
     await ReviewImage.bulkCreate([
       {
         reviewId: 1,
-        url: '/assets/images/houseImages/11.jpg',
+        url: 'https://travel.usnews.com/dims4/USNEWS/d59def3/2147483647/resize/600x400%5E%3E/crop/600x400/quality/85/?url=https%3A%2F%2Ftravel.usnews.com%2Fimages%2FCentral_Park_sunset_Wojtek_Zagorski_Getty.jpg',
       },
       {
         reviewId: 2,
-        url: '/assets/images/houseImages/12.jpg',
+        url: 'https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2240,c_limit/GettyImages-946087016.jpg',
       },
       {
         reviewId: 3,
-        url: '/assets/images/houseImages/13.jpeg',
+        url: 'https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2240,c_limit/GettyImages-946087016.jpg',
       },
       {
         reviewId: 4,
-        url: '/assets/images/houseImages/14.jpeg',
+        url: 'https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2240,c_limit/GettyImages-946087016.jpg',
       },
       {
         reviewId: 5,
-        url: '/assets/images/houseImages/15.jpeg',
+        url: 'https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2240,c_limit/GettyImages-946087016.jpg',
       },
       {
         reviewId: 6,
-        url: '/assets/images/houseImages/16.jpeg',
+        url: 'https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2240,c_limit/GettyImages-946087016.jpg',
       },
       {
         reviewId: 1,
-        url: '/assets/images/houseImages/17.jpeg',
+        url: 'https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2240,c_limit/GettyImages-946087016.jpg',
       },
       {
         reviewId: 2,
-        url: '/assets/images/houseImages/18.jpeg',
+        url: 'https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2240,c_limit/GettyImages-946087016.jpg',
       },
       {
         reviewId: 3,
-        url: '/assets/images/houseImages/19.jpeg',
+        url: 'https://media.architecturaldigest.com/photos/5da74823d599ec0008227ea8/16:9/w_2240,c_limit/GettyImages-946087016.jpg',
       }
 
     ],{ validate: true });
