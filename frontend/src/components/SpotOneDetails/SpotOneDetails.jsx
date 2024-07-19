@@ -29,7 +29,6 @@ function SpotOneDetails() {
 
     const reviewsArr = useSelector(state => state.reviews.allReviews)
     const spotsObj = useSelector(state => state.spots.single)
-    const sessionObj = useSelector(state => state.session)
 
 
 
@@ -66,7 +65,20 @@ function SpotOneDetails() {
         }
     }
 
-    console.log('session ==> ', sessionObj)
+    const handleUpdateBtn = (e, review) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('clicked Update Button')
+        // nav(`/spots/${spot.id}/edit`)
+    }
+
+    const handleDeleteBtn = (e, review) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('clicked Delete Button')
+        // dispatch(deleteSpotOneThunk(spot.id))
+    }
+
 
     return (
         <div>
@@ -136,10 +148,25 @@ function SpotOneDetails() {
             {
                 reviewsArr.map((review, idx) => (
                     <div key={`${review.id}-${idx}-review`} >
+                        <br/>
                         <h4>{review.User.firstName} {review.User.lastName}</h4>
                         <h5 style={({color: 'gray'})}>{formatDateString(review.updatedAt)}</h5>
-                        <h4>{review.review}</h4>
-                        <hr/>
+                        <p>{review.review}</p>
+                        <div>
+                                <button
+                                    className="greyButton clickable"
+                                    onClick={e => handleUpdateBtn(e, review)}
+                                >
+                                    Update
+                                </button>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button
+                                    className="greyButton clickable"
+                                    onClick={e => handleDeleteBtn(e, review)}
+                                >
+                                    Delete
+                                </button>
+                            </div>
                     </div>
                 ))
             }
