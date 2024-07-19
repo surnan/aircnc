@@ -18,7 +18,6 @@ const updateSpotOne = (data) => {
     };
 };
 
-
 const loadSpotsAll = (data) => {
     return {
         type: LOAD_SPOTS_ALL,
@@ -68,7 +67,6 @@ export const getSpotsOwnedThunk = () => async (dispatch) => {
     }
 };
 
-
 export const getSpotsOneThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`)
     if (response.ok) {
@@ -77,7 +75,6 @@ export const getSpotsOneThunk = (spotId) => async (dispatch) => {
         return data
     }
 }
-
 
 export const deleteSpotOneThunk = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -94,7 +91,6 @@ export const deleteSpotOneThunk = (spotId) => async (dispatch) => {
     }
 }
 
-
 const insertSpotImages = async ({ spotId, previewImageURL, sideImageURLs }) => {
     // post preview image
     await csrfFetch(`/api/spots/${spotId}/images`, {
@@ -107,7 +103,6 @@ const insertSpotImages = async ({ spotId, previewImageURL, sideImageURLs }) => {
 
     // post side images
     for (let url of sideImageURLs) {
-        //   if (!url) continue;
         if (!url) {
             url = previewImageURL;
         }
@@ -122,7 +117,6 @@ const insertSpotImages = async ({ spotId, previewImageURL, sideImageURLs }) => {
 };
 
 export const insertSpot = async ({ body, previewImageURL, sideImageURLs }) => {
-
     const response = await csrfFetch("/api/spots", {
         method: "POST",
         headers: {
@@ -139,35 +133,39 @@ export const addSpotOneThunk = (spot) => async (dispatch) => {
     const { body, previewImageURL, sideImageURLs } = spot;
     const response = await csrfFetch("/api/spots", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
     });
-
     const data = await response.json();
     await insertSpotImages({ spotId: data.id, previewImageURL, sideImageURLs });
-
     if (response.ok) {
         dispatch(addSpotOne(data))
         return data.id
     }
 }
 
+const deleteSpotImages = async (spotId) => {
+    const response = await csrfFetch(`/api/spot-images/spot/${spotId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+};
 
 export const updateSpotThunk = (spot) => async (dispatch) => {
     const { body, previewImageURL, sideImageURLs, spotId } = spot;
+    await deleteSpotImages(spotId);
     const response = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'PUT',
         header: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     })
-
     const data = await response.json();
     await insertSpotImages({ spotId: data.id, previewImageURL, sideImageURLs });
-
     if (response.ok) {
         dispatch(updateSpotOne(data))
-        // return data.id
-        return spotId
+        return data.id
     }
 }
 
@@ -224,11 +222,8 @@ const spotsReducer = (state = initialState, action) => {
             return newState;
         }
 
-        case ADD_SPOT_ONE: {
-
-            console.log('>>>>> updatethunk >>>>> action = ', action)
-
-
+        case UPDATE_SPOT_ONE: {
+            console.log('>>>>> case UPDATE_SPOT_ONE = ', action)
         }
         default: { return state }
     }
