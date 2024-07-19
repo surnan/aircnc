@@ -14,7 +14,7 @@ const loadReviewsSpot = (data) => {
     };
 };
 
-const loadReviewsUser = () => {
+const loadReviewsUser = (data) => {
     return {
         type: LOAD_REVIEWS_USER,
         payload: data

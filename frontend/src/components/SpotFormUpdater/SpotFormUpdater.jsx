@@ -1,8 +1,8 @@
 //frontend/src/components/SpotCard/SpotCard.jsx
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { Form, useNavigate, useParams } from "react-router-dom";
-import { getSpotsOneThunk, insertSpot, addSpotOneThunk, updateSpotThunk } from "../../store/spots";
+import { useNavigate, useParams } from "react-router-dom";
+import { getSpotsOneThunk, updateSpotThunk } from "../../store/spots";
 import "./SpotFormUpdater.css"
 
 
@@ -40,7 +40,7 @@ function SpotFormUpdater() {
 
 
 
-    let oldImageUrlIds = [];
+    // let oldImageUrlIds = [];
 
     useEffect(() => {
         if (spotsObj) {
@@ -63,11 +63,14 @@ function SpotFormUpdater() {
                 image5URL: image5?.url || ''
             });
 
-            [image1, image2, image3, image4, image5].forEach(e => {
-                if (e) {
-                    oldImageUrlIds.push(e.id)
-                }
-            })
+            // [image1, image2, image3, image4, image5].forEach(e => {
+            //     if (e) {
+            //         oldImageUrlIds.push(e.id)
+            //     }
+            // })
+            //
+            // const imageIds = [image1, image2, image3, image4, image5].filter(Boolean).map(e => e.id);
+            //
         }
     }, [spotsObj]);
 
@@ -212,7 +215,7 @@ function SpotFormUpdater() {
         <form className="spotForm">
             <h3>Update your Spot ....  spotId = {spotId}</h3>
             <br />
-            <h4>Where's your place located?</h4>
+            <h4>Where&#39;s your place located?</h4>
             <p>Guests will only get your exact address once the booked a reservation.</p>
             <br />
 
@@ -309,7 +312,7 @@ function SpotFormUpdater() {
             <hr />
 
             <h4>Create a title for your spot</h4>
-            <p>Catch guests' attention with a spot title that highlights what makes your place special</p>
+            <p>Catch guests&#39; attention with a spot title that highlights what makes your place special</p>
             <input
                 type="text"
                 name="title"

@@ -1,13 +1,13 @@
 //frontend/src/components/SpotCard/SpotCard.jsx
 import "./SpotCard.css";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 
 function SpotCard({ spot }) {
-  const nav = useNavigate();
-  const { id, city, state, avgRating, price, name, previewImage } = spot
+  
+  const { city, state, avgRating, price, name, previewImage } = spot
 
-  const starPath = "assets/icons/star.png"
+ 
 
 
   return (
