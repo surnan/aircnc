@@ -45,9 +45,7 @@ function SpotOneDetails() {
     }
 
     if (spotsObj?.SpotImages) {
-        console.log(`>>>>>>>spotsObj?.SpotImages.length = ${spotsObj?.SpotImages.length}`)
         for (let e of spotsObj.SpotImages ){
-            console.log(`>> ${e.id} ..... ${e.url}`)
         }
     }
 
