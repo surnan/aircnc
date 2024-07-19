@@ -7,12 +7,29 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getReviewsSpotThunk } from "../../store/reviews";
 import { getSpotsOneThunk } from "../../store/spots";
 
+
+function formatDateString(dateString) {
+    const date = new Date(dateString);
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+  
+    // Get the month and year
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+  
+    // Format the date as "Month Year"
+    return `${month} ${year}`;
+  }
+
 function SpotOneDetails() {
     const dispatch = useDispatch();
     const { spotId } = useParams()
 
     const reviewsArr = useSelector(state => state.reviews.allReviews)
     const spotsObj = useSelector(state => state.spots.single)
+    const sessionObj = useSelector(state => state.session)
 
 
 
@@ -49,9 +66,11 @@ function SpotOneDetails() {
         }
     }
 
+    console.log('session ==> ', sessionObj)
+
     return (
         <div>
-            <h1>{name} SpotOneDetails.jsx</h1>
+            <h1>{name}</h1>
             <h3>
                 {city}, {"\u00A0"}
                 {state}, {"\u00A0"}
@@ -110,13 +129,17 @@ function SpotOneDetails() {
                 &#9733; {avgStarRating || 'New'}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
-            {reviewsArr.length === 0 && <button className="greyButton">Post Your Review </button>}
+            {/* {reviewsArr.length === 0 && <button className="greyButton">Post Your Review </button>} */}
+            <button className="greyButton">Post Your Review </button>
             {reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
 
             {
                 reviewsArr.map((review, idx) => (
                     <div key={`${review.id}-${idx}-review`} >
-                        <h4>review: {review.review}</h4>
+                        <h4>{review.User.firstName} {review.User.lastName}</h4>
+                        <h5 style={({color: 'gray'})}>{formatDateString(review.updatedAt)}</h5>
+                        <h4>{review.review}</h4>
+                        <hr/>
                     </div>
                 ))
             }
