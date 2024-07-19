@@ -41,13 +41,16 @@ export const getReviewsUserThunk = () => async (dispatch) => {
 // State object
 const initialState = {
     allReviews: [],
-    byId: {}
+    byId: {},
+    currentUser: {}
 }
 
 //Reducers
 const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_REVIEWS_SPOT: {
+
+            console.log('LOAD_REVIEWS_SOT: ', JSON.stringify(action))
 
             let newState = {...state}
             newState.allReviews = action.payload.Reviews;
@@ -56,6 +59,8 @@ const reviewsReducer = (state = initialState, action) => {
             for (let review of action.payload.Reviews){
                 newState.byId[review.id] = review
             }
+
+            // newState.currentUser = action.payload.Reviews.
 
             return newState;
         }
