@@ -1,6 +1,6 @@
 // backend/routes/api/spot-images.js
 const express = require('express');
-const { Spot, SpotImage} = require('../../db/models');
+const { Spot, SpotImage } = require('../../db/models');
 const { Model } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 
@@ -39,5 +39,30 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
         next(e)
     }
 });
+
+
+router.delete('/spot/:spotId', requireAuth, async (req, res, next) => {
+    try {
+        const { user } = req;
+        const userId = parseInt(req.user.id);
+        const spotId = parseInt(req.params.spotId);
+        if (user) {
+            const allImages = await SpotImage.findAll({
+                where: {
+                    spotId
+                }
+            })
+
+            for (let e of allImages){
+                await e.destroy()
+            }
+            
+            res.json({message: "hello world"})
+        }
+    } catch (e) {
+        next(e)
+    }
+});
+
 
 module.exports = router;

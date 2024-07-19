@@ -13,6 +13,8 @@ function SpotFormUpdater() {
     const { spotId } = useParams();
     const spotsObj = useSelector(state => state.spots.single)
 
+
+
     const [form, setForm] = useState({
         country: '',
         address: '',
@@ -36,6 +38,10 @@ function SpotFormUpdater() {
         }
     }, [dispatch, spotId]);
 
+
+
+    let oldImageUrlIds = [];
+
     useEffect(() => {
         if (spotsObj) {
             const [image1, image2, image3, image4, image5] = spotsObj?.SpotImages || [];
@@ -56,6 +62,17 @@ function SpotFormUpdater() {
                 image4URL: image4?.url || '',
                 image5URL: image5?.url || ''
             });
+
+            [image1, image2, image3, image4, image5].forEach(e => {
+                if (e) {
+                    oldImageUrlIds.push(e.id)
+                }
+            })
+
+            // console.log('===========================')
+            // console.log('eoldImageUrlIds = ', oldImageUrlIds)
+            // console.log('===========================')
+
         }
     }, [spotsObj]);
 
@@ -131,7 +148,7 @@ function SpotFormUpdater() {
             price: parseInt(price)
         }
 
-        console.log('form', form)
+        // console.log('form', form)
 
         const submit = async () => {
             // console.log('111')
@@ -176,10 +193,30 @@ function SpotFormUpdater() {
         }
 
 
+        // const submit = async () => {
+        //     try {
+
+        //         console.log('>>>> handleSubmitForce-> spotId = ', spotId)
+        //         const newSpotId = await dispatch(updateSpotThunk(
+        //             {
+        //                 body,
+        //                 previewImageURL,
+        //                 sideImageURLs,
+        //                 spotId
+        //             }
+        //         ));
+        //         nav(`/spots/${newSpotId}`);
+        //     } catch (error) {
+        //         console.error('Error adding spot:', error);
+        //     }
+        // }
+
+        // submit();
+
         const submit = async () => {
             try {
 
-                console.log('spotId = ', spotId)
+                console.log('>>>> handleSubmitForce-> spotId = ', spotId)
                 const newSpotId = await dispatch(updateSpotThunk(
                     {
                         body,
@@ -188,15 +225,26 @@ function SpotFormUpdater() {
                         spotId
                     }
                 ));
-                nav(`/spots/${newSpotId}`);
+                // nav(`/spots/${newSpotId}`);
             } catch (error) {
                 console.error('Error adding spot:', error);
             }
         }
-        
+
         submit();
+
+
+
     }
 
+
+
+    // if (spotsObj?.SpotImages) {
+    //     console.log(`##### spotsObj?.SpotImages.length = ${spotsObj?.SpotImages.length}`)
+    //     for (let e of spotsObj.SpotImages ){
+    //         console.log(`>> ${e.id} ..... ${e.url}`)
+    //     }
+    // }
 
     return (
         <form className="spotForm">

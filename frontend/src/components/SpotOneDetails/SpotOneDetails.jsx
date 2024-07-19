@@ -44,10 +44,16 @@ function SpotOneDetails() {
         }
     }
 
+    if (spotsObj?.SpotImages) {
+        console.log(`>>>>>>>spotsObj?.SpotImages.length = ${spotsObj?.SpotImages.length}`)
+        for (let e of spotsObj.SpotImages ){
+            console.log(`>> ${e.id} ..... ${e.url}`)
+        }
+    }
 
     return (
         <div>
-            <h1>{name}</h1>
+            <h1>{name} SpotOneDetails.jsx</h1>
             <h3>
                 {city}, {"\u00A0"}
                 {state}, {"\u00A0"}
