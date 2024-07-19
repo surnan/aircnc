@@ -11,17 +11,17 @@ import { getSpotsOneThunk } from "../../store/spots";
 function formatDateString(dateString) {
     const date = new Date(dateString);
     const monthNames = [
-      "January", "February", "March", "April", "May", "June",
-      "July", "August", "September", "October", "November", "December"
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
     ];
-  
+
     // Get the month and year
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
-  
+
     // Format the date as "Month Year"
     return `${month} ${year}`;
-  }
+}
 
 function SpotOneDetails() {
     const dispatch = useDispatch();
@@ -29,6 +29,7 @@ function SpotOneDetails() {
 
     const reviewsArr = useSelector(state => state.reviews.allReviews)
     const spotsObj = useSelector(state => state.spots.single)
+    const sessionObject = useSelector(state => state.session)
 
 
 
@@ -61,7 +62,7 @@ function SpotOneDetails() {
     }
 
     if (spotsObj?.SpotImages) {
-        for (let e of spotsObj.SpotImages ){
+        for (let e of spotsObj.SpotImages) {
         }
     }
 
@@ -79,10 +80,26 @@ function SpotOneDetails() {
         // dispatch(deleteSpotOneThunk(spot.id))
     }
 
+    // console.log('>>>>> Owner == ', JSON.stringify(Owner));
+    // console.log('>>>>> Owner.id == ', JSON.stringify(Owner?.id));
+
+    // console.log('>>>>> sessionObject == ', JSON.stringify(sessionObject))
+    // console.log('>>>>> sessionObject?.user?.id == ', JSON.stringify(sessionObject?.user?.id))
+
+    // const sameOwner = () => {
+    //     return (Owner?.id === sessionObject?.user?.id) && Owner
+    // }
+
+    const isSameOwner = () => {
+        return Owner?.id === sessionObject?.user?.id;
+    };
+
 
     return (
         <div>
             <h1>{name}</h1>
+            {/* <h2> isSameOwner = {isSameOwner}</h2> */}
+            <h2> Same Owner = {isSameOwner() ? 'Yes' : 'No'}</h2>
             <h3>
                 {city}, {"\u00A0"}
                 {state}, {"\u00A0"}
@@ -148,25 +165,25 @@ function SpotOneDetails() {
             {
                 reviewsArr.map((review, idx) => (
                     <div key={`${review.id}-${idx}-review`} >
-                        <br/>
+                        <br />
                         <h4>{review.User.firstName} {review.User.lastName}</h4>
-                        <h5 style={({color: 'gray'})}>{formatDateString(review.updatedAt)}</h5>
+                        <h5 style={({ color: 'gray' })}>{formatDateString(review.updatedAt)}</h5>
                         <p>{review.review}</p>
                         <div>
-                                <button
-                                    className="greyButton clickable"
-                                    onClick={e => handleUpdateBtn(e, review)}
-                                >
-                                    Update
-                                </button>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <button
-                                    className="greyButton clickable"
-                                    onClick={e => handleDeleteBtn(e, review)}
-                                >
-                                    Delete
-                                </button>
-                            </div>
+                            <button
+                                className="greyButton clickable"
+                                onClick={e => handleUpdateBtn(e, review)}
+                            >
+                                Update
+                            </button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <button
+                                className="greyButton clickable"
+                                onClick={e => handleDeleteBtn(e, review)}
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 ))
             }

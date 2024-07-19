@@ -50,7 +50,7 @@ const reviewsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_REVIEWS_SPOT: {
 
-            console.log('LOAD_REVIEWS_SOT: ', JSON.stringify(action))
+            // console.log('LOAD_REVIEWS_SOT: ', JSON.stringify(action))
 
             let newState = {...state}
             newState.allReviews = action.payload.Reviews;
