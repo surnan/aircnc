@@ -47,6 +47,16 @@
     border-radius: 4px;
     height: 3.5rem;
     box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
+    /* background: hsla(0, 86%, 55%, 0.768);
+    color: white; */
+  }
+
+  .loginButton.enabled {
+    width: 100%;
+    margin: 15px 0;
+    border-radius: 4px;
+    height: 3.5rem;
+    box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
     background: hsla(0, 86%, 55%, 0.768);
     color: white;
   }

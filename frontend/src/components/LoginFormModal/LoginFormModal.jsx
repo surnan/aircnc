@@ -16,6 +16,7 @@ function LoginFormModal() {
   const [showError, setShowError] = useState(false);
 
 
+  const isButtonDisabled = credential.length === 0 || password.length === 0
 
   const demoLogin = (e) => {
     e.preventDefault();
@@ -78,7 +79,8 @@ function LoginFormModal() {
         />
         {errors.credential && (<p>{errors.credential}</p>)}
         <button
-          className="loginButton"
+          className={`loginButton ${!isButtonDisabled && 'enabled'}` }
+          disabled = {isButtonDisabled}
           type="submit"
         >
           Log In
