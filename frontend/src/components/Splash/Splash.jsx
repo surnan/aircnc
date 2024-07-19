@@ -1,8 +1,8 @@
 //frontend/src/components/Splash/Splash.jsx
 import "./Splash.css";
 
-import React from "react";
-import { useEffect, useState } from "react";
+
+import { useEffect } from "react"; //import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getSpotsAllThunk } from "../../store/spots";
@@ -12,7 +12,7 @@ function Splash() {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const spotsArr = useSelector(state => state.spots.allSpots)
-  const [isLoaded, setIsLoaded] = useState(false);
+
 
 
   const handleSpotClick = (e, spot) => {
