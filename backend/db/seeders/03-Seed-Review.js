@@ -15,37 +15,37 @@ module.exports = {
       {
         userId: 1,
         spotId: 3,
-        review: "abc",
+        review: "Comfortable and affordable",
         stars: 3//r1
       },
       {
         userId: 1,
         spotId: 4,
-        review: "def",
+        review: "Quiet and peaceful",
         stars: 5///r2
       },
       {
         userId: 2,
         spotId: 2,
-        review: "ghi",
+        review: "Lots of nearby businesses and friendy neighbors",
         stars: 4//r3
       },
       {
         userId: 2,
         spotId: 1,
-        review: "jkl",
+        review: "Busy and loud outside but quiet and peaceful inside",
         stars: 5//r4
       },
       {
         userId: 3,
         spotId: 4,
-        review: "mno",
+        review: "Expensive but worth the price",
         stars: 3//r5
       },
       {
         userId: 4,
         spotId: 4,
-        review: "pqr",
+        review: "Quality customer service and very clean",
         stars: 3//r6
       },
     ], { validate: true });
