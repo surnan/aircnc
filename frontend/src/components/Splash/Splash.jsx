@@ -1,4 +1,4 @@
-//frontend/src/components/SpotCard/SpotCard.jsx
+//frontend/src/components/Splash/Splash.jsx
 import "./Splash.css";
 
 import React from "react";
@@ -27,6 +27,8 @@ function Splash() {
 
 
   return (
+
+    // <div>
     <div className="splashSpotGrid">
       {
         spotsArr.map((spot, idx) => (
