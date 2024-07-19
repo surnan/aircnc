@@ -8,7 +8,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();

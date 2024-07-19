@@ -1,7 +1,7 @@
 //frontend/src/components/SpotCard/SpotCard.jsx
 import "./SpotsOwned.css";
 
-import React from "react";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,7 @@ function SpotsOwned() {
     }, [dispatch]);
 
 
-    const handleCreateNewSpotBtn = (e, spot) => {
+    const handleCreateNewSpotBtn = (e) => {   //const handleCreateNewSpotBtn = (e, spot) => {
         e.preventDefault();
         e.stopPropagation();
         nav(`/spots/new`)

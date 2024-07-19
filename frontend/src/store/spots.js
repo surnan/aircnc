@@ -145,7 +145,7 @@ export const addSpotOneThunk = (spot) => async (dispatch) => {
 }
 
 const deleteSpotImages = async (spotId) => {
-    const response = await csrfFetch(`/api/spot-images/spot/${spotId}`, {
+    await csrfFetch(`/api/spot-images/spot/${spotId}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -224,6 +224,7 @@ const spotsReducer = (state = initialState, action) => {
 
         case UPDATE_SPOT_ONE: {
             console.log('>>>>> case UPDATE_SPOT_ONE = ', action)
+            break;
         }
         default: { return state }
     }

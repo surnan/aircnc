@@ -2,8 +2,8 @@
 
 import "./SpotOneDetails.css";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { getReviewsSpotThunk } from "../../store/reviews";
 import { getSpotsOneThunk } from "../../store/spots";
 
@@ -38,7 +38,7 @@ function SpotOneDetails() {
         dispatch(getSpotsOneThunk(spotId))
     }, [dispatch, spotId]);
 
-    const { name, city, state, country, address } = spotsObj || {};
+    const { name, city, state, country } = spotsObj || {}; //const { name, city, state, country, address } = spotsObj || {};
     const { avgStarRating, price, Owner, SpotImages } = spotsObj || {};
 
     let previewURL;
@@ -61,34 +61,26 @@ function SpotOneDetails() {
         }
     }
 
-    if (spotsObj?.SpotImages) {
-        for (let e of spotsObj.SpotImages) {
-        }
-    }
+    // if (spotsObj?.SpotImages) {
+    //     for (let e of spotsObj.SpotImages) {
+    //     }
+    // }
 
-    const handleUpdateBtn = (e, review) => {
+    const handleUpdateBtn = (e) => { //const handleUpdateBtn = (e, review) => {
         e.preventDefault();
         e.stopPropagation();
         console.log('clicked Update Button')
         // nav(`/spots/${spot.id}/edit`)
     }
 
-    const handleDeleteBtn = (e, review) => {
+    const handleDeleteBtn = (e) => { //const handleDeleteBtn = (e, review) => {
         e.preventDefault();
         e.stopPropagation();
         console.log('clicked Delete Button')
         // dispatch(deleteSpotOneThunk(spot.id))
     }
 
-    // console.log('>>>>> Owner == ', JSON.stringify(Owner));
-    // console.log('>>>>> Owner.id == ', JSON.stringify(Owner?.id));
 
-    // console.log('>>>>> sessionObject == ', JSON.stringify(sessionObject))
-    // console.log('>>>>> sessionObject?.user?.id == ', JSON.stringify(sessionObject?.user?.id))
-
-    // const sameOwner = () => {
-    //     return (Owner?.id === sessionObject?.user?.id) && Owner
-    // }
 
     const isSameOwner = () => {
         return Owner?.id === sessionObject?.user?.id;
