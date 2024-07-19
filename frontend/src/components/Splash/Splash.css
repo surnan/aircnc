@@ -2,30 +2,45 @@
 
 .splashSpotGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    /* background-color: aquamarine; */
+    grid-template-columns: repeat(auto-fit, minmax(0.80fr, 1fr));
     align-items: center;
     gap: 15px;
-    grid-auto-flow: row;
     margin: auto;
-    /* padding: 100px; */
 }
 
+@media (min-width: 1801px) {
+    .splashSpotGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1800px) {
+    .splashSpotGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1200px) {
+    .splashSpotGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .splashSpotGrid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/*
 .splashSpotGrid img {
     height: 100%;
     width: 100%;
     object-fit: fill;
 }
 
-/* ///////////////////// */
-
-.clickable{
-    cursor: pointer;
-    height: auto;
-}
-
 .spotSquare {
     width: 100%;
     aspect-ratio: 1 / 1;
-    /* background-color: blueviolet; */
 }
+*/

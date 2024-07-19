@@ -1,31 +1,5 @@
 /* frontend/src/components/Splash/Splash.css */
 
-.splashSpotGrid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    /* background-color: aquamarine; */
-    align-items: center;
-    gap: 15px;
-    grid-auto-flow: row;
-    margin: auto;
-    /* padding: 100px; */
-}
-
-.splashSpotGrid img {
-    height: 100%;
-    width: 100%;
-    object-fit: fill;
-}
-
-/* ///////////////////// */
-
-
-.spotSquare {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    /* background-color: blueviolet; */
-}
-
-.isHidden {
-    display: none;
-}
+/*
+test
+*/

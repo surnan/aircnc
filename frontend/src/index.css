@@ -26,57 +26,7 @@ body {
     cursor: pointer;
 }
 
-/* 
-body {
-    padding: 15px
+
+.isHidden {
+    display: none;
 }
-
-
-.error {
-    margin: 0;
-    color: red;
-}
-
-.clickable {
-    cursor: pointer;
-    height: auto;
-}
-
-.gridCol {
-    display: grid;
-    grid-auto-flow: column;
-    margin: auto;
-}
-
-.gridRow {
-    display: grid;
-    grid-auto-flow: row;
-    margin: auto;
-}
-
-.horizontalFlexContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.verticalFlexContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-} */
-
-
-/* .grid-container {
-    display: grid;
-    grid-gap: 50px;
-    grid-auto-flow: row;
-    width: 75%;
-    margin: auto;
-} */
-
-/* .grid-container img {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-} */
