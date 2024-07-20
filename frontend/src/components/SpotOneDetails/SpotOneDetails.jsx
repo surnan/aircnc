@@ -61,11 +61,6 @@ function SpotOneDetails() {
         }
     }
 
-    // if (spotsObj?.SpotImages) {
-    //     for (let e of spotsObj.SpotImages) {
-    //     }
-    // }
-
     const handleUpdateBtn = (e) => { //const handleUpdateBtn = (e, review) => {
         e.preventDefault();
         e.stopPropagation();
@@ -86,11 +81,17 @@ function SpotOneDetails() {
         return Owner?.id === sessionObject?.user?.id;
     };
 
+    const getReviewsStr = (num) =>{
+        if (!num) return
+        if (num === 0) return "New"
+        if (num === 1) return "1 review"
+        return `${num} reviews`
+    }
+
 
     return (
         <div>
             <h1>{name}</h1>
-            {/* <h2> isSameOwner = {isSameOwner}</h2> */}
             <h2> Same Owner = {isSameOwner() ? 'Yes' : 'No'}</h2>
             <h3>
                 {city}, {"\u00A0"}
@@ -130,12 +131,13 @@ function SpotOneDetails() {
                 <div className="gridRow reserveBtnDiv">
 
                     <div className="xFlex">
-                        <div className="xFlex"><span className="priceFont">{`$${price}`}</span>{"\u00A0"}night </div>
+                        <div className="xFlex"><span className="priceFont">{`$${price.toFixed(2)}`}</span>{"\u00A0"}night </div>
                         <div
                             className="xFlex"
                         >
-                            &#9733; {avgStarRating || 'New'}
-                            {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
+                            &#9733; {avgStarRating === 0 ? 'New' : avgStarRating.toFixed(1)}
+                            {/* {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>} */}
+                            {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{getReviewsStr(reviewsArr.length)} </span>}
                         </div>
                     </div>
 
@@ -147,12 +149,12 @@ function SpotOneDetails() {
             <hr />
 
             <h2>
-                &#9733; {avgStarRating || 'New'}
+                
+                  &#9733; {avgStarRating === 0 ? 'New' : avgStarRating.toFixed(1)}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
-            {/* {reviewsArr.length === 0 && <button className="greyButton">Post Your Review </button>} */}
-            <button className="greyButton">Post Your Review </button>
-            {reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
+            {!isSameOwner() && <button className="greyButton">Post Your Review </button>}
+            {!isSameOwner() && reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
 
             {
                 reviewsArr.map((review, idx) => (
