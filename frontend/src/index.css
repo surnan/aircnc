@@ -30,3 +30,12 @@ body {
 .isHidden {
     display: none;
 }
+
+.submitButton {
+    width: 8rem;
+    height: 2rem;
+    background-color: rgba(255, 98, 0, 0.878);
+    color: white;
+    box-shadow: 2px 5px 5px black;
+    margin: auto;
+}
