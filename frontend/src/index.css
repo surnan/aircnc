@@ -26,6 +26,14 @@ body {
     cursor: pointer;
 }
 
+.errorUnderneath {
+    color: red;
+    padding: 0.5rem;
+}
+
+.errorMessage {
+    color: red;
+}
 
 .isHidden {
     display: none;
