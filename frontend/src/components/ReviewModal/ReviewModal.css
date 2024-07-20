@@ -90,35 +90,44 @@ textarea.addReviewText {
 }
 
 
+.submitReviewButtonModal {
+    width: 100%;
+    margin: 15px 0;
+    border-radius: 4px;
+    height: 3.5rem;
+    box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
+}
 
+.submitReviewButtonModal.enabled {
+  width: 100%;
+  margin: 15px 0;
+  border-radius: 4px;
+  height: 3.5rem;
+  box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
+  background: hsla(0, 86%, 55%, 0.768);
+  color: white;
+}
+
+.smallFont{
+    font-size: smaller;
+}
 
 /* 
-.submitReviewButtonModal:hover {
-    background-color: #9a9a9a;
-} 
-*/
+.loginButton {
+    width: 100%;
+    margin: 15px 0;
+    border-radius: 4px;
+    height: 3.5rem;
+    box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
+}
 
-/* .submitReviewButton {
-    width: 8rem;
-    height: 2rem;
-    background-color: white;
-    color: rgba(128, 128, 128, 0.738);
-    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.604);
-    margin: auto;
-} */
-
-
-
-/* .submitReviewButton {
-    width: 100%; 
-    max-width: 500px; 
-    height: 2.5rem;
-    background-color: white;
-    color: rgba(128, 128, 128, 0.738);
-    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.604);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 10px;
-    text-align: center;
+.loginButton.enabled {
+  width: 100%;
+  margin: 15px 0;
+  border-radius: 4px;
+  height: 3.5rem;
+  box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
+  background: hsla(0, 86%, 55%, 0.768);
+  color: white;
+}
 } */
