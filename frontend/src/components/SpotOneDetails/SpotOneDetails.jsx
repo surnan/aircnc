@@ -120,7 +120,10 @@ function SpotOneDetails() {
         }
         return false;
     };
-    
+
+    const handleReserveBtn = () => {
+        alert('Feature coming soon')
+    }
 
     return (
         <div>
@@ -174,7 +177,12 @@ function SpotOneDetails() {
                         </div>
                     </div>
 
-                    <button className="reserveBtn"> Reserve </button>
+                    <button
+                        className="reserveBtn clickable"
+                        onClick={handleReserveBtn}
+                    >
+                        Reserve
+                    </button>
                 </div>
             </div>
 
@@ -220,7 +228,7 @@ function SpotOneDetails() {
                     onClose={handleModalClose}
                     onSubmit={handleNewReviewBtn}
                     id={spotsObj.id}
-                    reviewExists= {hasReviewAlready()}
+                    reviewExists={hasReviewAlready()}
                 />
             )}
         </div>
