@@ -38,3 +38,25 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+
+.loginFlex {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    gap: 1rem;
+}
+
+.center {
+    margin: auto;
+}
+
+.signUpBtn{
+    width: 100%;
+    /* background-color: rgba(255, 77, 0, 0.742); */
+    background-color: rgba(228, 223, 223, 0.906);
+    color: darkgray;
+    height: 3rem;
+    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.604);
+    margin: auto;
+}
