@@ -94,7 +94,7 @@ function SpotFormUpdater() {
 
         for (let key of allKeys) {
             if (!form[key]) {
-                newErrors[key] = `${key} is required`
+                newErrors[key] = capitalizeFirstLetter(`${key} is required`);
             }
         }
 
