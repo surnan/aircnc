@@ -168,7 +168,7 @@ function SpotForm() {
         <form className="spotForm">
             <h3>Create a new Spot</h3>
             <br />
-            <h4>Where's your place located?</h4>
+            <h4>Where&#39;s your place located?</h4>
             <p>Guests will only get your exact address once the booked a reservation.</p>
             <br />
 
@@ -258,7 +258,7 @@ function SpotForm() {
             <hr />
 
             <h4>Create a title for your spot</h4>
-            <p>Catch guests' attention with a spot title that highlights what makes your place special</p>
+            <p>Catch guests&#39; attention with a spot title that highlights what makes your place special</p>
             <input
                 type="text"
                 name="title"
