@@ -54,6 +54,11 @@
     box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
 }
 
+.signUpBtn.enabled {
+    background: hsla(0, 86%, 55%, 0.768);
+    color: white;
+}
+
 .error {
     color: red;
 }
