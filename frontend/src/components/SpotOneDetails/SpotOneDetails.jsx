@@ -102,6 +102,10 @@ function SpotOneDetails() {
     }
 
 
+    // const reviewsArr = useSelector(state => state.reviews.allReviews)
+    // const spotsObj = useSelector(state => state.spots.single)
+    // const sessionObject = useSelector(state => state.session)
+
     return (
         <div>
             <h1>{name}</h1>
@@ -199,6 +203,7 @@ function SpotOneDetails() {
                 <ReviewModal
                     onClose={handleModalClose}
                     onSubmit={handleNewReviewBtn}
+                    id={spotsObj.id}
                 />
             )}
         </div>
