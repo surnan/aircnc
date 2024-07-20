@@ -2,12 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import './ReviewModal.css';
+import { postReviewThunk } from '../../store/reviews'
+import { useDispatch } from 'react-redux';
 
-const ReviewModal = ({ onClose, onSubmit }) => {
+
+const ReviewModal = ({ onClose, onSubmit, id }) => {
+    console.log('ReviewModal.id == ', id)
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
@@ -42,6 +48,24 @@ const ReviewModal = ({ onClose, onSubmit }) => {
             onClose();
         }
     };
+
+    const postReview = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const reviewAndRating = ({
+            review,
+            stars: rating
+
+        })
+
+        try {
+            const newReview = await dispatch(postReviewThunk(id, reviewAndRating))
+        } catch (e) {
+            console.log('ERROR: ', e)
+        }
+
+    }
 
     return (
         <div className="modal" onClick={handleOverlayClick}>
@@ -80,6 +104,7 @@ const ReviewModal = ({ onClose, onSubmit }) => {
                         type="submit"
                         className={`submitReviewButtonModal ${!isButtonDisabled ? 'enabled' : ''}`}
                         disabled={isButtonDisabled}
+                        onClick={(e) => postReview(e)}
                     >
                         Submit Your Review
                     </button>
