@@ -64,10 +64,10 @@ textarea {
     color: red;
 }
 
-.formBtn {
+/* .formBtn {
     width: 20rem;
     border-radius: 3px;
-}
+} */
 
 .formVerticalFlex{
     display: flex;
