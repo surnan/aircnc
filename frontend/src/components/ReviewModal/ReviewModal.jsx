@@ -49,7 +49,6 @@ const ReviewModal = ({ onClose, onSubmit }) => {
                 <span className="close" onClick={onClose}>&times;</span>
                 <h2>How was your stay?</h2>
                 <form onSubmit={handleSubmit} className='reviewForm'>
-
                     <textarea
                         value={review}
                         placeholder='Leave your review here...'
@@ -58,7 +57,6 @@ const ReviewModal = ({ onClose, onSubmit }) => {
                         required
                     >
                     </textarea>
-
                     <div className='starDiv'>
                         {[...Array(5)].map((_, index) => {
                             const starValue = index + 1;
@@ -76,12 +74,11 @@ const ReviewModal = ({ onClose, onSubmit }) => {
                                 </div>
                             );
                         })}
-                        Stars
+                        <span className="smallFont">&#160;Stars</span>
                     </div>
                     <button
-                        // type="Submit Your Review"
                         type="submit"
-                        className='submitReviewButtonModal'
+                        className={`submitReviewButtonModal ${!isButtonDisabled ? 'enabled' : ''}`}
                         disabled={isButtonDisabled}
                     >
                         Submit Your Review
