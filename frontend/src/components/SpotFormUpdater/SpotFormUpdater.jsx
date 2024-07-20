@@ -331,7 +331,7 @@ function SpotFormUpdater() {
                 name="title"
                 onChange={updateSetForm}
                 placeholder="Name of your spot"
-                value={form.description}
+                value={form.title}
             />
             {/* {errors.title && <span style={{ color: 'red' }}>{errors.name}</span>} */}
             <span className="errorMessage">{errors.title || " "}</span>
