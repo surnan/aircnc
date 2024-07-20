@@ -9,6 +9,7 @@ import SpotOneDetails from './components/SpotOneDetails'
 import SpotForm from './components/SpotForm';
 import SpotsOwned from './components/SpotsOwned';
 import SpotFormUpdater from './components/SpotFormUpdater'
+import ReviewsOwned from './components/ReviewsOwned'
 
 
 SpotsOwned
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
       {path: '/spots/:spotId', element: <SpotOneDetails />},
       {path: "/spots/:spotId/edit",element: <SpotFormUpdater />},
       {path: "/spots/current",element: <SpotsOwned />,},
+      {path: "/reviews/current",element: <ReviewsOwned />,},
 
 
 
