@@ -50,7 +50,7 @@ function SpotForm() {
         if (!form["lat"]) { newErrors.lat = "Latitude is required" }
         if (!form["lng"]) { newErrors.lng = "Longitude is required" }
 
-        if (description.length < 3) {
+        if (description.length < 30) {
             newErrors.description = "Description needs a minimum of 30 characters"
         }
 
