@@ -50,6 +50,16 @@
     border-radius: 15px;
 }
 
+
+.borderTop {
+    border-top: solid black 2px;
+}
+
+.borderBtm {
+    border-bottom: solid black 2px;
+}
+
+
 .boxIt {
     border-top: solid black 2px;
     border-bottom: solid black 2px;
