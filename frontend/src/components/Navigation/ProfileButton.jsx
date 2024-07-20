@@ -49,6 +49,10 @@ function ProfileButton({ user }) {
     nav(`/spots/current`);
   }
 
+  const handleManageReviews = ()=>{
+    nav(`/reviews/current`);
+  }
+
   const ulClassName = "profile-dropdown" + (showMenu ? " show" : " hidden");
 
   return (
@@ -74,6 +78,12 @@ function ProfileButton({ user }) {
               onClick={handleManageSpots}
             >
               Manage Spots
+            </li>
+            <li
+              className='boxIt clickable leftPad'
+              onClick={handleManageReviews}
+            >
+              Manage Reviews
             </li>
             <li
               className='liFlex'>
