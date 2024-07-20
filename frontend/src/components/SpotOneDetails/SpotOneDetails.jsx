@@ -136,11 +136,11 @@ function SpotOneDetails() {
                 <div className="gridRow reserveBtnDiv">
 
                     <div className="xFlex">
-                        <div className="xFlex"><span className="priceFont">{`$${price.toFixed(2)}`}</span>{"\u00A0"}night </div>
+                        <div className="xFlex"><span className="priceFont">{`$${price?.toFixed(2)}`}</span>{"\u00A0"}night </div>
                         <div
                             className="xFlex"
                         >
-                            &#9733; {avgStarRating === 0 ? 'New' : avgStarRating.toFixed(1)}
+                            &#9733; {avgStarRating === 0 ? 'New' : avgStarRating?.toFixed(1)}
                             {/* {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>} */}
                             {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{getReviewsStr(reviewsArr.length)} </span>}
                         </div>
@@ -155,7 +155,7 @@ function SpotOneDetails() {
 
             <h2>
                 
-                  &#9733; {avgStarRating === 0 ? 'New' : avgStarRating.toFixed(1)}
+                  &#9733; {avgStarRating === 0 ? 'New' : avgStarRating?.toFixed(1)}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
             {!isSameOwner() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
