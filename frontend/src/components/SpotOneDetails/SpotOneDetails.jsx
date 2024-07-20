@@ -90,9 +90,9 @@ function SpotOneDetails() {
     };
 
 
-    const isSameOwner = () => {
-        return Owner?.id === sessionObject?.user?.id;
-    };
+
+
+
 
     const getReviewsStr = (num) => {
         if (!num) return
@@ -102,14 +102,31 @@ function SpotOneDetails() {
     }
 
 
-    // const reviewsArr = useSelector(state => state.reviews.allReviews)
-    // const spotsObj = useSelector(state => state.spots.single)
-    // const sessionObject = useSelector(state => state.session)
+    console.log(`reviewsArr = ${JSON.stringify(reviewsArr)}`)
+    console.log(`spotsObj = ${JSON.stringify(spotsObj)}`)
+    console.log(`sessionObject = ${JSON.stringify(sessionObject)}`)
+
+    const isSameOwner = () => {
+        return Owner?.id === sessionObject?.user?.id;
+    };
+
+    const hasReviewAlready = () => {
+        if (reviewsArr && sessionObject) {
+            return reviewsArr.some(e => {
+                const isMatch = e?.userId === sessionObject?.user?.id;
+                console.log(`[left, right] ... [${e?.userId}, ${sessionObject?.user?.id}]`);
+                return isMatch;
+            });
+        }
+        return false;
+    };
+    
 
     return (
         <div>
             <h1>{name}</h1>
             <h2> Same Owner = {isSameOwner() ? 'Yes' : 'No'}</h2>
+            <h2> Has Review = {hasReviewAlready() ? 'Yes' : 'No'}</h2>
             <h3>
                 {city}, {"\u00A0"}
                 {state}, {"\u00A0"}
@@ -204,6 +221,7 @@ function SpotOneDetails() {
                     onClose={handleModalClose}
                     onSubmit={handleNewReviewBtn}
                     id={spotsObj.id}
+                    reviewExists= {hasReviewAlready()}
                 />
             )}
         </div>

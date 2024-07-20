@@ -60,6 +60,10 @@ textarea {
     padding: 0.5rem;
 }
 
+.errorMessage {
+    color: red;
+}
+
 .formBtn {
     width: 20rem;
     border-radius: 3px;
@@ -71,6 +75,3 @@ textarea {
     gap: 1rem;
 }
 
-.errorMessage {
-    color: red;
-}

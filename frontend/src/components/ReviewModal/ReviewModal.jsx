@@ -6,12 +6,13 @@ import { postReviewThunk } from '../../store/reviews'
 import { useDispatch } from 'react-redux';
 
 
-const ReviewModal = ({ onClose, onSubmit, id }) => {
+const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
     console.log('ReviewModal.id == ', id)
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -52,6 +53,7 @@ const ReviewModal = ({ onClose, onSubmit, id }) => {
     const postReview = async (e) => {
         e.preventDefault();
         e.stopPropagation();
+        setClickedSubmitBtn(true);
 
         const reviewAndRating = ({
             review,
@@ -59,19 +61,25 @@ const ReviewModal = ({ onClose, onSubmit, id }) => {
 
         })
 
+
         try {
-            const newReview = await dispatch(postReviewThunk(id, reviewAndRating))
+            if (!reviewExists) {
+                const newReview = await dispatch(postReviewThunk(id, reviewAndRating))
+            }
         } catch (e) {
             console.log('ERROR: ', e)
         }
 
     }
 
+    //setClickedSubmitBtn(true);
+
     return (
         <div className="modal" onClick={handleOverlayClick}>
             <div className="modal-content">
                 <span className="close" onClick={onClose}>&times;</span>
                 <h2>How was your stay?</h2>
+                {clickedSubmitBtn && reviewExists && <p className='errorUnderneath'>Review already exists for this spot</p>}
                 <form onSubmit={handleSubmit} className='reviewForm'>
                     <textarea
                         value={review}
