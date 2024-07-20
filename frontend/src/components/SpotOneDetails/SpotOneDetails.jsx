@@ -125,8 +125,8 @@ function SpotOneDetails() {
     return (
         <div>
             <h1>{name}</h1>
-            <h2> Same Owner = {isSameOwner() ? 'Yes' : 'No'}</h2>
-            <h2> Has Review = {hasReviewAlready() ? 'Yes' : 'No'}</h2>
+            {/* <h2> Same Owner = {isSameOwner() ? 'Yes' : 'No'}</h2>
+            <h2> Has Review = {hasReviewAlready() ? 'Yes' : 'No'}</h2> */}
             <h3>
                 {city}, {"\u00A0"}
                 {state}, {"\u00A0"}
