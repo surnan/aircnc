@@ -31,11 +31,20 @@ body {
     display: none;
 }
 
-.submitButton {
+.submitReviewButton {
     width: 8rem;
     height: 2rem;
-    background-color: rgba(255, 98, 0, 0.878);
-    color: white;
-    box-shadow: 2px 5px 5px black;
+    background-color: white;
+    color: rgba(128, 128, 128, 0.738);
+    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.604);
+    margin: auto;
+}
+
+.addReviewText {
+    width: 30rem;
+    margin: auto;
+}
+
+.starDiv{
     margin: auto;
 }
