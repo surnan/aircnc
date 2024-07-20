@@ -75,6 +75,11 @@ function SpotOneDetails() {
         // dispatch(deleteSpotOneThunk(spot.id))
     }
 
+    const handleNewReviewBtn = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('clicked handleNewReviewBtn Button')
+    }
 
 
     const isSameOwner = () => {
@@ -153,7 +158,7 @@ function SpotOneDetails() {
                   &#9733; {avgStarRating === 0 ? 'New' : avgStarRating.toFixed(1)}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
-            {!isSameOwner() && <button className="greyButton">Post Your Review </button>}
+            {!isSameOwner() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
             {!isSameOwner() && reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
 
             {
