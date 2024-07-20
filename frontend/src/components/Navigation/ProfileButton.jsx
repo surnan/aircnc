@@ -74,13 +74,13 @@ function ProfileButton({ user }) {
             <li className='leftPad'>Hello, {user.username}</li>
             <li className='leftPad'>{user.email}</li>
             <li
-              className='boxIt clickable leftPad'
+              className='borderTop clickable leftPad'
               onClick={handleManageSpots}
             >
               Manage Spots
             </li>
             <li
-              className='boxIt clickable leftPad'
+              className='borderBtm clickable leftPad'
               onClick={handleManageReviews}
             >
               Manage Reviews
