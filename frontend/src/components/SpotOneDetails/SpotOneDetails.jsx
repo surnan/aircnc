@@ -2,10 +2,12 @@
 
 import "./SpotOneDetails.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getReviewsSpotThunk } from "../../store/reviews";
 import { getSpotsOneThunk } from "../../store/spots";
+
+import ReviewModal from '../ReviewModal'
 
 
 function formatDateString(dateString) {
@@ -32,6 +34,7 @@ function SpotOneDetails() {
     const sessionObject = useSelector(state => state.session)
 
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         dispatch(getReviewsSpotThunk(spotId))
@@ -79,14 +82,19 @@ function SpotOneDetails() {
         e.preventDefault();
         e.stopPropagation();
         console.log('clicked handleNewReviewBtn Button')
+        setIsModalOpen(true)
     }
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+    };
 
 
     const isSameOwner = () => {
         return Owner?.id === sessionObject?.user?.id;
     };
 
-    const getReviewsStr = (num) =>{
+    const getReviewsStr = (num) => {
         if (!num) return
         if (num === 0) return "New"
         if (num === 1) return "1 review"
@@ -154,8 +162,8 @@ function SpotOneDetails() {
             <hr />
 
             <h2>
-                
-                  &#9733; {avgStarRating === 0 ? 'New' : avgStarRating?.toFixed(1)}
+
+                &#9733; {avgStarRating === 0 ? 'New' : avgStarRating?.toFixed(1)}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
             {!isSameOwner() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
@@ -186,6 +194,13 @@ function SpotOneDetails() {
                     </div>
                 ))
             }
+
+            {isModalOpen && (
+                <ReviewModal
+                    onClose={handleModalClose}
+                    onSubmit={handleNewReviewBtn}
+                />
+            )}
         </div>
     );
 }
