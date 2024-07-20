@@ -47,8 +47,6 @@ export const getReviewsUserThunk = () => async (dispatch) => {
 }
 
 export const postReviewThunk = (id, review) => async (dispatch) => {
-    // console.log('*************************************')
-    // console.log('postReviewThunk - id = ... ', id)
     const res = await csrfFetch(`/api/spots/${id}/reviews`, {
         method: 'POST',
         header: { 'Content-Type': 'application/json' },
@@ -80,8 +78,9 @@ const reviewsReducer = (state = initialState, action) => {
             }
             return newState;
         }
-        case LOAD_REVIEWS_USER: {
+        case LOAD_REVIEWS_USER: {            
             let newState = { ...state }
+            newState.allReviews = action.payload.Reviews
             return newState
         }
         case POST_REVIEW_ONE: {

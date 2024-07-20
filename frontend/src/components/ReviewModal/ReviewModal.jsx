@@ -28,7 +28,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
         setHoverRating(star);
     };
 
-    const handleMouseLeave = (star) => {
+    const handleMouseLeave = () => {
         setHoverRating(0);
     };
 
@@ -114,7 +114,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
                         type="submit"
                         className={`submitReviewButtonModal ${!isButtonDisabled ? 'enabled' : ''}`}
                         disabled={isButtonDisabled}
-                        // onClick={(e) => postReview(e)}
+                        
                         onClick={handleSubmit}
                     >
                         Submit Your Review
