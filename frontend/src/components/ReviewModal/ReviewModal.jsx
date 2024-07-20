@@ -6,12 +6,12 @@ import { postReviewThunk } from '../../store/reviews'
 import { useDispatch } from 'react-redux';
 
 
-const ReviewModal = ({ onClose, onSubmit, id }) => {
-    console.log('ReviewModal.id == ', id)
+const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -34,14 +34,9 @@ const ReviewModal = ({ onClose, onSubmit, id }) => {
 
     const handleClick = (star) => {
         setRating(star);
-        console.log('rating = ', star)
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit({ review, rating });
-        onClose();
-    };
+
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -49,29 +44,44 @@ const ReviewModal = ({ onClose, onSubmit, id }) => {
         }
     };
 
-    const postReview = async (e) => {
+
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         e.stopPropagation();
+        setClickedSubmitBtn(true);
 
-        const reviewAndRating = ({
+        const reviewAndRating = {
             review,
             stars: rating
-
-        })
+        };
 
         try {
-            const newReview = await dispatch(postReviewThunk(id, reviewAndRating))
+            if (!reviewExists) {
+                
+                const result = await dispatch(postReviewThunk(id, reviewAndRating));
+                if (result) {
+                    onSubmit({ review, rating });
+                    onClose();
+                } else {
+                    onSubmit({ review, rating });
+                    onClose();
+                }
+            } else {
+                console.log('>>> Review already exists');
+            }
         } catch (e) {
-            console.log('ERROR: ', e)
+            console.log('>> ** >> ERROR: ', e);
         }
-
-    }
+    };
 
     return (
         <div className="modal" onClick={handleOverlayClick}>
             <div className="modal-content">
                 <span className="close" onClick={onClose}>&times;</span>
                 <h2>How was your stay?</h2>
+                {clickedSubmitBtn && reviewExists && <p className='errorUnderneath'>Review already exists for this spot</p>}
                 <form onSubmit={handleSubmit} className='reviewForm'>
                     <textarea
                         value={review}
@@ -104,7 +114,8 @@ const ReviewModal = ({ onClose, onSubmit, id }) => {
                         type="submit"
                         className={`submitReviewButtonModal ${!isButtonDisabled ? 'enabled' : ''}`}
                         disabled={isButtonDisabled}
-                        onClick={(e) => postReview(e)}
+                        // onClick={(e) => postReview(e)}
+                        onClick={handleSubmit}
                     >
                         Submit Your Review
                     </button>
