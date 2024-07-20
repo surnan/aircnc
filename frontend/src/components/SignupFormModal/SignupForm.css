@@ -38,3 +38,22 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.signUpFlex {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.signUpBtn {
+    width: 100%;
+    margin: 15px 0;
+    border-radius: 4px;
+    height: 3.5rem;
+    box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
+}
+
+.error {
+    color: red;
+}
