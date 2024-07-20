@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 
 
 const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
-    console.log('ReviewModal.id == ', id)
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
@@ -35,14 +34,9 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
 
     const handleClick = (star) => {
         setRating(star);
-        console.log('rating = ', star)
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit({ review, rating });
-        onClose();
-    };
+
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -50,29 +44,37 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
         }
     };
 
-    const postReview = async (e) => {
+
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         e.stopPropagation();
         setClickedSubmitBtn(true);
 
-        const reviewAndRating = ({
+        const reviewAndRating = {
             review,
             stars: rating
-
-        })
-
+        };
 
         try {
             if (!reviewExists) {
-                const newReview = await dispatch(postReviewThunk(id, reviewAndRating))
+                
+                const result = await dispatch(postReviewThunk(id, reviewAndRating));
+                if (result) {
+                    onSubmit({ review, rating });
+                    onClose();
+                } else {
+                    onSubmit({ review, rating });
+                    onClose();
+                }
+            } else {
+                console.log('>>> Review already exists');
             }
         } catch (e) {
-            console.log('ERROR: ', e)
+            console.log('>> ** >> ERROR: ', e);
         }
-
-    }
-
-    //setClickedSubmitBtn(true);
+    };
 
     return (
         <div className="modal" onClick={handleOverlayClick}>
@@ -112,7 +114,8 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
                         type="submit"
                         className={`submitReviewButtonModal ${!isButtonDisabled ? 'enabled' : ''}`}
                         disabled={isButtonDisabled}
-                        onClick={(e) => postReview(e)}
+                        // onClick={(e) => postReview(e)}
+                        onClick={handleSubmit}
                     >
                         Submit Your Review
                     </button>
