@@ -78,7 +78,8 @@ function SpotOneDetails() {
         // dispatch(deleteSpotOneThunk(spot.id))
     }
 
-    const handleNewReviewBtn = (e) => {
+    const handleNewReviewBtn = () => {
+    // const handleNewReviewBtn = (e) => {
         // e.preventDefault();
         // e.stopPropagation();
         console.log('clicked handleNewReviewBtn Button')
