@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 
 
 const ReviewModal = ({ onClose, onSubmit, id }) => {
+    console.log('ReviewModal.id == ', id)
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
@@ -58,7 +59,12 @@ const ReviewModal = ({ onClose, onSubmit, id }) => {
 
         })
 
-        const newReview = await dispatch(postReviewThunk(id, reviewAndRating))
+        try {
+            const newReview = await dispatch(postReviewThunk(id, reviewAndRating))
+        } catch (e) {
+            console.log('ERROR: ', e)
+        }
+
     }
 
     return (
