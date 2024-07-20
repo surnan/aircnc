@@ -1,4 +1,4 @@
-//frontend/src/components/SpotCard/SpotCard.jsx
+//frontend/src/components/SpotCard/SpotsOwned.jsx
 import "./SpotsOwned.css";
 
 
@@ -8,11 +8,24 @@ import { useNavigate } from "react-router-dom";
 import { deleteSpotOneThunk, getSpotsOwnedThunk } from "../../store/spots";
 import SpotCard from "../SpotCard/SpotCard";
 
+/////////////
+import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";  /////////////
+
+
 function SpotsOwned() {
     const dispatch = useDispatch();
     const nav = useNavigate();
     const spotsArr = useSelector(state => state.spots.allSpots)
     const [isLoaded, setIsLoaded] = useState(false);
+
+
+    /////////////
+    /////////////
+    const [showDeleteModal, setShowDeleteModal] = useState(false);  /////////////
+    const [selectedSpot, setSelectedSpot] = useState(null);  /////////////
+    /////////////
+    /////////////
+
 
 
     const handleSpotClick = (e, spot) => {
@@ -22,7 +35,7 @@ function SpotsOwned() {
     }
 
     useEffect(() => {
-        dispatch(getSpotsOwnedThunk()).then(()=>setIsLoaded(true))
+        dispatch(getSpotsOwnedThunk()).then(() => setIsLoaded(true))
     }, [dispatch]);
 
 
@@ -41,9 +54,24 @@ function SpotsOwned() {
     const handleDeleteBtn = (e, spot) => {
         e.preventDefault();
         e.stopPropagation();
-        dispatch(deleteSpotOneThunk(spot.id))
+
+
+        /////////////
+        /////////////
+        setSelectedSpot(spot)       /////////////
+        setShowDeleteModal(true)    /////////////
+        // dispatch(deleteSpotOneThunk(spot.id))
+
     }
-    
+
+    const handleConfirmDelete = async () => {
+        await dispatch(deleteSpotOneThunk(selectedSpot.id));
+        setShowDeleteModal(false);  // Close the delete modal
+        setSelectedSpot(null);  // Clear the selected spot
+    }
+    /////////////
+    /////////////
+
 
     return (
         <>
@@ -63,7 +91,7 @@ function SpotsOwned() {
                                 className="clickable spotSquare"
                                 onClick={e => handleSpotClick(e, spot)}
                             >
-                                <SpotCard spot={spot}/>
+                                <SpotCard spot={spot} />
                             </div>
                             <div>
                                 <button
@@ -84,6 +112,12 @@ function SpotsOwned() {
                     ))
                 }
             </div>
+            {showDeleteModal && (
+                <ConfirmDeleteModal
+                    spotId={selectedSpot.id}
+                    onClose={() => setShowDeleteModal(false)}  // Close the modal
+                />
+            )}
         </>
     );
 }
