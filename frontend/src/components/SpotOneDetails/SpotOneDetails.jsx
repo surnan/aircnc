@@ -199,6 +199,7 @@ function SpotOneDetails() {
                 <ReviewModal
                     onClose={handleModalClose}
                     onSubmit={handleNewReviewBtn}
+                    id={spotId}
                 />
             )}
         </div>

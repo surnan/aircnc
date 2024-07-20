@@ -33,7 +33,6 @@ const postReviewOne = (data) => {
 
 //Thunks
 export const getReviewsSpotThunk = (spotId) => async (dispatch) => {
-    // const response = await csrfFetch('/api/spots/:spotId/reviews')
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`)
     const data = await response.json();
     dispatch(loadReviewsSpot(data))
@@ -56,7 +55,7 @@ export const postReviewThunk = (id, review) => async (dispatch) => {
 
     if (res.ok) {
         const reviewData = await res.json();
-        await dispatch(createReview(reviewData));
+        await dispatch(postReviewOne(reviewData));
         return reviewData;
     }
 }
