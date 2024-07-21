@@ -141,48 +141,48 @@ function SpotFormUpdater() {
     }
 
 
-    const handleSubmitForce = async (e) => {
-        e.preventDefault();
+    // const handleSubmitForce = async (e) => {
+    //     e.preventDefault();
 
-        const previewImageURL = 'https://via.placeholder.com/400.jpg'
+    //     const previewImageURL = 'https://via.placeholder.com/400.jpg'
 
-        const sideImageURLs = [
-            'https://via.placeholder.com/800x600.png',
-            'https://via.placeholder.com/800x600.png',
-            'https://via.placeholder.com/800x600.png',
-            'https://via.placeholder.com/800x600.png'
-        ];
+    //     const sideImageURLs = [
+    //         'https://via.placeholder.com/800x600.png',
+    //         'https://via.placeholder.com/800x600.png',
+    //         'https://via.placeholder.com/800x600.png',
+    //         'https://via.placeholder.com/800x600.png'
+    //     ];
 
-        const body = {
-            address: 'gasdf',
-            city: 'GGGGGGGG',
-            state: 'HHHHHHHH',
-            country: 'IIIIIIII',
-            lat: parseFloat('44.44'),
-            lng: parseFloat('33.33'),
-            name: "JJJJJ",
-            description: "LLLLLLLLLLLLL",
-            price: parseInt('999')
-        }
+    //     const body = {
+    //         address: 'gasdf',
+    //         city: 'GGGGGGGG',
+    //         state: 'HHHHHHHH',
+    //         country: 'IIIIIIII',
+    //         lat: parseFloat('44.44'),
+    //         lng: parseFloat('33.33'),
+    //         name: "JJJJJ",
+    //         description: "LLLLLLLLLLLLL",
+    //         price: parseInt('999')
+    //     }
 
-        const submit = async () => {
-            try {
-                const newSpotId = await dispatch(updateSpotThunk(
-                    {
-                        body,
-                        previewImageURL,
-                        sideImageURLs,
-                        spotId
-                    }
-                ));
-                nav(`/spots/${newSpotId}`);
-            } catch (error) {
-                console.error('Error adding spot:', error);
-            }
-        }
+    //     const submit = async () => {
+    //         try {
+    //             const newSpotId = await dispatch(updateSpotThunk(
+    //                 {
+    //                     body,
+    //                     previewImageURL,
+    //                     sideImageURLs,
+    //                     spotId
+    //                 }
+    //             ));
+    //             nav(`/spots/${newSpotId}`);
+    //         } catch (error) {
+    //             console.error('Error adding spot:', error);
+    //         }
+    //     }
 
-        submit();
-    }
+    //     submit();
+    // }
 
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);

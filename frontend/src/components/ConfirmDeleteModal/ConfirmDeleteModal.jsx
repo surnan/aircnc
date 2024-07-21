@@ -1,6 +1,6 @@
 // frontend/src/components/ConfirmDeleteModal/ConfirmDeleteModal.jsx
 
-import React from 'react';
+
 import { useDispatch } from 'react-redux';
 import { deleteSpotOneThunk } from '../../store/spots';
 import './ConfirmDeleteModal.css';
