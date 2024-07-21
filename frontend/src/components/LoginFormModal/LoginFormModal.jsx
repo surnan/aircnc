@@ -16,7 +16,7 @@ function LoginFormModal() {
   const [showError, setShowError] = useState(false);
 
 
-  const isButtonDisabled = credential.length === 0 || password.length === 0
+  const isButtonDisabled = credential.length < 4  || password.length < 6
 
   const demoLogin = (e) => {
     e.preventDefault();
