@@ -47,7 +47,7 @@ function SpotOneDetails() {
         dispatch(getSpotsOneThunk(spotId))
     }, [dispatch, spotId]);
 
-    const { name, city, state, country } = spotsObj || {}; //const { name, city, state, country, address } = spotsObj || {};
+    const { name, city, state, country, description } = spotsObj || {}; //const { name, city, state, country, address } = spotsObj || {};
     const { avgStarRating, price, Owner, SpotImages } = spotsObj || {};
 
     let previewURL;
@@ -154,13 +154,7 @@ function SpotOneDetails() {
                         Hosted by {"\u00A0"}
                         {Owner && Owner.firstName} {Owner && Owner.lastName}
                     </h2>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum reprehenderit explicabo esse eius distinctio quisquam fuga ratione, exercitationem alias deleniti veniam enim sunt id provident ab nesciunt vero nemo debitis.
-                        Quo, molestias possimus voluptas consequuntur accusamus id necessitatibus! Corporis rem perferendis, amet quisquam culpa voluptates commodi alias expedita aliquam reiciendis vel voluptatem ducimus labore sequi, cum, quae accusantium voluptate officiis.
-                        Quos quo odio voluptates dolores saepe sunt, fugit at dolor pariatur commodi debitis ut facilis officiis similique ratione, rem tenetur, nostrum obcaecati placeat dolorum suscipit. Quibusdam aperiam culpa perferendis nobis!
-                        Optio amet quis quod ipsam maiores officiis reiciendis vero. Ullam expedita sint minima laborum laudantium ut unde? Officia sunt repellat quisquam ut, delectus mollitia explicabo minima perferendis aut aliquid ipsa.
-                        Maiores sunt labore commodi delectus, atque corporis ipsum suscipit consequatur numquam iure accusantium. Vel quaerat impedit mollitia, rem ut iste deserunt voluptate sunt magni, magnam expedita error repellendus placeat excepturi?
-                        Recusandae perferendis dignissimos animi provident neque porro, amet velit asperiores quo saepe nemo. Reprehenderit quo voluptatum nostrum eveniet ad quasi eos quis sit cum aspernatur, minus eligendi error rem ab.
-                    </p>
+                    <p> {description} </p>
                 </div>
                 <div className="gridRow reserveBtnDiv">
 
