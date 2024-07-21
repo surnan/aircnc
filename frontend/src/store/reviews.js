@@ -145,12 +145,24 @@ const reviewsReducer = (state = initialState, action) => {
         }
         case UPDATE_REVIEW_ONE: {
             let newState = { ...state }
-            // newState.allReviews = newState.allReviews.filter(review => review.id !== action.payload);
-            // delete newState.byId[action.payload];
-            // return newState;
 
-            console.log(`>>>>>>> action =>  ${action}`)
+            const reviewId = action.payload.id
 
+            const newAllReviews = [];
+
+            for (let i = 0; i < newState.allReviews.length; i++){
+                let currentReview = newState.allReviews[i]
+                if (currentReview.id === reviewId){
+                    newAllReviews.push(action.payload)
+                } else {
+                    newAllReviews.push(currentReview)
+                }
+            }
+
+            newState.allReviews = newAllReviews
+            newState.byId = {...newState.byId, [reviewId]: action.payload}
+
+            console.log(`>>>>>>> action =>  ${JSON.stringify(action)}`)
             return newState
         }
         default: { return state }
