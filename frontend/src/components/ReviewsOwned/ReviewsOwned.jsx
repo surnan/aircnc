@@ -7,7 +7,7 @@ import "./ReviewsOwned.css"
 
 
 import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";
-import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";
+import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";    ////////////////////////////
 
 
 
