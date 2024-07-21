@@ -6,8 +6,8 @@ import { getSpotsAllThunk } from "../../store/spots";
 import "./ReviewsOwned.css"
 
 
-import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";
-import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";
+import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     //Line=102   ////////////////////////////
+import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";    //Line=102   ////////////////////////////
 
 
 
@@ -26,6 +26,12 @@ function formatDateString(dateString) {
     return `${month} ${year}`;
 }
 
+
+// const handleDeleteBtn = (e, review) => {
+//     e.preventDefault();
+//     setSelectedReview(review);
+//     setShowDeleteModal(true);
+// }
 
 
 function ReviewsOwned() {
@@ -70,7 +76,7 @@ function ReviewsOwned() {
                 reviewsArr.map((review, idx) => (
                     <div key={`${review.id}-${idx}-review`} >
                         <br />
-                        <h4>{spotsObj.byId[review.spotId].name}</h4>
+                        <h4>{spotsObj.byId[review.spotId]?.name}</h4>
                         <h5 style={({ color: 'gray' })}>{formatDateString(review.updatedAt)}</h5>
                         <p>{review.review}</p>
                         <div>

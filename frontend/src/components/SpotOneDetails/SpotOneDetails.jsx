@@ -8,7 +8,7 @@ import { getReviewsSpotThunk } from "../../store/reviews";
 import { getSpotsOneThunk } from "../../store/spots";
 
 import ReviewModal from '../ReviewModal'
-
+import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";
 
 function formatDateString(dateString) {
     const date = new Date(dateString);
@@ -35,6 +35,8 @@ function SpotOneDetails() {
 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);  ////////////////////////////
+    const [selectedReview, setSelectedReview] = useState(null);     ////////////////////////////
 
     useEffect(() => {
         dispatch(getReviewsSpotThunk(spotId))
@@ -71,15 +73,15 @@ function SpotOneDetails() {
         // nav(`/spots/${spot.id}/edit`)
     }
 
-    const handleDeleteBtn = (e) => { //const handleDeleteBtn = (e, review) => {
+    const handleDeleteBtn = (e, review) => {
         e.preventDefault();
-        e.stopPropagation();
-        console.log('clicked Delete Button')
+        setSelectedReview(review);
+        setShowDeleteModal(true);
         // dispatch(deleteSpotOneThunk(spot.id))
     }
 
     const handleNewReviewBtn = () => {
-    // const handleNewReviewBtn = (e) => {
+        // const handleNewReviewBtn = (e) => {
         // e.preventDefault();
         // e.stopPropagation();
         console.log('clicked handleNewReviewBtn Button')
@@ -230,6 +232,12 @@ function SpotOneDetails() {
                     onSubmit={handleNewReviewBtn}
                     id={spotsObj.id}
                     reviewExists={hasReviewAlready()}
+                />
+            )}
+            {showDeleteModal && (
+                <ConfirmDeleteModal
+                    review={selectedReview}
+                    onClose={() => setShowDeleteModal(false)}
                 />
             )}
         </div>
