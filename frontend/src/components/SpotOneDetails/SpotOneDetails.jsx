@@ -184,7 +184,7 @@ function SpotOneDetails() {
                 &#9733; {avgStarRating === 0 ? 'New' : avgStarRating?.toFixed(1)}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
-            {isLoggedIn() && !isSameOwnerSpot() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
+            {!hasReviewAlready() && isLoggedIn() && !isSameOwnerSpot() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
             {isLoggedIn() && !isSameOwnerSpot() && reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
 
             {
