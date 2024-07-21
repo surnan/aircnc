@@ -109,48 +109,50 @@ function SpotForm() {
     }
 
 
-    const handleSubmitForce = async (e) => {
-        e.preventDefault();
 
-        const previewImageURL = 'https://via.placeholder.com/400.jpg'
+    // const handleSubmitForce = async (e) => {
+    //     e.preventDefault();
 
-        const sideImageURLs = [
-            'https://via.placeholder.com/600.jpg',
-            'https://via.placeholder.com/600.jpg',
-            'https://via.placeholder.com/600.jpg',
-            'https://via.placeholder.com/600.jpg'
-        ];
+    //     const previewImageURL = 'https://via.placeholder.com/400.jpg'
+
+    //     const sideImageURLs = [
+    //         'https://via.placeholder.com/600.jpg',
+    //         'https://via.placeholder.com/600.jpg',
+    //         'https://via.placeholder.com/600.jpg',
+    //         'https://via.placeholder.com/600.jpg'
+    //     ];
 
 
 
-        const body = {
-            address: 'asdf',
-            city: 'asdf',
-            state: 'asdf',
-            country: 'asdf',
-            lat: parseFloat('44.44'),
-            lng: parseFloat('33.33'),
-            name: "Abba",
-            description: "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsa",
-            price: parseInt('123')
-        }
+    //     const body = {
+    //         address: 'asdf',
+    //         city: 'asdf',
+    //         state: 'asdf',
+    //         country: 'asdf',
+    //         lat: parseFloat('44.44'),
+    //         lng: parseFloat('33.33'),
+    //         name: "Abba",
+    //         description: "asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsa",
+    //         price: parseInt('123')
+    //     }
 
-        const submit = async () => {
-            try {
-                const newSpotId = await dispatch(addSpotOneThunk(
-                    {
-                        body,
-                        previewImageURL,
-                        sideImageURLs
-                    }
-                ));
-                nav(`/spots/${newSpotId}`);
-            } catch (error) {
-                console.error('Error adding spot:', error);
-            }
-        }
-        submit();
-    }
+    //     const submit = async () => {
+    //         try {
+    //             const newSpotId = await dispatch(addSpotOneThunk(
+    //                 {
+    //                     body,
+    //                     previewImageURL,
+    //                     sideImageURLs
+    //                 }
+    //             ));
+    //             nav(`/spots/${newSpotId}`);
+    //         } catch (error) {
+    //             console.error('Error adding spot:', error);
+    //         }
+    //     }
+    //     submit();
+    // }
+
 
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
