@@ -17,7 +17,7 @@ function SignupFormModal() {
   const { closeModal } = useModal();
 
   const isButtonDisabled = () => (
-   email.length === 0 || username.length === 0 || firstName.length === 0 || lastName.length === 0 || password.length === 0 || confirmPassword.length === 0
+   email.length === 0 || username.length < 4 || firstName.length === 0 || lastName.length === 0 || password.length < 6 || confirmPassword.length < 6
   )
 
   const handleSubmit = (e) => {
