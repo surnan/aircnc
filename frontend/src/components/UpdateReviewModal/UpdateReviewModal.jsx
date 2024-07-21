@@ -12,6 +12,11 @@ const UpdateReviewModal = ({review, onClose }) => {
     const dispatch = useDispatch();
     const [errors, setErrors] = useState({});
 
+    useEffect(()=>{
+        setUpdatedReview(review.review)
+    }, [dispatch])
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (updatedReview.length < 3) {
@@ -27,13 +32,17 @@ const UpdateReviewModal = ({review, onClose }) => {
         }
     };
 
+
+
+
+
     return (
         <div className="modal">
             <div className="modalContent">
                 <h3>Update Review</h3>
                 <form onSubmit={handleSubmit}>
                     <textarea
-                        // value={updatedReview}
+                        value={updatedReview}
                         onChange={(e) => setUpdatedReview(e.target.value)}
                     />
                     {errors.review && <p className="error">{errors.review}</p>}
