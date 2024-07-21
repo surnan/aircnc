@@ -1,14 +1,17 @@
 //frontend/src/components/DeleteReviewModal/DeleteReviewModal.jsx
 import { useDispatch } from 'react-redux';
-// import { deleteReviewThunk } from '../../store/reviews';
+import { deleteReviewThunk } from '../../store/reviews';
 import './DeleteReviewModal.css'
 
 const DeleteReviewModal = ({ review, onClose }) => {
+
+    console.log(`>>>> DeleteReviewModal.review.id = ${JSON.stringify(review.id)}`)
+
     const dispatch = useDispatch();
 
     const handleDelete = async () => {
         try {
-            // await dispatch(deleteReviewThunk(review.id));
+            await dispatch(deleteReviewThunk(review.id));
             onClose();
         } catch (error) {
             console.error('Error deleting review:', error);
