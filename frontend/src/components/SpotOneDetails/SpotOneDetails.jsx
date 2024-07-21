@@ -74,23 +74,15 @@ function SpotOneDetails() {
         e.preventDefault();
         setSelectedReview(review);
         setShowUpdateModal(true);
-        // e.stopPropagation();
-        // console.log('clicked Update Button')
-        // nav(`/spots/${spot.id}/edit`)
     }
 
     const handleDeleteBtn = (e, review) => {
         e.preventDefault();
         setSelectedReview(review);
         setShowDeleteModal(true);
-        // dispatch(deleteSpotOneThunk(spot.id))
     }
 
     const handleNewReviewBtn = () => {
-        // const handleNewReviewBtn = (e) => {
-        // e.preventDefault();
-        // e.stopPropagation();
-        console.log('clicked handleNewReviewBtn Button')
         setIsModalOpen(true)
     }
 
@@ -110,11 +102,6 @@ function SpotOneDetails() {
         return `${num} reviews`
     }
 
-
-    // console.log(`reviewsArr = ${JSON.stringify(reviewsArr)}`)
-    // console.log(`spotsObj = ${JSON.stringify(spotsObj)}`)
-    // console.log(`sessionObject = ${JSON.stringify(sessionObject)}`)
-
     const isSameOwnerSpot = () => {
         return Owner?.id === sessionObject?.user?.id;
     };
@@ -127,7 +114,6 @@ function SpotOneDetails() {
         if (reviewsArr && sessionObject) {
             return reviewsArr.some(e => {
                 const isMatch = e?.userId === sessionObject?.user?.id;
-                // console.log(`[left, right] ... [${e?.userId}, ${sessionObject?.user?.id}]`);
                 return isMatch;
             });
         }
