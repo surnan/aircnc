@@ -190,6 +190,7 @@ function SpotFormUpdater() {
 
     return (
         <form className="spotForm">
+            <h3>Update your Spot</h3>
             <br />
             <h4>Where&#39;s your place located?</h4>
             <p>Guests will only get your exact address once the booked a reservation.</p>
@@ -376,7 +377,7 @@ function SpotFormUpdater() {
                 onClick={handleSubmitForce}
                 className="formBtn submitButton"
             >
-                FORCE CREATE
+                FORCE CREATE SPOT
             </button>
         </form>
     )
