@@ -60,6 +60,19 @@ export const getReviewsUserThunk = () => async (dispatch) => {
     return data
 }
 
+export const deleteReviewThunk = (id) => async (dispatch) => {
+    const res = await csrfFetch(`/api/reviews/${id}`, {
+        method: 'DELETE',
+        header: { 'Content-Type': 'application/json' },
+    })
+
+    if (res.ok) {
+        const reviewData = await res.json();
+        await dispatch(removeReviewOne(id));
+        return reviewData;
+    }
+}
+
 export const postReviewThunk = (id, review) => async (dispatch) => {
     const res = await csrfFetch(`/api/spots/${id}/reviews`, {
         method: 'POST',
@@ -74,18 +87,26 @@ export const postReviewThunk = (id, review) => async (dispatch) => {
     }
 }
 
-export const deleteReviewThunk = (id) => async (dispatch) => {
-    const res = await csrfFetch(`/api/reviews/${id}`, {
-        method: 'DELETE',
+export const updateReviewThunk = (review) => async (dispatch) => {
+
+    console.log(`[review.id, review] = [${review.id}, ${JSON.stringify(review)}]`)
+    const res = await csrfFetch(`/api/reviews/${review.id}`, {
+        method: 'PUT',
         header: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(review)
     })
 
     if (res.ok) {
         const reviewData = await res.json();
-        await dispatch(removeReviewOne(id));
+        await dispatch(updateReviewOne(reviewData));
         return reviewData;
     }
 }
+
+
+
+
+
 
 // State object
 const initialState = {
@@ -121,6 +142,16 @@ const reviewsReducer = (state = initialState, action) => {
             newState.allReviews = newState.allReviews.filter(review => review.id !== action.payload);
             delete newState.byId[action.payload];
             return newState;
+        }
+        case UPDATE_REVIEW_ONE: {
+            let newState = { ...state }
+            // newState.allReviews = newState.allReviews.filter(review => review.id !== action.payload);
+            // delete newState.byId[action.payload];
+            // return newState;
+
+            console.log(`>>>>>>> action =>  ${action}`)
+
+            return newState
         }
         default: { return state }
     }
