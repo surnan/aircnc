@@ -8,25 +8,15 @@ import { useNavigate } from "react-router-dom";
 import { deleteSpotOneThunk, getSpotsOwnedThunk } from "../../store/spots";
 import SpotCard from "../SpotCard/SpotCard";
 
-/////////////
 import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";  /////////////
-
 
 function SpotsOwned() {
     const dispatch = useDispatch();
     const nav = useNavigate();
     const spotsArr = useSelector(state => state.spots.allSpots)
     const [isLoaded, setIsLoaded] = useState(false);
-
-
-    /////////////
-    /////////////
     const [showDeleteModal, setShowDeleteModal] = useState(false);  /////////////
     const [selectedSpot, setSelectedSpot] = useState(null);  /////////////
-    /////////////
-    /////////////
-
-
 
     const handleSpotClick = (e, spot) => {
         e.preventDefault();
@@ -37,7 +27,6 @@ function SpotsOwned() {
     useEffect(() => {
         dispatch(getSpotsOwnedThunk()).then(() => setIsLoaded(true))
     }, [dispatch]);
-
 
     const handleCreateNewSpotBtn = (e) => {   //const handleCreateNewSpotBtn = (e, spot) => {
         e.preventDefault();
@@ -55,13 +44,8 @@ function SpotsOwned() {
         e.preventDefault();
         e.stopPropagation();
 
-
-        /////////////
-        /////////////
         setSelectedSpot(spot)       /////////////
         setShowDeleteModal(true)    /////////////
-        // dispatch(deleteSpotOneThunk(spot.id))
-
     }
 
     const handleConfirmDelete = async () => {
@@ -69,9 +53,6 @@ function SpotsOwned() {
         setShowDeleteModal(false);  // Close the delete modal
         setSelectedSpot(null);  // Clear the selected spot
     }
-    /////////////
-    /////////////
-
 
     return (
         <>

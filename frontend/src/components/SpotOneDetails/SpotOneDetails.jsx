@@ -141,8 +141,6 @@ function SpotOneDetails() {
     return (
         <div>
             <h1>{name}</h1>
-            {/* <h2> Same Owner = {isSameOwnerSpot() ? 'Yes' : 'No'}</h2>
-            <h2> Has Review = {hasReviewAlready() ? 'Yes' : 'No'}</h2> */}
             <h3>
                 {city}, {"\u00A0"}
                 {state}, {"\u00A0"}
@@ -217,7 +215,6 @@ function SpotOneDetails() {
                         <h4>{review?.User?.firstName} {review?.User?.lastName}</h4>
                         <h5 style={({ color: 'gray' })}>{formatDateString(review.updatedAt)}</h5>
                         <p>{review.review}</p>
-                        {/* <p>{isSameOwnerReview(review) ? 'SameOwner' : 'NOT SameOwner'}</p> */}
                         {isSameOwnerReview(review) && <div>
                             <button
                                 className="greyButton clickable"

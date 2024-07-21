@@ -7,15 +7,11 @@
     padding: 30px 0 60px 0;
 }
 
-
-
 .horizontal {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-
-
 
 .vertical {
     display: flex;
@@ -32,7 +28,6 @@ textarea {
     height: 10rem;
 }
 
-
 .spacedRow {
     margin-top: 1rem;
 }
@@ -48,12 +43,8 @@ input {
 textarea {
     padding: 0.5rem;
     background-color: rgba(173, 216, 230, 0.292);
-
-
     border-radius: 0.5;
     border: 2.5px solid black;
-    
-
 }
 
 .errorUnderneath {

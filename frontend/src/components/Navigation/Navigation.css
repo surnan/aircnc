@@ -1,25 +1,19 @@
 /* /frontend/src/Navigation/Navigation.css */
-@import url('../../index.css');
-
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative; /* Positioning dropdown */
     padding: 10px 10px;
-    /* background-color: orange; */
-
 }
 
 nav#navigation {
   border-bottom: 1px hsla(0, 0%, 0%, 0.373) solid;
 }
 
-
 #logo {
   width: 100px;
 }
-
 
 #navRightContainer{
   display: flex;

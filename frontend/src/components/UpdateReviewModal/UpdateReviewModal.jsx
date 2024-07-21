@@ -32,7 +32,6 @@ const UpdateReviewModal = ({review, onClose }) => {
         }
     };
 
-
     return (
         <div className="modal">
             <div className="modalContent">

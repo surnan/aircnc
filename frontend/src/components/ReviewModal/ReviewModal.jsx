@@ -15,7 +15,6 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
 
     const dispatch = useDispatch();
 
-
     useEffect(() => {
         if (review.length >= 10 && rating > 0) {
             setIsButtonDisabled(false);
@@ -36,16 +35,11 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
         setRating(star);
     };
 
-
-
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
             onClose();
         }
     };
-
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,7 +53,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
 
         try {
             if (!reviewExists) {
-                
+
                 const result = await dispatch(postReviewThunk(id, reviewAndRating));
                 if (result) {
                     onSubmit({ review, rating });
@@ -103,7 +97,6 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
                                     onMouseLeave={handleMouseLeave}
                                     onClick={() => handleClick(starValue)}
                                 >
-                                    {/* html entities crash with &#9733; &#9734;, needs to be Unicode values */}
                                     {isFilled ? '\u2605' : '\u2606'}
                                 </div>
                             );
@@ -114,7 +107,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
                         type="submit"
                         className={`submitReviewButtonModal ${!isButtonDisabled ? 'enabled' : ''}`}
                         disabled={isButtonDisabled}
-                        
+
                         onClick={handleSubmit}
                     >
                         Submit Your Review
