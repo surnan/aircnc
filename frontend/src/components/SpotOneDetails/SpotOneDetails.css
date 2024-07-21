@@ -73,3 +73,11 @@ body {
     width: 75%;
     margin: auto;
 }
+
+div.gridCol.middlePanel {
+    min-height: 15rem;
+}
+
+div.gridRow.reserveBtnDiv {
+    min-width: 375px;
+}
