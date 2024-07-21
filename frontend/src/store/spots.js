@@ -223,8 +223,23 @@ const spotsReducer = (state = initialState, action) => {
         }
 
         case UPDATE_SPOT_ONE: {
-            console.log('>>>>> case UPDATE_SPOT_ONE = ', action)
-            break;
+            let newState = { ...state }
+
+            const reviewId = action.payload.id
+
+            const newAllSpots = [];
+
+            for (let i = 0; i < newState.allSpots.length; i++){
+                let currentReview = newState.allSpots[i]
+                if (currentReview.id === reviewId){
+                    newAllSpots.push(action.payload)
+                } else {
+                    newAllSpots.push(currentReview)
+                }
+            }
+
+            newState.allSpots = newAllReviews
+            newState.byId = {...newState.byId, [reviewId]: action.payload}
         }
         default: { return state }
     }
