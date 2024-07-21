@@ -1,11 +1,9 @@
-//frontend/src/components/SpotCard/SpotCard.jsx
+//frontend/src/components/SpotForm/SpotForm.jsx
 import { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { addSpotOneThunk } from "../../store/spots";
 import "./SpotForm.css"
-
-
 
 function SpotForm() {
     const nav = useNavigate();
@@ -40,7 +38,6 @@ function SpotForm() {
         const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
         const goodImgExt = ["jpg", "jpeg", "png"]
 
-
         for (let key of allKeys) {
             if (!form[key]) {
                 newErrors[key] = capitalizeFirstLetter(`${key} is required`);
@@ -58,7 +55,6 @@ function SpotForm() {
             if (form[key]) {
                 const keyArr = form[key].split('.');
                 const ext = keyArr.at(-1).toLowerCase();
-
                 if (!goodImgExt.includes(ext))
                     newErrors[key] = `Image URL must end in .png, .jpg, or .jpeg`;
             }
@@ -74,7 +70,6 @@ function SpotForm() {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }))
     }
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -105,13 +100,11 @@ function SpotForm() {
                         sideImageURLs
                     }
                 ));
-
                 nav(`/spots/${newSpotId}`);
             } catch (error) {
                 console.error('Error adding spot:', error);
             }
         }
-
         submit();
     }
 
@@ -156,7 +149,6 @@ function SpotForm() {
                 console.error('Error adding spot:', error);
             }
         }
-
         submit();
     }
 
@@ -171,7 +163,6 @@ function SpotForm() {
             <h4>Where&#39;s your place located?</h4>
             <p>Guests will only get your exact address once the booked a reservation.</p>
             <br />
-
             <label>
                 Country &#160;&#160;{errors.country && <span style={{ color: 'red' }}>{errors.country}</span>}
             </label>
@@ -280,9 +271,7 @@ function SpotForm() {
             />
             
             <span className="errorMessage">{errors.price || " "}</span>
-
             <hr />
-
             <div className="formVerticalFlex">
                 <h4>Liven up your spot with photos</h4>
                 <p>Submit a link to at least one photo to publish your spot</p>

@@ -4,10 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getReviewsUserThunk } from "../../store/reviews";
 import { getSpotsAllThunk } from "../../store/spots";
 import "./ReviewsOwned.css"
-
-
-import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     //Line=102   ////////////////////////////
-import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";    //Line=102   ////////////////////////////
+import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
+import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";    ////////////////////////////
 
 
 
@@ -17,12 +15,8 @@ function formatDateString(dateString) {
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
-
-    // Get the month and year
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
-
-    // Format the date as "Month Year"
     return `${month} ${year}`;
 }
 

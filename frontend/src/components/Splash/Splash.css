@@ -31,16 +31,3 @@
         grid-template-columns: repeat(1, 1fr);
     }
 }
-
-/*
-.splashSpotGrid img {
-    height: 100%;
-    width: 100%;
-    object-fit: fill;
-}
-
-.spotSquare {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-}
-*/

@@ -1,3 +1,4 @@
+////frontend/src/components/SignupFormModal/SignupFormModal.jsx
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
@@ -15,7 +16,6 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
-  // const isButtonDisabled = credential.length === 0 || password.length === 0
   const isButtonDisabled = () => (
    email.length === 0 || username.length === 0 || firstName.length === 0 || lastName.length === 0 || password.length === 0 || confirmPassword.length === 0
   )
@@ -52,7 +52,6 @@ function SignupFormModal() {
       <form
         className='signUpFlex'
       >
-
         <input
           type="text"
           value={email}
@@ -80,7 +79,6 @@ function SignupFormModal() {
         />
         {errors.firstName && <p className='error'>{errors.firstName}</p>}
 
-
         <input
           type="text"
           value={lastName}
@@ -89,7 +87,6 @@ function SignupFormModal() {
           required
         />
         {errors.lastName && <p className='error'>{errors.lastName}</p>}
-
 
         <input
           type="password"
@@ -109,7 +106,6 @@ function SignupFormModal() {
         />
         {errors.confirmPassword && (
           <p className='error'>{errors.confirmPassword}</p>
-
 
         )}
         <button

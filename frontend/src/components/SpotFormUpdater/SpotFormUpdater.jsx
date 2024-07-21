@@ -5,15 +5,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getSpotsOneThunk, updateSpotThunk } from "../../store/spots";
 import "./SpotFormUpdater.css"
 
-
-
 function SpotFormUpdater() {
     const nav = useNavigate();
     const dispatch = useDispatch();
     const { spotId } = useParams();
     const spotsObj = useSelector(state => state.spots.single)
-
-
 
     const [form, setForm] = useState({
         country: '',
@@ -38,10 +34,6 @@ function SpotFormUpdater() {
         }
     }, [dispatch, spotId]);
 
-
-
-    // let oldImageUrlIds = [];
-
     useEffect(() => {
         if (spotsObj) {
             const [image1, image2, image3, image4, image5] = spotsObj?.SpotImages || [];
@@ -62,35 +54,19 @@ function SpotFormUpdater() {
                 image4URL: image4?.url || '',
                 image5URL: image5?.url || ''
             });
-
-            // [image1, image2, image3, image4, image5].forEach(e => {
-            //     if (e) {
-            //         oldImageUrlIds.push(e.id)
-            //     }
-            // })
-            //
-            // const imageIds = [image1, image2, image3, image4, image5].filter(Boolean).map(e => e.id);
-            //
         }
     }, [spotsObj]);
-
-
 
     const [errors, setErrors] = useState({})
     const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
     const hasError = () => (Object.keys(errors).length !== 0)
 
-
-
-
     useEffect(() => {
         const newErrors = {};
         const { description } = form;
-
         const allKeys = ["country", "address", "city", "state", "title", "price", "previewImageURL", "lat", "lng"];
         const allImageLinks = ["previewImageURL", "image2URL", "image3URL", "image4URL", "image5URL"]
         const goodImgExt = ["jpg", "jpeg", "png"]
-
 
         for (let key of allKeys) {
             if (!form[key]) {
@@ -121,13 +97,10 @@ function SpotFormUpdater() {
 
     }, [form, clickedSubmitBtn])
 
-
-
     const updateSetForm = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }))
     }
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -135,7 +108,6 @@ function SpotFormUpdater() {
 
         const { address, city, state, country, lat, lng, description, price, previewImageURL } = form;
         const { image2URL, image3URL, image4URL, image5URL } = form;
-
         const sideImageURLs = [image2URL, image3URL, image4URL, image5URL];
         const body = {
             address,
@@ -181,8 +153,6 @@ function SpotFormUpdater() {
             'https://via.placeholder.com/800x600.png'
         ];
 
-
-
         const body = {
             address: 'gasdf',
             city: 'GGGGGGGG',
@@ -226,7 +196,6 @@ function SpotFormUpdater() {
             <br />
 
             <label>
-                {/* Country {errors.country && <span style={{ color: 'red' }}>{errors.country}</span>} */}
                 Country &#160;&#160;{errors.country && <span style={{ color: 'red' }}>{errors.country}</span>}
             </label>
             <input
@@ -238,7 +207,6 @@ function SpotFormUpdater() {
             />
 
             <label>
-                {/* Street Address {errors.address && <span style={{ color: 'red' }}>{errors.address}</span>} */}
                 Street Address &#160;&#160;{errors.address && <span style={{ color: 'red' }}>{errors.address}</span>}
             </label>
             <input
@@ -252,7 +220,6 @@ function SpotFormUpdater() {
             <div className="horizontal">
                 <div className="vertical">
                     <label>
-                        {/* City {errors.city && <span style={{ color: 'red' }}>{errors.city}</span>} */}
                         City &#160;&#160;{errors.city && <span style={{ color: 'red' }}>{errors.city}</span>}
                     </label>
                     <input
@@ -265,7 +232,6 @@ function SpotFormUpdater() {
                 </div>
                 <div className="vertical">
                     <label>
-                        {/* State {errors.state && <span style={{ color: 'red' }}>{errors.state}</span>} */}
                         State &#160;&#160;{errors.state && <span style={{ color: 'red' }}>{errors.state}</span>}
                     </label>
                     <input
@@ -281,7 +247,6 @@ function SpotFormUpdater() {
             <div className="horizontal">
                 <div className="vertical">
                     <label>
-                        {/* Latitude {errors.lat && <span style={{ color: 'red' }}>{errors.lat}</span>} */}
                         Latitude &#160;&#160;{errors.lat && <span style={{ color: 'red' }}>{errors.lat}</span>}
                     </label>
                     <input
@@ -294,7 +259,6 @@ function SpotFormUpdater() {
                 </div>
                 <div className="vertical">
                     <label>
-                        {/* Longitude {errors.lng && <span style={{ color: 'red' }}>{errors.lng}</span>} */}
                         Longitude &#160;&#160;{errors.lng && <span style={{ color: 'red' }}>{errors.lng}</span>}
                     </label>
                     <input
@@ -319,7 +283,6 @@ function SpotFormUpdater() {
                 placeholder="Description"
                 value={form.description}
             />
-            {/* {errors.description && <span style={{ color: 'red' }}>{errors.description}</span>} */}
             <span className="errorMessage">{errors.description || " "}</span>
 
             <hr />
@@ -333,11 +296,8 @@ function SpotFormUpdater() {
                 placeholder="Name of your spot"
                 value={form.title}
             />
-            {/* {errors.title && <span style={{ color: 'red' }}>{errors.name}</span>} */}
             <span className="errorMessage">{errors.title || " "}</span>
-
             <hr />
-
             <h4>Set a base price for your spot</h4>
             <p>Competitive pricing can help your listing stand out and rank higher in search results</p>
             <input
@@ -347,11 +307,8 @@ function SpotFormUpdater() {
                 placeholder="Price per night (USD)"
                 value={form.price}
             />
-            {/* {errors.price && <span style={{ color: 'red' }}>{errors.price}</span>} */}
             <span className="errorMessage">{errors.price || " "}</span>
-
             <hr />
-
             <div className="formVerticalFlex">
                 <h4>Liven up your spot with photos</h4>
                 <p>Submit a link to at least one photo to publish your spot</p>
@@ -362,7 +319,6 @@ function SpotFormUpdater() {
                     placeholder="Preview Image URL"
                     value={form.previewImageURL}
                 />
-                {/* {errors.previewImageURL && <span style={{ color: 'red' }}>{errors.previewImageURL}</span>} */}
                 <span className="errorMessage">{errors.previewImageURL || " "}</span>
 
                 <input
@@ -373,7 +329,6 @@ function SpotFormUpdater() {
                     value={form.image2URL}
                 />
 
-                {/* {errors.image2URL && <span style={{ color: 'red' }}>{errors.image2URL}</span>} */}
                 <span className="errorMessage">{errors.image2URL || " "}</span>
                 <input
                     type="text"
@@ -383,7 +338,6 @@ function SpotFormUpdater() {
                     value={form.image3URL}
                 />
 
-                {/* {errors.image3URL && <span style={{ color: 'red' }}>{errors.image3URL}</span>} */}
                 <span className="errorMessage">{errors.image3URL || " "}</span>
 
                 <input
@@ -393,7 +347,6 @@ function SpotFormUpdater() {
                     placeholder="Image URL"
                     value={form.image4URL}
                 />
-                {/* {errors.image4URL && <span style={{ color: 'red' }}>{errors.image4URL}</span>} */}
                 <span className="errorMessage">{errors.image4URL || " "}</span>
 
                 <input
@@ -404,14 +357,12 @@ function SpotFormUpdater() {
                     value={form.image5URL}
                 />
 
-                {/* {errors.image5URL && <span style={{ color: 'red' }}>{errors.image5URL}</span>} */}
                 <span className="errorMessage">{errors.image5URL || " "}</span>
             </div>
             <hr />
 
             <button
                 type="submit"
-                // disabled={Object.keys(errors).length !== 0}
                 disabled={hasError()}
                 onClick={handleSubmit}
                 className="formBtn submitButton"

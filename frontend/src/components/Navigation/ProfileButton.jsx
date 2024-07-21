@@ -23,20 +23,16 @@ function ProfileButton({ user }) {
 
   useEffect(() => {
     if (!showMenu) return;
-
     const closeMenu = (e) => {
       if (!ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
     };
-
     document.addEventListener('click', closeMenu);
-
     return () => document.removeEventListener("click", closeMenu);
   }, [showMenu]);
 
   const closeMenu = () => setShowMenu(false);
-
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
@@ -57,7 +53,6 @@ function ProfileButton({ user }) {
 
   return (
     <nav>
-
       <div
         id='PROFILE-RIGHT-CONTAINER'
         className='clickable'
@@ -110,8 +105,6 @@ function ProfileButton({ user }) {
           </>
         )}
       </ul>
-
-
     </nav >
   );
 }
