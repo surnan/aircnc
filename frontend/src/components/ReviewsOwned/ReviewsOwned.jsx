@@ -20,29 +20,11 @@ function formatDateString(dateString) {
     return `${month} ${year}`;
 }
 
-
-// const handleDeleteBtn = (e, review) => {
-//     e.preventDefault();
-//     setSelectedReview(review);
-//     setShowDeleteModal(true);
-// }
-
-
 function ReviewsOwned() {
     const dispatch = useDispatch();
-
-
-    ////////////////////////////
-    ////////////////////////////
-    ////////////////////////////
     const [showUpdateModal, setShowUpdateModal] = useState(false);  ////////////////////////////
     const [showDeleteModal, setShowDeleteModal] = useState(false);  ////////////////////////////
     const [selectedReview, setSelectedReview] = useState(null);     ////////////////////////////
-    ////////////////////////////
-    ////////////////////////////
-    ////////////////////////////
-
-
     const reviewsArr = useSelector(state => state.reviews.allReviews)
     const spotsObj = useSelector(state => state.spots)
 
