@@ -1,9 +1,13 @@
 //frontend/src/components/ReviewsOwned/ReviewsOwned.jsx
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getReviewsUserThunk } from "../../store/reviews";
 import { getSpotsAllThunk } from "../../store/spots";
 import "./ReviewsOwned.css"
+
+
+import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";
+import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";
 
 
 
@@ -22,33 +26,48 @@ function formatDateString(dateString) {
     return `${month} ${year}`;
 }
 
-const handleUpdateBtn = () => {
-    console.log('click handleUpdateBtn')
-}
 
-const handleDeleteBtn = () => {
-    console.log('click handleUpdateBtn')
-}
 
 function ReviewsOwned() {
     const dispatch = useDispatch();
 
+
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+    const [showUpdateModal, setShowUpdateModal] = useState(false);  ////////////////////////////
+    const [showDeleteModal, setShowDeleteModal] = useState(false);  ////////////////////////////
+    const [selectedReview, setSelectedReview] = useState(null);     ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+    ////////////////////////////
+
+
     const reviewsArr = useSelector(state => state.reviews.allReviews)
-    const spotsObj= useSelector(state => state.spots)
-    
-    
+    const spotsObj = useSelector(state => state.spots)
 
     useEffect(() => {
         dispatch(getReviewsUserThunk())
         dispatch(getSpotsAllThunk())
     }, [dispatch]);
 
+    const handleUpdateBtn = (e, review) => {
+        e.preventDefault();
+        setSelectedReview(review);
+        setShowUpdateModal(true);
+    }
+
+    const handleDeleteBtn = (e, review) => {
+        e.preventDefault();
+        setSelectedReview(review);
+        setShowDeleteModal(true);
+    }
 
     return (
         <>
             <h1 className="reviewTitle">Manage Reviews</h1>
             {
-                 reviewsArr.map((review, idx) => (
+                reviewsArr.map((review, idx) => (
                     <div key={`${review.id}-${idx}-review`} >
                         <br />
                         <h4>{spotsObj.byId[review.spotId].name}</h4>
@@ -69,10 +88,22 @@ function ReviewsOwned() {
                                 Delete
                             </button>
                         </div>
-                        <br/>
+                        <br />
                     </div>
                 ))
             }
+            {showUpdateModal && (
+                <UpdateReviewModal
+                    review={selectedReview}
+                    onClose={() => setShowUpdateModal(false)}
+                />
+            )}
+            {showDeleteModal && (
+                <ConfirmDeleteModal
+                    review={selectedReview}
+                    onClose={() => setShowDeleteModal(false)}
+                />
+            )}
         </>
     )
 }
