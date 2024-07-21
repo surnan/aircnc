@@ -1,4 +1,4 @@
-//frontend/src/components/viewAllSpots/ViewAllSpots.jsx
+//frontend/src/components/SpotOneDetails/SpotOneDetails.jsx
 
 import "./SpotOneDetails.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,9 @@ import { getSpotsOneThunk } from "../../store/spots";
 
 import ReviewModal from '../ReviewModal'
 import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";
+import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
+
+
 
 function formatDateString(dateString) {
     const date = new Date(dateString);
@@ -36,6 +39,7 @@ function SpotOneDetails() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);  ////////////////////////////
+    const [showUpdateModal, setShowUpdateModal] = useState(false);  ////////////////////////////
     const [selectedReview, setSelectedReview] = useState(null);     ////////////////////////////
 
     useEffect(() => {
@@ -66,10 +70,12 @@ function SpotOneDetails() {
         }
     }
 
-    const handleUpdateBtn = (e) => { //const handleUpdateBtn = (e, review) => {
+    const handleUpdateBtn = (e, review) => { //const handleUpdateBtn = (e, review) => {
         e.preventDefault();
-        e.stopPropagation();
-        console.log('clicked Update Button')
+        setSelectedReview(review);
+        setShowUpdateModal(true);
+        // e.stopPropagation();
+        // console.log('clicked Update Button')
         // nav(`/spots/${spot.id}/edit`)
     }
 
@@ -238,6 +244,12 @@ function SpotOneDetails() {
                 <ConfirmDeleteModal
                     review={selectedReview}
                     onClose={() => setShowDeleteModal(false)}
+                />
+            )}
+            {showUpdateModal && (
+                <UpdateReviewModal
+                    review={selectedReview}
+                    onClose={() => setShowUpdateModal(false)}
                 />
             )}
         </div>
