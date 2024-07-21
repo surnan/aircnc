@@ -14,7 +14,7 @@ const UpdateReviewModal = ({review, onClose }) => {
 
     useEffect(()=>{
         setUpdatedReview(review.review)
-    }, [dispatch])
+    }, [dispatch, review?.review])
 
 
     const handleSubmit = async (e) => {

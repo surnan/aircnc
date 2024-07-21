@@ -5,7 +5,7 @@ import "./SpotsOwned.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteSpotOneThunk, getSpotsOwnedThunk } from "../../store/spots";
+import { getSpotsOwnedThunk } from "../../store/spots";
 import SpotCard from "../SpotCard/SpotCard";
 
 import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";  /////////////
@@ -48,11 +48,11 @@ function SpotsOwned() {
         setShowDeleteModal(true)    /////////////
     }
 
-    const handleConfirmDelete = async () => {
-        await dispatch(deleteSpotOneThunk(selectedSpot.id));
-        setShowDeleteModal(false);  // Close the delete modal
-        setSelectedSpot(null);  // Clear the selected spot
-    }
+    // const handleConfirmDelete = async () => {
+    //     await dispatch(deleteSpotOneThunk(selectedSpot.id));
+    //     setShowDeleteModal(false);  // Close the delete modal
+    //     setSelectedSpot(null);  // Clear the selected spot
+    // }
 
     return (
         <>

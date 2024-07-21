@@ -238,8 +238,9 @@ const spotsReducer = (state = initialState, action) => {
                 }
             }
 
-            newState.allSpots = newAllReviews
+            newState.allSpots = newAllSpots
             newState.byId = {...newState.byId, [reviewId]: action.payload}
+            return newState
         }
         default: { return state }
     }
