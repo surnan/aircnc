@@ -90,10 +90,9 @@ function SpotOneDetails() {
         setIsModalOpen(false);
     };
 
-
-
-
-
+    const isLoggedIn = () => {
+        return sessionObject?.user
+    }
 
     const getReviewsStr = (num) => {
         if (!num) return
@@ -185,8 +184,8 @@ function SpotOneDetails() {
                 &#9733; {avgStarRating === 0 ? 'New' : avgStarRating?.toFixed(1)}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
-            {!isSameOwnerSpot() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
-            {!isSameOwnerSpot() && reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
+            {isLoggedIn() && !isSameOwnerSpot() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
+            {isLoggedIn() && !isSameOwnerSpot() && reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
 
             {
                 reviewsArr.map((review, idx) => (
@@ -195,7 +194,7 @@ function SpotOneDetails() {
                         <h4>{review?.User?.firstName} {review?.User?.lastName}</h4>
                         <h5 style={({ color: 'gray' })}>{formatDateString(review.updatedAt)}</h5>
                         <p>{review.review}</p>
-                        {isSameOwnerReview(review) && <div>
+                        {isLoggedIn() && isSameOwnerReview(review) && <div>
                             <button
                                 className="greyButton clickable"
                                 onClick={e => handleUpdateBtn(e, review)}
