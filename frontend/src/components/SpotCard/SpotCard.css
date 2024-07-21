@@ -13,8 +13,8 @@
 
 .spotPreviewImage {
   width: 100%;
-  height: 350px; /* Fixed height for images */
-  object-fit: cover; /* Ensures the image covers the specified area */
+  height: 350px; 
+  object-fit: cover; 
 }
 
 .spotCard {
