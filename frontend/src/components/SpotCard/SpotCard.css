@@ -1,14 +1,33 @@
 /* /frontend/src/Navigation/SpotCard.css */
 
-.spotPreviewImage {
+/* .spotPreviewImage {
   width: 100%;
   height: auto;
   padding: 2px;
+} */
+
+/* .spotCard {
+  position: relative;
+} */
+
+
+.spotPreviewImage {
+  width: 100%;
+  height: 350px; /* Fixed height for images */
+  object-fit: cover; /* Ensures the image covers the specified area */
 }
 
 .spotCard {
   position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  box-sizing: border-box;
+  background: white;
 }
+
 
 .spotCardBtm {
   display: flex;
