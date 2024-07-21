@@ -115,9 +115,13 @@ function SpotOneDetails() {
     // console.log(`spotsObj = ${JSON.stringify(spotsObj)}`)
     // console.log(`sessionObject = ${JSON.stringify(sessionObject)}`)
 
-    const isSameOwner = () => {
+    const isSameOwnerSpot = () => {
         return Owner?.id === sessionObject?.user?.id;
     };
+
+    const isSameOwnerReview = (review) => {
+        return review?.userId === sessionObject?.user?.id;
+    }
 
     const hasReviewAlready = () => {
         if (reviewsArr && sessionObject) {
@@ -137,7 +141,7 @@ function SpotOneDetails() {
     return (
         <div>
             <h1>{name}</h1>
-            {/* <h2> Same Owner = {isSameOwner() ? 'Yes' : 'No'}</h2>
+            {/* <h2> Same Owner = {isSameOwnerSpot() ? 'Yes' : 'No'}</h2>
             <h2> Has Review = {hasReviewAlready() ? 'Yes' : 'No'}</h2> */}
             <h3>
                 {city}, {"\u00A0"}
@@ -203,8 +207,8 @@ function SpotOneDetails() {
                 &#9733; {avgStarRating === 0 ? 'New' : avgStarRating?.toFixed(1)}
                 {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
             </h2>
-            {!isSameOwner() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
-            {!isSameOwner() && reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
+            {!isSameOwnerSpot() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
+            {!isSameOwnerSpot() && reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
 
             {
                 reviewsArr.map((review, idx) => (
@@ -213,7 +217,8 @@ function SpotOneDetails() {
                         <h4>{review?.User?.firstName} {review?.User?.lastName}</h4>
                         <h5 style={({ color: 'gray' })}>{formatDateString(review.updatedAt)}</h5>
                         <p>{review.review}</p>
-                        <div>
+                        {/* <p>{isSameOwnerReview(review) ? 'SameOwner' : 'NOT SameOwner'}</p> */}
+                        {isSameOwnerReview(review) && <div>
                             <button
                                 className="greyButton clickable"
                                 onClick={e => handleUpdateBtn(e, review)}
@@ -227,7 +232,7 @@ function SpotOneDetails() {
                             >
                                 Delete
                             </button>
-                        </div>
+                        </div>}
                     </div>
                 ))
             }
