@@ -4,11 +4,7 @@ import { deleteReviewThunk } from '../../store/reviews';
 import './DeleteReviewModal.css'
 
 const DeleteReviewModal = ({ review, onClose }) => {
-
-    console.log(`>>>> DeleteReviewModal.review.id = ${JSON.stringify(review.id)}`)
-
     const dispatch = useDispatch();
-
     const handleDelete = async () => {
         try {
             await dispatch(deleteReviewThunk(review.id));
@@ -17,7 +13,6 @@ const DeleteReviewModal = ({ review, onClose }) => {
             console.error('Error deleting review:', error);
         }
     };
-
     return (
         <div className="confirmDeleteModal">
             <div className="modalContent">

@@ -30,20 +30,3 @@ const ConfirmDeleteModal = ({ spotId, onClose }) => {
 };
 
 export default ConfirmDeleteModal;
-
-
-
-/*
-    return (
-        <div className="confirmDeleteModal">
-            <div className="modalContent">
-                <h3>Confirm Delete</h3>
-                <p>Are you sure you want to remove this spot from the listings?</p>
-                <div className="modalActions">
-                    <button onClick={handleDelete} className="deleteButton">Delete</button>
-                    <button onClick={onClose} className="cancelButton">Cancel</button>
-                </div>
-            </div>
-        </div>
-    );
-*/

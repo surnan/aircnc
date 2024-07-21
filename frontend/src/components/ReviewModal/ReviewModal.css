@@ -48,8 +48,6 @@ h2 {
     margin-bottom: 15px;
 }
 
-
-
 textarea.addReviewText {
     width: 100%; /* Use full width of modal-content */
     height: 150px;
@@ -66,8 +64,6 @@ textarea.addReviewText {
     padding-bottom: 15px;
 }
 
-
-
 .addReviewText {
     width: 25rem;
     margin: auto;
@@ -83,12 +79,9 @@ textarea.addReviewText {
     box-shadow: 3px 2px 2px rgba(128, 128, 128, 0.386);
 }
 
-
-
 .reviewForm {
     width: 100%
 }
-
 
 .submitReviewButtonModal {
     width: 100%;
@@ -111,23 +104,3 @@ textarea.addReviewText {
 .smallFont{
     font-size: smaller;
 }
-
-/* 
-.loginButton {
-    width: 100%;
-    margin: 15px 0;
-    border-radius: 4px;
-    height: 3.5rem;
-    box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
-}
-
-.loginButton.enabled {
-  width: 100%;
-  margin: 15px 0;
-  border-radius: 4px;
-  height: 3.5rem;
-  box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
-  background: hsla(0, 86%, 55%, 0.768);
-  color: white;
-}
-} */

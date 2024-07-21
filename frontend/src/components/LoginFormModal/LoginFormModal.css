@@ -1,12 +1,9 @@
-/* /frontend/src/Navigation/SpotCard.css */
+/* /frontend/src/LoginForm/LoginForm.css */
 
 /*  width was set by H1 character count*/
-
   .verticalFlexContainer {
     display: flex;
     flex-direction: column;
-    /* background-color: lightgreen; */
-    /* padding: 35px; */
     padding: 10px;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -14,13 +11,10 @@
 
 .loginModal {
     width: 350px;
-    /* background-color: orange; */
     border-radius: 35px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-    
   }
 
   .demoButton{
@@ -32,7 +26,6 @@
     text-align: center;
   }
 
-
   .formInput {
     width: 100%;
     margin: 10px 0; 
@@ -40,15 +33,12 @@
     border-radius: 4px;
   }
   
-  
   .loginButton {
     width: 100%;
     margin: 15px 0;
     border-radius: 4px;
     height: 3.5rem;
     box-shadow: 5px 5px 5px hsla(0, 0%, 0%, 0.664);
-    /* background: hsla(0, 86%, 55%, 0.768);
-    color: white; */
   }
 
   .loginButton.enabled {
@@ -66,7 +56,6 @@
     margin: 0 0 0 5px;
     border-radius: 4px;
     height: 3.5rem;
-    /* background-color: lightcoral; */
     border: none;
     font-size: large;
     text-decoration: underline;
