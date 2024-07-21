@@ -16,11 +16,12 @@ const DeleteReviewModal = ({ review, onClose }) => {
     };
 
     return (
-        <div className="modal">
+        <div className="confirmDeleteModal">
             <div className="modalContent">
-                <h3>Are you sure you want to delete this review?</h3>
-                <button onClick={handleDelete}>Delete</button>
-                <button onClick={onClose}>Cancel</button>
+                <h3>Confirm Delete</h3>
+                <p>Are you sure you want to remove this spot from the listings?</p>
+                <button onClick={handleDelete} className="deleteButton">Yes (Delete Review)</button>
+                <button onClick={onClose} className="cancelButton">No (Keep Review)</button>
             </div>
         </div>
     );
