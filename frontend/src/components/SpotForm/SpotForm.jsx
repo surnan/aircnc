@@ -329,13 +329,13 @@ function SpotForm() {
             </button>
 
             <br />
-            <button
+            {/* <button
                 type="submit"
                 onClick={handleSubmitForce}
                 className="formBtn submitButton"
             >
                 FORCE CREATE
-            </button>
+            </button> */}
         </form>
     )
 }
