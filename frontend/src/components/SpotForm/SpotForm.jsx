@@ -337,6 +337,7 @@ function SpotForm() {
                 onClick={handleSubmitForce}
                 className="formBtn submitButton"
             >
+            useless commen added to force git commit/push & hopefully Render-Sync
                 FORCE CREATE
             </button> */}
         </form>
@@ -344,5 +345,6 @@ function SpotForm() {
 }
 
 export default SpotForm;
+
 
 
