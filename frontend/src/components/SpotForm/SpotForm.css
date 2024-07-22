@@ -61,3 +61,6 @@ textarea {
     gap: 1rem;
 }
 
+.enabledButton {
+    cursor: pointer;
+}

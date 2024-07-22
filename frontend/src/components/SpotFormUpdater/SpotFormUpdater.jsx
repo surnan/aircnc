@@ -366,7 +366,8 @@ function SpotFormUpdater() {
                 type="submit"
                 disabled={hasError()}
                 onClick={handleSubmit}
-                className="formBtn submitButton"
+                // className="formBtn submitButton"
+                className={`formBtn submitButton ${!hasError() ? 'enabledButton' : ''}`}
             >
                 Update Spot
             </button>

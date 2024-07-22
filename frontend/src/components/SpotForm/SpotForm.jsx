@@ -325,7 +325,8 @@ function SpotForm() {
                 type="submit"
                 disabled={hasError()}
                 onClick={handleSubmit}
-                className="formBtn submitButton"
+                // className="formBtn submitButton "
+                className={`formBtn submitButton ${!hasError() ? 'enabledButton' : ''}`}
             >
                 Create Spot
             </button>
