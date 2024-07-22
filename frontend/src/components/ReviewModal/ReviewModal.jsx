@@ -125,7 +125,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
                     </div>
                     <button
                         type="submit"
-                        className={`submitReviewButtonModal ${!isButtonDisabled ? 'enabled' : ''}`}
+                        className={`submitReviewButtonModal ${!isButtonDisabled ? 'enabled clickable' : ''}`}
                         disabled={isButtonDisabled}
 
                         onClick={handleSubmit}
