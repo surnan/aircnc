@@ -34,12 +34,6 @@ function ReviewsOwned() {
         dispatch(getSpotsAllThunk())
     }, [dispatch]);
 
-    // const _handleUpdateBtn = (e, review) => {
-    //     e.preventDefault();
-    //     setSelectedReview(review);
-    //     setShowUpdateModal(true);
-    // }
-
     const handleDeleteBtn = (e, review) => {
         e.preventDefault();
         setSelectedReview(review);
@@ -52,9 +46,9 @@ function ReviewsOwned() {
     }
 
     const handleModalClose = () => {
-        // setIsModalOpen(false);
         setShowUpdateModal(false);
         setShowDeleteModal(false);
+        // setIsModalOpen(false);
         // setSelectedReview(null)
     };
 
