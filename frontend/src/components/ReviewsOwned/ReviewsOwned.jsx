@@ -22,7 +22,7 @@ function formatDateString(dateString) {
 
 function ReviewsOwned() {
     const dispatch = useDispatch();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // const [isModalOpen, setIsModalOpen] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);  ////////////////////////////
     const [showDeleteModal, setShowDeleteModal] = useState(false);  ////////////////////////////
     const [selectedReview, setSelectedReview] = useState(null);     ////////////////////////////
@@ -34,11 +34,11 @@ function ReviewsOwned() {
         dispatch(getSpotsAllThunk())
     }, [dispatch]);
 
-    const _handleUpdateBtn = (e, review) => {
-        e.preventDefault();
-        setSelectedReview(review);
-        setShowUpdateModal(true);
-    }
+    // const _handleUpdateBtn = (e, review) => {
+    //     e.preventDefault();
+    //     setSelectedReview(review);
+    //     setShowUpdateModal(true);
+    // }
 
     const handleDeleteBtn = (e, review) => {
         e.preventDefault();
@@ -52,7 +52,7 @@ function ReviewsOwned() {
     }
 
     const handleModalClose = () => {
-        setIsModalOpen(false);
+        // setIsModalOpen(false);
         setShowUpdateModal(false);
         setShowDeleteModal(false);
         // setSelectedReview(null)
