@@ -190,7 +190,7 @@ function SpotOneDetails() {
             <h2>
 
                 &#9733; {avgStarRating === 0 ? 'New' : avgStarRating?.toFixed(1)}
-                {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{reviewsArr.length} reviews </span>}
+                {reviewsArr.length > 0 && <span> &nbsp; &#183; &nbsp;{getReviewsStr(reviewsArr.length)} </span>}
             </h2>
             {!hasReviewAlready() && isLoggedIn() && !isSameOwnerSpot() && <button className="greyButton clickable" onClick={handleNewReviewBtn}>Post Your Review </button>}
             {isLoggedIn() && !isSameOwnerSpot() && reviewsArr.length === 0 && <p>Be the first to post a review!</p>}
