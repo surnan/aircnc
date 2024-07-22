@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getReviewsUserThunk } from "../../store/reviews";
 import { getSpotsAllThunk } from "../../store/spots";
 import "./ReviewsOwned.css"
-import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
+// import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
 import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";    ////////////////////////////
-
+import ReviewModal from '../ReviewModal'
 
 
 function formatDateString(dateString) {
@@ -90,10 +90,11 @@ function ReviewsOwned() {
             {showUpdateModal && (
                 <ReviewModal
                     onClose={handleModalClose}
-                    onSubmit={handleNewReviewBtn}
+                    // onSubmit={handleNewReviewBtn}
+                    onSubmit={handleUpdateBtn}
                     id={spotsObj.id}
                     reviewExists={false}
-                    spotsObj={spotsObj}
+                    spotsObj={spotsObj?.byId[selectedReview?.spotId]}
                     selectedReview={selectedReview}
                 />
             )}
@@ -108,13 +109,3 @@ function ReviewsOwned() {
 }
 
 export default ReviewsOwned;
-
-
-/*
-{showUpdateModal && (
-    <UpdateReviewModal
-        review={selectedReview}
-        onClose={() => setShowUpdateModal(false)}
-    />
-)}
-*/

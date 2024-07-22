@@ -12,7 +12,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
     const [hoverRating, setHoverRating] = useState(0);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [clickedSubmitBtn, setClickedSubmitBtn] = useState(false);
-    
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -81,7 +81,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
                     onClose();
                 }
             } else {
-                await dispatch(updateReviewThunk({ ...selectedReview, review: review }));
+                await dispatch(updateReviewThunk({ ...selectedReview, review: review, rating: rating }));
                 onClose();
             }
         } catch (e) {
