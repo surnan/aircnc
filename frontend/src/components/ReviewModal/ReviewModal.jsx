@@ -81,7 +81,8 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
                     onClose();
                 }
             } else {
-                await dispatch(updateReviewThunk({ ...selectedReview, review: review, rating: rating }));
+                console.log('>>>>>>  rating = ', rating)
+                await dispatch(updateReviewThunk({ ...selectedReview, review: review, stars: rating }));
                 onClose();
             }
         } catch (e) {
@@ -94,7 +95,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
             <div className="modal-content">
                 <span className="close" onClick={onClose}>&times;</span>
                 <h2>{h2Title}</h2>
-                {clickedSubmitBtn && reviewExists && <p className='errorUnderneath'>Review already exists for this spot</p>}
+                {!selectedReview && clickedSubmitBtn && reviewExists && <p className='errorUnderneath'>Review already exists for this spot</p>}
                 <form onSubmit={handleSubmit} className='reviewForm'>
                     <textarea
                         value={review}

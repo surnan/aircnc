@@ -87,9 +87,7 @@ export const postReviewThunk = (id, review) => async (dispatch) => {
     }
 }
 
-export const updateReviewThunk = (review) => async (dispatch) => {
-
-    console.log(`[review.id, review] = [${review.id}, ${JSON.stringify(review)}]`)
+export const updateReviewThunk = (review) => async (dispatch) => {    
     const res = await csrfFetch(`/api/reviews/${review.id}`, {
         method: 'PUT',
         header: { 'Content-Type': 'application/json' },
@@ -147,7 +145,6 @@ const reviewsReducer = (state = initialState, action) => {
             let newState = { ...state }
 
             const reviewId = action.payload.id
-
             const newAllReviews = [];
 
             for (let i = 0; i < newState.allReviews.length; i++){
