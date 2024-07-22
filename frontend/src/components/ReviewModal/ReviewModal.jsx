@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import './ReviewModal.css';
-import { postReviewThunk } from '../../store/reviews'
+import { postReviewThunk, updateReviewThunk } from '../../store/reviews'
 import { useDispatch } from 'react-redux';
 
 
@@ -71,8 +71,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
         };
 
         try {
-            if (!reviewExists || selectedReview) {
-
+            if (!reviewExists) {
                 const result = await dispatch(postReviewThunk(id, reviewAndRating));
                 if (result) {
                     onSubmit({ review, rating });
@@ -82,7 +81,8 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
                     onClose();
                 }
             } else {
-                console.log('>>> Review already exists');
+                await dispatch(updateReviewThunk({ ...selectedReview, review: review }));
+                onClose();
             }
         } catch (e) {
             console.log('>> ** >> ERROR: ', e);
