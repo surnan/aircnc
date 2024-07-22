@@ -16,6 +16,10 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (selectedReview && selectedReview.review) {
+            setReview(selectedReview.review);
+        }
+
         if (selectedReview && selectedReview.stars) {
             setRating(selectedReview.stars);
         }
@@ -67,7 +71,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
         };
 
         try {
-            if (!reviewExists) {
+            if (!reviewExists || selectedReview) {
 
                 const result = await dispatch(postReviewThunk(id, reviewAndRating));
                 if (result) {
@@ -93,7 +97,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedRe
                 {clickedSubmitBtn && reviewExists && <p className='errorUnderneath'>Review already exists for this spot</p>}
                 <form onSubmit={handleSubmit} className='reviewForm'>
                     <textarea
-                        value={selectedReview?.review}
+                        value={review}
                         placeholder='Leave your review here...'
                         onChange={(e) => setReview(e.target.value)}
                         className='addReviewText'

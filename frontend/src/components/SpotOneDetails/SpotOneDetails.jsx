@@ -9,7 +9,7 @@ import { getSpotsOneThunk } from "../../store/spots";
 
 import ReviewModal from '../ReviewModal'
 import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";
-import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
+// import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
 
 
 
@@ -70,11 +70,11 @@ function SpotOneDetails() {
         }
     }
 
-    const _handleUpdateBtn = (e, review) => { //const handleUpdateBtn = (e, review) => {
-        e.preventDefault();
-        setSelectedReview(review);
-        setShowUpdateModal(true);
-    }
+    // const _handleUpdateBtn = (e, review) => { //const handleUpdateBtn = (e, review) => {
+    //     e.preventDefault();
+    //     setSelectedReview(review);
+    //     setShowUpdateModal(true);
+    // }
 
     const handleDeleteBtn = (e, review) => {
         e.preventDefault();
@@ -95,7 +95,7 @@ function SpotOneDetails() {
         setIsModalOpen(false);
         setShowUpdateModal(false);
         setShowDeleteModal(false);
-        setSelectedReview(null)
+        // setSelectedReview(null)
     };
 
     const isLoggedIn = () => {
