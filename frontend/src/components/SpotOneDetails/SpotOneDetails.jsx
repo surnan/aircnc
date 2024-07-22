@@ -45,7 +45,7 @@ function SpotOneDetails() {
     useEffect(() => {
         dispatch(getReviewsSpotThunk(spotId))
         dispatch(getSpotsOneThunk(spotId))
-    }, [dispatch, spotId]);
+    }, [dispatch, spotId, isModalOpen, showUpdateModal, showDeleteModal]);
 
     const { name, city, state, country, description } = spotsObj || {}; //const { name, city, state, country, address } = spotsObj || {};
     const { avgStarRating, price, Owner, SpotImages } = spotsObj || {};
