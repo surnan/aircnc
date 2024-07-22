@@ -244,7 +244,7 @@ function SpotForm() {
             <textarea
                 name="description"
                 onChange={updateSetForm}
-                placeholder="Description"
+                placeholder="Please write at least 30 characters"
             />
             
             <span className="errorMessage">{errors.description || " "}</span>
