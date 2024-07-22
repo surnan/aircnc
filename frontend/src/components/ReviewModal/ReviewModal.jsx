@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import './ReviewModal.css';
-import { postReviewThunk } from '../../store/reviews'
+import { postReviewThunk, updateReviewThunk } from '../../store/reviews'
 import { useDispatch } from 'react-redux';
 
 
-const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
+const ReviewModal = ({ onClose, onSubmit, id, reviewExists, spotsObj, selectedReview}) => {
     const [review, setReview] = useState('');
     const [rating, setRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
@@ -16,12 +16,31 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (selectedReview && selectedReview.review) {
+            setReview(selectedReview.review);
+        }
+
+        if (selectedReview && selectedReview.stars) {
+            setRating(selectedReview.stars);
+        }
+    }, [selectedReview]);
+
+    useEffect(() => {
         if (review.length >= 10 && rating > 0) {
             setIsButtonDisabled(false);
         } else {
             setIsButtonDisabled(true);
         }
     }, [review, rating]);
+
+
+    const h2Title = selectedReview ? (
+        <>
+            How was your stay at <br /> {spotsObj?.name}?
+        </>
+    ) : (
+        "How was your stay?"
+    );
 
     const handleMouseEnter = (star) => {
         setHoverRating(star);
@@ -53,7 +72,6 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
 
         try {
             if (!reviewExists) {
-
                 const result = await dispatch(postReviewThunk(id, reviewAndRating));
                 if (result) {
                     onSubmit({ review, rating });
@@ -63,7 +81,8 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
                     onClose();
                 }
             } else {
-                console.log('>>> Review already exists');
+                await dispatch(updateReviewThunk({ ...selectedReview, review: review, rating: rating }));
+                onClose();
             }
         } catch (e) {
             console.log('>> ** >> ERROR: ', e);
@@ -74,7 +93,7 @@ const ReviewModal = ({ onClose, onSubmit, id, reviewExists }) => {
         <div className="modal" onClick={handleOverlayClick}>
             <div className="modal-content">
                 <span className="close" onClick={onClose}>&times;</span>
-                <h2>How was your stay?</h2>
+                <h2>{h2Title}</h2>
                 {clickedSubmitBtn && reviewExists && <p className='errorUnderneath'>Review already exists for this spot</p>}
                 <form onSubmit={handleSubmit} className='reviewForm'>
                     <textarea

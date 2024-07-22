@@ -9,7 +9,7 @@ import { getSpotsOneThunk } from "../../store/spots";
 
 import ReviewModal from '../ReviewModal'
 import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";
-import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
+// import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
 
 
 
@@ -38,8 +38,8 @@ function SpotOneDetails() {
 
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);  ////////////////////////////
     const [showUpdateModal, setShowUpdateModal] = useState(false);  ////////////////////////////
+    const [showDeleteModal, setShowDeleteModal] = useState(false);  ////////////////////////////
     const [selectedReview, setSelectedReview] = useState(null);     ////////////////////////////
 
     useEffect(() => {
@@ -70,11 +70,11 @@ function SpotOneDetails() {
         }
     }
 
-    const handleUpdateBtn = (e, review) => { //const handleUpdateBtn = (e, review) => {
-        e.preventDefault();
-        setSelectedReview(review);
-        setShowUpdateModal(true);
-    }
+    // const _handleUpdateBtn = (e, review) => { //const handleUpdateBtn = (e, review) => {
+    //     e.preventDefault();
+    //     setSelectedReview(review);
+    //     setShowUpdateModal(true);
+    // }
 
     const handleDeleteBtn = (e, review) => {
         e.preventDefault();
@@ -86,8 +86,16 @@ function SpotOneDetails() {
         setIsModalOpen(true)
     }
 
+    const handleUpdateBtn = (e, review) => { //const handleUpdateBtn = (e, review) => {
+        setSelectedReview(review);
+        setShowUpdateModal(true);
+    }
+
     const handleModalClose = () => {
         setIsModalOpen(false);
+        setShowUpdateModal(false);
+        setShowDeleteModal(false);
+        // setSelectedReview(null)
     };
 
     const isLoggedIn = () => {
@@ -219,6 +227,7 @@ function SpotOneDetails() {
                     onSubmit={handleNewReviewBtn}
                     id={spotsObj.id}
                     reviewExists={hasReviewAlready()}
+                    spotsObj={spotsObj}
                 />
             )}
             {showDeleteModal && (
@@ -228,9 +237,13 @@ function SpotOneDetails() {
                 />
             )}
             {showUpdateModal && (
-                <UpdateReviewModal
-                    review={selectedReview}
-                    onClose={() => setShowUpdateModal(false)}
+                <ReviewModal
+                    onClose={handleModalClose}
+                    onSubmit={handleNewReviewBtn}
+                    id={spotsObj.id}
+                    reviewExists={hasReviewAlready()}
+                    spotsObj={spotsObj}
+                    selectedReview={selectedReview}
                 />
             )}
         </div>
@@ -238,3 +251,13 @@ function SpotOneDetails() {
 }
 
 export default SpotOneDetails;
+
+
+/*
+ {showUpdateModal && (
+                <UpdateReviewModal
+                    review={selectedReview}
+                    onClose={() => setShowUpdateModal(false)}
+                />
+)}
+*/

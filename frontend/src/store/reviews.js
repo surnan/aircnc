@@ -161,8 +161,6 @@ const reviewsReducer = (state = initialState, action) => {
 
             newState.allReviews = newAllReviews
             newState.byId = {...newState.byId, [reviewId]: action.payload}
-
-            console.log(`>>>>>>> action =>  ${JSON.stringify(action)}`)
             return newState
         }
         default: { return state }
