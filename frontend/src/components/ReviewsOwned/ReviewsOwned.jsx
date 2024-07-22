@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getReviewsUserThunk } from "../../store/reviews";
 import { getSpotsAllThunk } from "../../store/spots";
 import "./ReviewsOwned.css"
-import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
+// import UpdateReviewModal from "../UpdateReviewModal/UpdateReviewModal";     ////////////////////////////
 import ConfirmDeleteModal from "../DeleteReviewModal/DeleteReviewModal";    ////////////////////////////
-
+import ReviewModal from '../ReviewModal'
 
 
 function formatDateString(dateString) {
@@ -22,6 +22,7 @@ function formatDateString(dateString) {
 
 function ReviewsOwned() {
     const dispatch = useDispatch();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [showUpdateModal, setShowUpdateModal] = useState(false);  ////////////////////////////
     const [showDeleteModal, setShowDeleteModal] = useState(false);  ////////////////////////////
     const [selectedReview, setSelectedReview] = useState(null);     ////////////////////////////
@@ -33,7 +34,7 @@ function ReviewsOwned() {
         dispatch(getSpotsAllThunk())
     }, [dispatch]);
 
-    const handleUpdateBtn = (e, review) => {
+    const _handleUpdateBtn = (e, review) => {
         e.preventDefault();
         setSelectedReview(review);
         setShowUpdateModal(true);
@@ -44,6 +45,18 @@ function ReviewsOwned() {
         setSelectedReview(review);
         setShowDeleteModal(true);
     }
+
+    const handleUpdateBtn = (e, review) => { //const handleUpdateBtn = (e, review) => {
+        setSelectedReview(review);
+        setShowUpdateModal(true);
+    }
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+        setShowUpdateModal(false);
+        setShowDeleteModal(false);
+        // setSelectedReview(null)
+    };
 
     return (
         <>
@@ -75,9 +88,14 @@ function ReviewsOwned() {
                 ))
             }
             {showUpdateModal && (
-                <UpdateReviewModal
-                    review={selectedReview}
-                    onClose={() => setShowUpdateModal(false)}
+                <ReviewModal
+                    onClose={handleModalClose}
+                    // onSubmit={handleNewReviewBtn}
+                    onSubmit={handleUpdateBtn}
+                    id={spotsObj.id}
+                    reviewExists={false}
+                    spotsObj={spotsObj?.byId[selectedReview?.spotId]}
+                    selectedReview={selectedReview}
                 />
             )}
             {showDeleteModal && (
@@ -91,5 +109,3 @@ function ReviewsOwned() {
 }
 
 export default ReviewsOwned;
-
-
