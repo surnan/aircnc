@@ -71,5 +71,5 @@ body {
 }
 
 button:active {
-    filter: brightness(1.9); /* Increase brightness to lighten the color */
+    filter: brightness(1.5); /* Increase brightness to lighten the color */
   }
