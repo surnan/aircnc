@@ -1,9 +1,6 @@
 <!--!!START SILENT -->
 # Air CnC
-<!--!!END -->
-<!--!!ADD -->
-<!-- # `<name of application here>` -->
-<!--!!END_ADD -->
+Rental platform offering user-friendly interfaces to connect renters and property owners.  Integrated Google Maps API to enhance user experience.
 
 ## Database Schema Design
 
@@ -14,7 +11,7 @@
 [airbnb-db-diagram-info]: https://appacademy-open-assets.s3.us-west-1.amazonaws.com/Modular-Curriculum/content/week-12/airbnb-db-diagram-info.txt
 <!--!!END -->
 <!--!!ADD -->
-<!-- `<insert database schema design here>` -->
+<!-- `<insert database schema design here>` -->https://github.com/surnan/aircnc
 <!--!!END_ADD -->
 
 ## API Documentation
