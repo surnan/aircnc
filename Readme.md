@@ -1,9 +1,6 @@
 <!--!!START SILENT -->
 # Air CnC
-<!--!!END -->
-<!--!!ADD -->
-<!-- # `<name of application here>` -->
-<!--!!END_ADD -->
+Created rental platform offering an intuitive and user-friendly interfaces to connect renters and property owners. Integrated Google Maps API to enable location-based features and enhance user experiences. Robust Node.js backend using Sequelize ORM to manage and interact with the PostgreSQL database efficiently. Secure user authentication with CSRF technology
 
 ## Database Schema Design
 
